@@ -7,7 +7,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://www.yahoo.com',
         ws: true,
         changeOrigin: true
       }
@@ -15,7 +15,7 @@ module.exports = {
   },
   // Change build paths to make them Maven compatible
   // see https://cli.vuejs.org/config/
-  outputDir: 'target/dist',
+  outputDir: 'public',
   assetsDir: 'static',
   configureWebpack: {
     output: {
