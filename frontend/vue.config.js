@@ -7,7 +7,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://www.yahoo.com',
+        target: 'http://localhost:8080',
         ws: true,
         changeOrigin: true
       }
@@ -15,12 +15,12 @@ module.exports = {
   },
   // Change build paths to make them Maven compatible
   // see https://cli.vuejs.org/config/
-  outputDir: 'public',
+  outputDir: 'target/dist',
   assetsDir: 'static',
   configureWebpack: {
     output: {
-      filename: "static/js/[name].js",
-      chunkFilename: "static/js/chunk-vendors.js"
+      filename: "static/js/[name].[contenthash].js",
+      chunkFilename: "static/js/[name].[contenthash].js"
     }
   },
 }
