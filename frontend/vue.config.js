@@ -7,7 +7,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:8090',
         ws: true,
         changeOrigin: true
       }
@@ -19,8 +19,8 @@ module.exports = {
   assetsDir: 'static',
   configureWebpack: {
     output: {
-      filename: "static/js/[name].[contenthash].js",
-      chunkFilename: "static/js/[name].[contenthash].js"
+      filename: "static/js/[name].[hash].js",
+      chunkFilename: "static/js/[name].[hash].js"
     }
   },
 }
