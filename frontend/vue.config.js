@@ -10,7 +10,12 @@ module.exports = {
         target: 'http://localhost:8090',
         ws: true,
         changeOrigin: true
-      }
+      },
+    '/logout': {
+      target: 'http://localhost:8090',
+        ws: true,
+        changeOrigin: true
+    }
     }
   },
   // Change build paths to make them Maven compatible

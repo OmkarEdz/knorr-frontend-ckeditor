@@ -3,17 +3,28 @@ const express = require('express')
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const history = require('connect-history-api-fallback');
 const serverStatic=require('serve-static')
+var proxy = require('express-http-proxy');
+var http = require('http')
+const bodyParser = require('body-parser');
 path=require('path')
-const bodyParser = require("body-parser");
+
+
 const app = express();
+app.set('etag', false);
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store')
+  next()
+})
+app.enable('strict routing');
 var router = express.Router();
 var request = require('request');
-const staticFileMiddleware = express.static(path.join(__dirname , '/dist'));
-app.use(staticFileMiddleware);
-app.use(history({
-  verbose: true
-}));
-app.use(staticFileMiddleware);
+const apiProxy = createProxyMiddleware({ target: 'http://localhost:8090' ,secure:false,changeOrigin:false, ws: true});
+app.use('/api', apiProxy)
+app.use('/logout', apiProxy)
+
+// app.get('/', function (req, res) {
+// res.sendFile(__dirname + '/target/dist/index.html');
+//  });
 app.use('*/css',express.static(path.join(__dirname , "/public/",'/static/css')));
 app.use('*/js',express.static(path.join(__dirname , "/public/",'/static/js')));
 app.use('*/img',express.static(path.join(__dirname , "/public/",'/static/img')));
@@ -22,13 +33,21 @@ app.use('*/css.map',express.static(path.join(__dirname , "/public/",'/static/css
 app.use('*/webfonts',express.static(path.join(__dirname , "/public/",'/static/webfonts')));
 app.use('*/files/flags',express.static(path.join(__dirname , "/public/",'/files/flags')));
 app.use('*/files/images',express.static(path.join(__dirname , "/public/",'/files/images')));
+//bodyParser.urlencoded({extended: false})
 
-// Add middleware for http proxying 
-const apiProxy = createProxyMiddleware('/api', { target: 'http://localhost:8090' });
-app.use('/api', apiProxy)
+const staticFileMiddleware = express.static(path.join(__dirname , '/target/dist'));
+
+app.use(staticFileMiddleware);
 
 
-app.use(bodyParser.json());
+app.use(history({
+  verbose: true
+}));
+
+
+app.use(staticFileMiddleware);
+
+
 const port=process.env.PORT || 8080
 app.listen(port)
 console.log(`app is listening on port: ${port}`)
