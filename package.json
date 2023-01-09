@@ -2,8 +2,9 @@
   "name": "frontend",
   "version": "3.0.0",
   "private": true,
+  "engineStrict" : true,
   "engines": {
-    "node": "v16.13.0"
+    "node": "v16.19.0"
   },
   "description": "A Vue.js & Spring Boot example project",
   "author": "CodeGuides GmbH <info@codeguides.de>",
