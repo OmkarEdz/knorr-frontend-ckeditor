@@ -30,6 +30,11 @@ module.exports = {
       target: 'http://localhost:8090',
         ws: true,
         changeOrigin: true
+    },
+    '/files': {
+      target: 'http://localhost:8090',
+        ws: true,
+        changeOrigin: true
     }
     }
   },

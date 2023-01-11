@@ -22,6 +22,7 @@ var request = require('request');
 const apiProxy = createProxyMiddleware({ target: 'http://localhost:8090' ,secure:false,changeOrigin:false, ws: true});
 app.use('/api', apiProxy)
 app.use('/logout', apiProxy)
+app.use('/files', apiProxy)
 
 // app.get('/', function (req, res) {
 // res.sendFile(__dirname + '/target/dist/index.html');
@@ -32,8 +33,6 @@ app.use('*/img',express.static(path.join(__dirname , "/public/",'/static/img')))
 app.use('*/fonts',express.static(path.join(__dirname , "/public/",'/static/fonts')));
 app.use('*/css.map',express.static(path.join(__dirname , "/public/",'/static/css.map')));
 app.use('*/webfonts',express.static(path.join(__dirname , "/public/",'/static/webfonts')));
-app.use('*/files/flags',express.static(path.join(__dirname , "/public/",'/files/flags')));
-app.use('*/files/images',express.static(path.join(__dirname , "/public/",'/files/images')));
 //bodyParser.urlencoded({extended: false})
 
 const staticFileMiddleware = express.static(path.join(__dirname , '/target/dist'));
