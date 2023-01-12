@@ -20,7 +20,10 @@ app.enable('strict routing');
 var router = express.Router();
 var request = require('request');
 //const apiProxy = createProxyMiddleware({ target: 'http://localhost:8090' ,secure:false,changeOrigin:false, ws: true});
-const apiProxy = createProxyMiddleware({ target: 'https://knorr-bremse-trainingbackend-production.up.railway.app' ,secure:false,changeOrigin:false, ws: true});
+const apiProxy = createProxyMiddleware({ target: 'https://knorr-bremse-trainingbackend-production.up.railway.app' ,secure:false,changeOrigin:true, ws: true, headers: {
+  "Connection": "keep-alive"
+}, proxyTimeout: 17000,
+logLevel: "debug"});
 app.use('/api', apiProxy)
 app.use('/logout', apiProxy)
 app.use('/files', apiProxy)
