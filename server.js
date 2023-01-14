@@ -13,11 +13,11 @@ app.use((req, res, next) => {
   next()
 })
 app.enable('strict routing');
-//let apiProxy = createProxyMiddleware({ target: 'http://localhost:8090' ,secure:false,changeOrigin:false, ws: true});
-const apiProxy = createProxyMiddleware({ target: 'https://knorr-bremse-trainingbackend-production.up.railway.app' ,secure:false,changeOrigin:true, ws: true, headers: {
-  "Connection": "keep-alive"
-}, proxyTimeout: 17000,
-logLevel: "debug"});
+let apiProxy = createProxyMiddleware({ target: 'http://localhost:8090' ,secure:false,changeOrigin:false, ws: true});
+// const apiProxy = createProxyMiddleware({ target: 'https://knorr-bremse-trainingbackend-production.up.railway.app' ,secure:false,changeOrigin:true, ws: true, headers: {
+//   "Connection": "keep-alive"
+// }, proxyTimeout: 17000,
+// logLevel: "debug"});
 app.use('/api', apiProxy)
 app.use('/logout', apiProxy)
 app.use('/files', apiProxy)
@@ -27,7 +27,7 @@ app.use('*/img',express.static(path.join(__dirname , "/public/",'/static/img')))
 app.use('*/fonts',express.static(path.join(__dirname , "/public/",'/static/fonts')));
 app.use('*/css.map',express.static(path.join(__dirname , "/public/",'/static/css.map')));
 app.use('*/webfonts',express.static(path.join(__dirname , "/public/",'/static/webfonts')));
-//app.use('/*?lang', apiProxy)
+app.use('/*?', apiProxy)
 const staticFileMiddleware = express.static(path.join(__dirname , '/target/dist'));
 app.use(staticFileMiddleware);
 app.use(history({
@@ -36,4 +36,5 @@ app.use(history({
 app.use(staticFileMiddleware);
 const port=process.env.PORT || 8080
 app.listen(port)
+console.log(path.join(__dirname , '/target/dist/','index.html'));
 console.log(`app is listening on port: ${port}`)
