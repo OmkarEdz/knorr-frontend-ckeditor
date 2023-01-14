@@ -27,7 +27,7 @@ app.use('*/img',express.static(path.join(__dirname , "/public/",'/static/img')))
 app.use('*/fonts',express.static(path.join(__dirname , "/public/",'/static/fonts')));
 app.use('*/css.map',express.static(path.join(__dirname , "/public/",'/static/css.map')));
 app.use('*/webfonts',express.static(path.join(__dirname , "/public/",'/static/webfonts')));
-app.use('/*?', apiProxy)
+//app.use('/*?lang', apiProxy)
 const staticFileMiddleware = express.static(path.join(__dirname , '/target/dist'));
 app.use(staticFileMiddleware);
 app.use(history({
