@@ -18,7 +18,6 @@ const apiProxy = createProxyMiddleware({ target: 'https://knorr-bremse-trainingb
   "Connection": "keep-alive"
 }, proxyTimeout: 17000,
 logLevel: "debug"});
-app.use('/*?', apiProxy)
 app.use('/api', apiProxy)
 app.use('/logout', apiProxy)
 app.use('/files', apiProxy)
@@ -28,6 +27,7 @@ app.use('*/img',express.static(path.join(__dirname , "/public/",'/static/img')))
 app.use('*/fonts',express.static(path.join(__dirname , "/public/",'/static/fonts')));
 app.use('*/css.map',express.static(path.join(__dirname , "/public/",'/static/css.map')));
 app.use('*/webfonts',express.static(path.join(__dirname , "/public/",'/static/webfonts')));
+app.use('/*?', apiProxy)
 const staticFileMiddleware = express.static(path.join(__dirname , '/target/dist'));
 app.use(staticFileMiddleware);
 app.use(history({
