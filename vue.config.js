@@ -49,8 +49,8 @@ module.exports = {
   assetsDir: 'static',
   configureWebpack: {
     output: {
-      filename: "static/js/[name].[hash].js",
-      chunkFilename: "static/js/[name].[hash].js"
+      filename: "static/js/app.js",
+      chunkFilename: "static/js/chunk-vendors.js"
     }
   },
 }
