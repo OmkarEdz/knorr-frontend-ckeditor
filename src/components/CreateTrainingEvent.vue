@@ -510,7 +510,7 @@
                     @keypress.enter="addParticipant()"
                     ></v-text-field>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6" v-show="$rights.includes('CREATE_TRAINING_EVENT')">
+                <div class="col-12 col-sm-6 col-md-6" v-show="$user != null && !$user.external">
                     <v-autocomplete  
                         v-model="adduser.tenantId"
                         hide-details="auto"
