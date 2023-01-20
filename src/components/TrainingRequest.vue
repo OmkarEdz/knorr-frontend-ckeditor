@@ -347,7 +347,11 @@
                         :label="$t('trainingAmountNeeded') + '*'"
                         v-model="request.trainingAmountNeeded"
                         ></v-text-field>
-                    </div>
+                    </div> 
+            <div class="col-12">
+              <Upload  multiple allowOtherFileTypes=true accept="application/pdf" />
+            </div>
+        
                 </div>
                 <div class="col-md-6 disablerow" v-if="editMode">
                     <div class="col-md-12 pt-0">
