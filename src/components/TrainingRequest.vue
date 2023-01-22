@@ -184,12 +184,12 @@
                          <v-radio
                              :key="'usb'"
                              :label="$t('USBform')"
-                             :value="'usb'"
+                             :value="'USB'"
                          ></v-radio>
                          <v-radio
                              :key="'print'"
                              :label="$t('printedForm')+$t('printedSet')"
-                             :value="'print'"
+                             :value="'PRINT'"
                           > </v-radio>
                         </v-radio-group>
                     </div>
@@ -618,7 +618,7 @@ export default {
           customerName: null,
           customerLocation: null,
           customerNumber: null,
-          documentType:"usb",
+          documentType:"USB",
           street: null,
           hnr: null,
           zip: null,
