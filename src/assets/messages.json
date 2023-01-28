@@ -1,5 +1,10 @@
 {
     "de": {
+        "training course event":"Schulungsveranstaltung",
+        "documents in":"Möchten Sie die Dokumente in",
+        "USBform":"USB-Formular",
+        "printedForm":"Gedrucktes Formular",
+        "printedSet":"(200 Euro pro Drucksatz)",
         "my trainings": "Meine Trainings",
         "user management": "Nutzerverwaltung",
         "manage venues": "Veranstaltungsorte verwalten",
@@ -847,6 +852,11 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "training course event":"Training Course Event",
+        "documents in":"Do you want the documents in",
+        "USBform":"USB Form",
+        "printedForm":"Printed Form",
+        "printedSet":"(200 Euro per print set)",
         "my trainings": "My Training Courses",
         "user management": "User Management",
         "manage venues": "Venue Management",
@@ -1696,6 +1706,11 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "training course event":"Wydarzenie dotyczące kursu szkoleniowego",
+        "documents in":"Chcesz dokumenty w",
+        "USBform":"Formularz USB",
+        "printedForm":"Drukowany formularz",
+        "printedSet":"(200 euro za zestaw do drukowania)",
         "my trainings": "Moje szkolenia",
         "user management": "Zarządzanie użytkownikami",
         "manage venues": "Zarządzanie miejscami wydarzeń",

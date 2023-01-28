@@ -179,6 +179,21 @@
                         <span class="headlinecolor text-h6"> {{$t("training_event")}}</span>
                     </div>
                     <div class="col-12">
+                       {{$t("documents in")+ '*'}}
+                       <v-radio-group v-model="request.documentType"  dense class=" justify-content-end align-self-center">
+                         <v-radio
+                             :key="'usb'"
+                             :label="$t('USBform')"
+                             :value="'USB'"
+                         ></v-radio>
+                         <v-radio
+                             :key="'print'"
+                             :label="$t('printedForm')+$t('printedSet')"
+                             :value="'PRINT'"
+                          > </v-radio>
+                        </v-radio-group>
+                    </div>
+                    <div class="col-12">
                         <v-text-field  
                         hide-details="auto"
                         class="datainput justify-content-end align-self-center pb-1"
@@ -603,6 +618,7 @@ export default {
           customerName: null,
           customerLocation: null,
           customerNumber: null,
+          documentType:"USB",
           street: null,
           hnr: null,
           zip: null,
@@ -786,6 +802,11 @@ export default {
         }
         if(request.contactPerson == null){
           this.$noty.error(this.$t("empty_value", {name: this.$t("contactPerson")}));
+          return;
+        }
+        if(request.documentType==null)
+        {
+          this.$noty.error(this.$t("empty_value", {name: this.$t("documents in")}));
           return;
         }
         if(request.location == null){
