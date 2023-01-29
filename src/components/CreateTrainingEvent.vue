@@ -54,7 +54,7 @@
       <v-tab
         class="LanguageselectTab"
         :disabled="!editMode || !$rights.includes('CREATE_BOOKING')"
-        :hidden="!$rights.includes('CREATE_BOOKING')"
+        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
       >
         {{ $t("add_participants") }}
       </v-tab>
@@ -436,7 +436,7 @@
                       </v-tooltip>
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.booker" :disabled="booking.participant.email == null" @click="sendMail(booking)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on">
+                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.booker && !$user.translator" :disabled="booking.participant.email == null" @click="sendMail(booking)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on">
                             <v-badge :value="true" color="primary" overlap>
                               <div slot="badge">
                                 <span v-show="booking.invitationSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
@@ -450,9 +450,14 @@
                       </v-tooltip>
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-show="$rights.includes('CREATE_BOOKING')" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-trash</v-icon></v-btn>
+                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.translator" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-trash</v-icon></v-btn>
                         </template>
                         <span>{{ $t("delete_booking") }}</span>
+                      </v-tooltip>
+                       <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-edit</v-icon></v-btn>
+                        </template>
                       </v-tooltip>
                     </td>
                   </tr>
@@ -629,6 +634,140 @@
 
         </v-tabs-items>
     </div>
+    <div>
+    <b-modal v-model="showModal" centered  class="innercreatetraining">
+      <template v-slot:modal-header>
+      <h5 class="text-dark">EDIT PARTICIPANTS</h5>
+      </template>
+      <b-form>
+        <b-row class="mb-0 mt-0">
+          <b-col>
+                <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    id="edit_participant_firstname"
+                    :label="$t('firstname') + '*'"
+                    v-model="edituser.firstname"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>    
+          </b-col>
+          <b-col>
+                <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('lastname') + '*'"
+                    v-model="edituser.lastname"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+               <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('personnelnumber') + '*'"
+                    v-model="edituser.personnelnumber"
+                    @keypress.enter="editParticipant()"
+                ></v-text-field>
+          </b-col>
+          <b-col>
+               <v-autocomplete  
+                        v-model="edituser.tenantId"
+                        hide-details="auto"
+                        class="datainput justify-content-end searchbar align-self-center pb-1"
+                        :items="customers"
+                        item-text='name'
+                        item-value='id'
+                        style="padding-right:2px"
+                        dense
+                        outlined
+                        clearable
+                        :label="$t('customer') + '*'">
+                    </v-autocomplete>
+          </b-col>
+        </b-row>
+        <b-row class="mb-0 mt-0">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('email')"
+                     v-model="edituser.email"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          <b-col>
+               <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    :label="$t('company')"
+                    v-model="edituser.company"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+        </b-row>
+        <b-row class="mb-0 mt-0">
+          <b-col>
+                <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('location')"
+                     v-model="edituser.location"
+                     @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          <b-col>
+               <v-autocomplete  
+                        hide-details="auto"
+                       :items="$selectableLanguages"
+                        item-text="name"
+                        item-value="key"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('language')"
+                        v-model="edituser.language"
+                    ></v-autocomplete>
+          </b-col>
+        </b-row>
+        <div class="text-right">
+                <v-label>
+                  * {{ $t("mandatory_fields") }}
+                </v-label>
+        </div>
+        <strong class="headlinecolor">Result</strong>
+         <v-radio-group v-model="edituser.trainingResult" row  inline dense >
+                         <v-radio
+                             :key="'PASS'"
+                             :label="'PASS'"
+                             :value="'PASS'"
+                         ></v-radio>
+                         <v-radio
+                             :key="'FAIL'"
+                             :label="'FAIL'"
+                             :value="'FAIL'"
+                          > </v-radio>
+          </v-radio-group>
+      </b-form> 
+      <template v-slot:modal-footer>
+        <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+        <v-btn @click="editParticipant(booking)" outlined depressed tile class="savebutton mb-2">Save</v-btn>
+      </template>
+    </b-modal>
+    </div>
     <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0">
 
         <!-- Actions for first and second Tab -->
@@ -653,7 +792,7 @@
         </div>
 
         <!-- Actions for fourth Tab -->
-        <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 3">
+        <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 3">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
@@ -749,6 +888,21 @@ export default {
 
   data() {
     return {
+      currentBookingID:"",
+      showModal: false,
+      scrollPositionX: 0,
+      scrollPositionY: 0,
+      edituser: {
+        firstname: null,
+        lastname: null,
+        personnelnumber: null,
+        location: null,
+        company: null,
+        email: null,
+        language: null,
+        tenantId: null,
+        trainingResult:null
+      },
       editMode: false,
 
       trainers: [],
@@ -901,6 +1055,59 @@ export default {
   },
 
   methods: {
+    beforeOpenModal(booking) {
+      this.currentBookingID=booking.id;
+      this.scrollPositionX = window.scrollX;
+      this.scrollPositionY = window.scrollY;
+      var _this = this;
+      _this.edituser = {
+            firstname: null,
+            lastname: null,
+            personnelnumber: null,
+            location: null,
+            company: null,
+            email: null,
+            tenantId: null,
+            trainingResult:null
+          };
+      this.$axios
+        .get("/api/booking/"+ booking.id)
+        .then(function (response) {
+           _this.edituser.firstname=response.data.participant.firstname;
+           _this.edituser.lastname=response.data.participant.lastname;
+           _this.edituser.personnelnumber=response.data.participant.personnelnumber;
+           _this.edituser.location=response.data.participant.location;
+           _this.edituser.company=response.data.participant.originalCompany;
+           _this.edituser.email=response.data.participant.email;
+           _this.edituser.language=response.data.participant.language;
+           _this.edituser.tenantId=response.data.participant.tenantId;
+           _this.edituser.userId=response.data.participant.id;
+           _this.edituser.trainingResult=response.data.trainingResult;
+           _this.$noty.success(
+           _this.$t("participant_added", { name: user.fullname }));
+           _this.fetchBookings();
+        })
+        .catch(this.onError);
+
+        this.showModal=true;     
+      },
+
+     afterCloseModal() {
+       setTimeout(() => {
+        window.scrollTo(this.scrollPositionX, this.scrollPositionY)
+        }, 400);   
+       this.showModal=false;
+        _this.edituser = {
+            firstname: null,
+            lastname: null,
+            personnelnumber: null,
+            location: null,
+            company: null,
+            email: null,
+            tenantId: null,
+            trainingResult:null
+          };
+    },
     participants_previousPage() {
       this.participants_page = this.participants_page - 1;
       this.fetchTrainingEvents();
@@ -1471,7 +1678,38 @@ export default {
         })
         .catch(this.onError);
     },
-
+    editParticipant()
+    {
+      var _this = this;
+      this.edituser.trainingEventId = this.trainingEvent.id;
+      this.edituser.id=this.currentBookingID;
+      const username = this.edituser.firstname + " " + this.edituser.lastname;
+      this.$axios
+        .put("/api/booking/"+ this.currentBookingID, this.edituser)
+        .then(function (response) {
+          _this.$noty.success(
+            _this.$t("participant_edited", { name: username })
+          );
+          _this.edituser = {
+            firstname: null,
+            lastname: null,
+            personnelnumber: null,
+            location: null,
+            company: null,
+            email: null,
+            tenantId: null,
+            trainingResult:null
+          };
+        })
+        .catch(this.onError);
+         this.showModal=false;
+         setTimeout(() => {
+          window.scrollTo(this.scrollPositionX, this.scrollPositionY)
+          _this.fetchBookings();
+          _this.fetchUsers();
+          }, 400);   
+          document.getElementById("edit_participant_firstname").focus();
+    },
     /**
      * Old Method to add directly one user to Event
      */
@@ -1511,3 +1749,16 @@ export default {
   },
 };
 </script>
+<style >
+.modal-content{
+     background-color: var(--beige2);
+     border-radius: 0rem;
+}
+.modal-footer
+{
+     justify-content: flex-start;
+}
+.modal-dialog {
+     max-width: 700px;
+}
+</style>
