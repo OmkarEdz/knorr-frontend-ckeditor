@@ -2485,3 +2485,13 @@ div.bg-blue{
   }
   
     
+  /* EDZ start here */
+
+  @media (max-width:1602px) and (min-width:1200px){
+    .mob-mb-2 {margin-top: 8px;}
+  }
+
+  @media (max-width:488px){
+    .mob-mb-2 {margin-top: 8px;}
+  }
+

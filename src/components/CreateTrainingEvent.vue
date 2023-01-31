@@ -639,6 +639,8 @@
           <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2">{{ $t("delete") }}</v-btn>
           <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="editMode" outlined depressed tile class="mr-2 savebutton">{{ $t("cancel this event") }}</v-btn>
+          <v-btn v-show="editMode" outlined depressed tile class="mr-2 savebutton">{{ $t("active this event") }}</v-btn>
         </div>
 
         <!-- Actions for third Tab -->

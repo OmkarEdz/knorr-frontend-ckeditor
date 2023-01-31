@@ -3,7 +3,7 @@
   <div class="sixteentosix omt-6 omt-md-25">
     <div class="kachelimage header-image" style="background: url('/static/img/graph_pen.jpg')">
       <div class="headline">
-        <div class="text-subtitle-2 text-md-h5">{{ $t("trainingevents") }}</div>
+        <div class="text-subtitle-2 text-md-h5">{{ $t("cancelled events") }}</div>
       </div>
     </div>
   </div>
@@ -67,9 +67,8 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn :to="`/create-training-event`" outlined depressed tile class="savebutton mr-2">{{ $t("create_trainingEvent") }}</v-btn>
-          <v-btn :href="`/api/training/event/export`" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mr-2">{{ $t("export_csv") }}</v-btn>
-          <v-btn :href="`/training-cancelled-events`" outlined depressed tile class="savebutton mob-mb-2">{{ $t("view cancelled events") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2">{{ $t("cancel") }}</v-btn>
+          <v-btn :href="`/training-events`" outlined depressed tile class="savebutton">{{ $t("view events") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block">
           <h3 class="text-uppercase">{{ $t("search") }}</h3>

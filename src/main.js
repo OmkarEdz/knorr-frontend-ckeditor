@@ -29,6 +29,7 @@ import Venues from './components/Venues.vue'
 import TrainingTable from './components/TrainingTable.vue'
 import TrainingDetails from './components/TrainingDetails.vue'
 import TrainingEvents from './components/TrainingEvents.vue'
+import TrainingCancelledEvents from './components/TrainingCancelledEvents.vue'
 import CreateTrainingEvent from './components/CreateTrainingEvent.vue'
 import CreateTraining from './components/CreateTraining.vue'
 import CreateCategory from './components/CreateCategory.vue'
@@ -86,6 +87,7 @@ Vue.use(Login)
 Vue.use(ResetPassword)
 Vue.use(Venues)
 Vue.use(TrainingEvents)
+Vue.use(TrainingCancelledEvents)
 Vue.use(CreateTrainingEvent)
 
 // Widgets
@@ -145,6 +147,7 @@ const router = new VueRouter({
         { path: "/create-category", component: CreateCategory },
         { path: "/edit-category", component: CreateCategory, props: route => ({ categoryId: route.query.categoryId }) },
         { path: "/training/:pathMatch(.*)*", component: TrainingDetails },
+        { path: "/training-cancelled-events", component: TrainingCancelledEvents },
         { path: "/training-events", component: TrainingEvents },
         { path: "/create-training-event", component: CreateTrainingEvent, props: route => ({ trainingRequestId: route.query.trainingRequestId }) },
         { path: "/edit-training-event", component: CreateTrainingEvent, props: route => ({ trainingEventId: route.query.trainingEventId }) },
