@@ -549,7 +549,7 @@
           <v-btn v-show="editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
           <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("back") }}</v-btn>
           <v-btn v-show="editMode" @click="deleteRequest()" outlined depressed tile class="mr-2 mb-2">{{ $t("delete") }}</v-btn>
-           <v-btn v-show="editMode" @click="download()" outlined depressed tile class="mr-2 mb-2">{{ $t("download") }}</v-btn>
+           <v-btn v-show="editMode" @click="download()" outlined depressed tile class="mr-2 mb-2">{{ $t("downloadpdf") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block" v-show="editMode">
           <h3>{{ $t("customer") }}</h3>
@@ -924,7 +924,7 @@ export default {
             const url = window.URL.createObjectURL(new Blob([response.data]))
             const link = document.createElement('a')
             link.href = url
-            link.setAttribute('download', 'training_request_'+_this.trainingRequestId+'.docx')
+            link.setAttribute('download', 'training_request_'+_this.trainingRequestId+'.pdf')
             document.body.appendChild(link)
             link.click()
           })
