@@ -761,6 +761,11 @@
                              :value="'FAIL'"
                           > </v-radio>
           </v-radio-group>
+          <b-row class="mb-0 mt-0 w-50">
+            <b-col>
+              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1"  v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
+            </b-col>
+          </b-row>
       </b-form> 
       <template v-slot:modal-footer>
         <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
@@ -873,7 +878,6 @@
 <script>
 import Card from "./custom/Card.vue";
 import pagination from './custom/pagination.vue'
-
 export default {
   components: {
     Card,
@@ -901,7 +905,8 @@ export default {
         email: null,
         language: null,
         tenantId: null,
-        trainingResult:null
+        trainingResult:null,
+        selectedStatus:null
       },
       editMode: false,
 
@@ -993,6 +998,7 @@ export default {
       users_ElementPerPage: 50,
       users_sort: null,
       users_order: true,
+      statusOptions: ["Participated", "Participated Successfully", "Successfully Passed the Exam"]
     };
   },
 
@@ -1083,6 +1089,7 @@ export default {
            _this.edituser.tenantId=response.data.participant.tenantId;
            _this.edituser.userId=response.data.participant.id;
            _this.edituser.trainingResult=response.data.trainingResult;
+           _this.edituser.selectedStatus=response.data.selectedStatus;
            _this.$noty.success(
            _this.$t("participant_added", { name: user.fullname }));
            _this.fetchBookings();
@@ -1105,7 +1112,8 @@ export default {
             company: null,
             email: null,
             tenantId: null,
-            trainingResult:null
+            trainingResult:null,
+            selectedStatus:null
           };
     },
     participants_previousPage() {
@@ -1698,7 +1706,8 @@ export default {
             company: null,
             email: null,
             tenantId: null,
-            trainingResult:null
+            trainingResult:null,
+            selectedStatus:null
           };
         })
         .catch(this.onError);
