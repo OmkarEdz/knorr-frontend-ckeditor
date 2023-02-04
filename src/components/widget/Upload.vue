@@ -144,7 +144,7 @@ export default {
         //This condition is for upload documents in training request
         if(this.trainingRequest)
         {
-           let pathForTrainingRequest=`/files/uploadDocument/`;
+           let pathForTrainingRequest=`/files/uploadDocument`;
            this.$axios.post(pathForTrainingRequest, formData, {
             headers: { "Content-Type": "multipart/form-data" },
             params: {
@@ -230,12 +230,7 @@ export default {
        //This condition is for deleting documents in training request 
       if(this.trainingRequest)
         {
-       this.$axios.delete("/files/uploadDocument/" + internalFolder + fileName, {
-        params: {
-        id: this.trainingId,
-        type:""
-       }
-       })
+       this.$axios.delete(`/files/uploadDocument/${this.trainingId}` + internalFolder + fileName)
         .then(function (response) {})
         .catch(function(err){
           console.error(err);
