@@ -364,7 +364,7 @@
                         ></v-text-field>
                     </div> 
             <div class="col-12">
-              <Upload  multiple allowOtherFileTypes=true accept="application/pdf" />
+              <Upload  v-model="request.trainingDocumentList" multiple allowOtherFileTypes=true accept="application/pdf" :trainingRequest="true" :trainingId="trainingRequestId" />
             </div>
         
                 </div>
@@ -652,6 +652,7 @@ export default {
           additionalNeededVehicles: null,
           comments: null,
           overhaulingTraining: false,
+          trainingDocumentList:null
         }
       }
     },

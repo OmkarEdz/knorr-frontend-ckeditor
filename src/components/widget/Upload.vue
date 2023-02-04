@@ -75,6 +75,15 @@ export default {
         return false;
       }
     },
+    trainingRequest:{
+      type: Boolean,
+      default: function(){
+        return false;
+      }
+    },
+    trainingId:{
+       type: Number
+    },
     internalFiles: {
       type: Boolean,
       default: function(){
@@ -132,7 +141,34 @@ export default {
         formData.append("internalFile", this.internalFiles);
 
         const path = this.application ? "/files/upload-application" : "/files/upload";
-
+        //This condition is for upload documents in training request
+        if(this.trainingRequest)
+        {
+           let pathForTrainingRequest=`/files/uploadDocument/`;
+           this.$axios.post(pathForTrainingRequest, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+            params: {
+                  id: this.trainingId,
+                   type:""
+                    }
+          })
+        .then(function (response) {
+          _this.newFilesSelected = true;
+          if(_this.multiple){
+            _this.fileNames.push(response.data);
+          }else{
+            if(_this.fileNames != null && _this.fileNames.length > 0){
+              // Remove single file from Server (if not multiple selected!)
+              _this.removeFile(_this.fileNames[0])
+            }
+            _this.fileNames = response.data;
+          }
+          _this.files = [];
+        })
+        .catch(this.onError);
+      }
+      else
+        {
         this.$axios.post(path, formData, {
             headers: { "Content-Type": "multipart/form-data" }
           })
@@ -151,6 +187,7 @@ export default {
         })
         .catch(this.onError);
       }
+    }
     },
 
     showFile(fileName){
@@ -190,11 +227,28 @@ export default {
       }
 
       const internalFolder = this.internalFiles ? "internal/" : "";
-      this.$axios.delete("/files/upload/" + internalFolder + fileName)
+       //This condition is for deleting documents in training request 
+      if(this.trainingRequest)
+        {
+       this.$axios.delete("/files/uploadDocument/" + internalFolder + fileName, {
+        params: {
+        id: this.trainingId,
+        type:""
+       }
+       })
         .then(function (response) {})
         .catch(function(err){
           console.error(err);
         });
+        }
+        else
+        {
+        this.$axios.delete("/files/upload/" + internalFolder + fileName)
+        .then(function (response) {})
+        .catch(function(err){
+          console.error(err);
+        });
+        }
     },
 
     onError(err) {
