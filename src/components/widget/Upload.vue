@@ -149,8 +149,8 @@ export default {
             headers: { "Content-Type": "multipart/form-data" },
             params: {
                   id: this.trainingId,
-                   type:""
-                    }
+                  type:""
+              }
           })
         .then(function (response) {
           _this.newFilesSelected = true;
@@ -230,7 +230,7 @@ export default {
        //This condition is for deleting documents in training request 
       if(this.trainingRequest)
         {
-       this.$axios.delete(`/files/uploadDocument/${this.trainingId}` + internalFolder + fileName)
+       this.$axios.delete(`/files/uploadDocument/${this.trainingId}/` + internalFolder + fileName)
         .then(function (response) {})
         .catch(function(err){
           console.error(err);
