@@ -230,7 +230,7 @@ export default {
        //This condition is for deleting documents in training request 
       if(this.trainingRequest)
         {
-       this.$axios.delete(`/files/uploadDocument/${this.trainingId}/` + internalFolder + fileName)
+       this.$axios.delete(`/files/uploadDocument/internal/` + internalFolder + this.trainingId+"/"+fileName)
         .then(function (response) {})
         .catch(function(err){
           console.error(err);
