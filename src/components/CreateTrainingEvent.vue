@@ -637,7 +637,7 @@
     <div>
     <b-modal v-model="showModal" centered  class="innercreatetraining">
       <template v-slot:modal-header>
-      <h5 class="text-dark">EDIT PARTICIPANTS</h5>
+      <h5 class="text-dark">{{ $t("editParticipants") }}</h5>
       </template>
       <b-form>
         <b-row class="mb-0 mt-0">
@@ -689,7 +689,9 @@
                         dense
                         outlined
                         clearable
-                        :label="$t('customer') + '*'">
+                        :label="$t('customer') + '*'"
+                        :disabled="true"
+                        >
                     </v-autocomplete>
           </b-col>
         </b-row>
@@ -742,34 +744,40 @@
                         v-model="edituser.language"
                     ></v-autocomplete>
           </b-col>
-        </b-row>
-        <div class="text-right">
+          <br/>
+           <div class="d-block w-100 text-right mr-3">
                 <v-label>
                   * {{ $t("mandatory_fields") }}
                 </v-label>
-        </div>
-        <strong class="headlinecolor">Result</strong>
+           </div>
+        </b-row>
+       
+        <b-row class="mb-0 mt-0">
+        <b-col>
+        <strong class="headlinecolor">{{ $t("result") }}</strong>
          <v-radio-group v-model="edituser.trainingResult" row  inline dense >
                          <v-radio
                              :key="'PASS'"
-                             :label="'PASS'"
+                             :label="$t('pass')"
                              :value="'PASS'"
                          ></v-radio>
                          <v-radio
                              :key="'FAIL'"
-                             :label="'FAIL'"
+                             :label="$t('fail')"
                              :value="'FAIL'"
                           > </v-radio>
           </v-radio-group>
+          </b-col>
+          </b-row>
           <b-row class="mb-0 mt-0 w-50">
             <b-col>
-              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1"  v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
+              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1" v-if="edituser.trainingResult==='PASS'" v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
             </b-col>
           </b-row>
       </b-form> 
       <template v-slot:modal-footer>
         <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-        <v-btn @click="editParticipant(booking)" outlined depressed tile class="savebutton mb-2">Save</v-btn>
+        <v-btn @click="editParticipant(booking)" outlined depressed tile class="savebutton mb-2">{{ $t("save") }}</v-btn>
       </template>
     </b-modal>
     </div>
@@ -1691,6 +1699,10 @@ export default {
       var _this = this;
       this.edituser.trainingEventId = this.trainingEvent.id;
       this.edituser.id=this.currentBookingID;
+      if(this.edituser.trainingResult==="FAIL")
+      {
+        this.edituser.selectedStatus="";
+      }
       const username = this.edituser.firstname + " " + this.edituser.lastname;
       this.$axios
         .put("/api/booking/"+ this.currentBookingID, this.edituser)
