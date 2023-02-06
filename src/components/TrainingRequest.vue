@@ -364,7 +364,7 @@
                         ></v-text-field>
                     </div> 
             <div class="col-12">
-              <Upload  v-model="request.trainingDocumentList" multiple allowOtherFileTypes=true accept="application/pdf" :trainingRequest="true" :trainingId="trainingRequestId" />
+              <Upload  v-model="request.trainingDocumentList" internalFiles multiple :allowOtherFileTypes="true" accept="application/pdf" :trainingRequest="true" :trainingId="trainingRequestId" />
             </div>
         
                 </div>
