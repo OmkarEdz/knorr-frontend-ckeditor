@@ -362,11 +362,7 @@
                         :label="$t('trainingAmountNeeded') + '*'"
                         v-model="request.trainingAmountNeeded"
                         ></v-text-field>
-                    </div> 
-            <div class="col-12">
-              <Upload  v-model="request.trainingDocumentList" internalFiles multiple :allowOtherFileTypes="true" accept="application/pdf" :trainingRequest="true" :trainingId="trainingRequestId" />
-            </div>
-        
+                    </div>
                 </div>
                 <div class="col-md-6 disablerow" v-if="editMode">
                     <div class="col-md-12 pt-0">
@@ -652,7 +648,6 @@ export default {
           additionalNeededVehicles: null,
           comments: null,
           overhaulingTraining: false,
-          trainingDocumentList:null
         }
       }
     },
