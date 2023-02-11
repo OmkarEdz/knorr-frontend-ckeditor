@@ -751,29 +751,120 @@
                 </v-label>
            </div>
         </b-row>
-       
-        <b-row class="mb-0 mt-0">
-        <b-col>
-        <strong class="headlinecolor">{{ $t("result") }}</strong>
-         <v-radio-group v-model="edituser.trainingResult" row  inline dense >
-                         <v-radio
-                             :key="'PASS'"
-                             :label="$t('pass')"
-                             :value="'PASS'"
-                         ></v-radio>
-                         <v-radio
-                             :key="'FAIL'"
-                             :label="$t('fail')"
-                             :value="'FAIL'"
-                          > </v-radio>
-          </v-radio-group>
-          </b-col>
-          </b-row>
           <b-row class="mb-0 mt-0 w-50">
             <b-col>
-              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1" v-if="edituser.trainingResult==='PASS'" v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
+              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1"  v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
             </b-col>
           </b-row>
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')" class="mb-0 mt-0">
+             <div class="d-block w-100 ml-3">
+                <v-label>
+                 <h5 class="text-dark">{{ $t("editCertificate") }}</h5>
+                </v-label>
+           </div>
+           <br/>
+           </b-row>
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    :label="$t('trainingName')"
+                    v-model="edituser.certificateTrainingName"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+           <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <div class="col-md-12 pb-4">
+              <div class="html-editor">
+                <label class="html-editor-headline">
+                {{ $t("descriptionOfTraining") }}
+                </label>
+                <vue-editor
+                  v-model="edituser.certificateTrainingDescription"
+                  :editor-toolbar="customToolbar"
+                />
+              </div>
+            </div>
+          
+            </b-row>
+         
+            <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('startDate')"
+                     v-model="edituser.certificateStartDate"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+           <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('endDate')"
+                     v-model="edituser.certificateEndDate"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+              <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('certificateLocation')"
+                    v-model="edituser.certificateEventLocation"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+           <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('certificateEventNumber')"
+                    v-model="edituser.certificateEventNumber"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+            <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('trainer1')"
+                   v-model="edituser.certificateTrainer"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+           <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('trainer2')"
+                    v-model="edituser.certificateTrainer2"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+          
       </b-form> 
       <template v-slot:modal-footer>
         <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
@@ -900,6 +991,12 @@ export default {
 
   data() {
     return {
+        customToolbar: [
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          ["clean"]
+        ],
       currentBookingID:"",
       showModal: false,
       scrollPositionX: 0,
@@ -913,8 +1010,21 @@ export default {
         email: null,
         language: null,
         tenantId: null,
-        trainingResult:null,
-        selectedStatus:null
+        selectedStatus:null,
+        certificateStartDate:null,
+        certificateEndDate:null,
+        certificateEventLocation:null,
+        certificateEventNumber:null,
+        certificateTrainer:null,
+        certificateTrainer2:null,
+        certificateTrainingNameEnglish:null,
+        certificateTrainingNameGerman:null,
+        certificateTrainingNamePolish:null,
+        certificateTrainingName:null,
+        certificateTrainingDescription:null,
+        certificateTrainingDescriptionEnglish:null,
+        certificateTrainingDescriptionGerman:null,
+        certificateTrainingDescriptionPolish:null
       },
       editMode: false,
 
@@ -1006,7 +1116,7 @@ export default {
       users_ElementPerPage: 50,
       users_sort: null,
       users_order: true,
-      statusOptions: ["Participated", "Participated Successfully", "Successfully Passed the Exam"]
+      statusOptions: ["Participated", "Participated Successfully", "Successfully Passed the Exam","Failed"]
     };
   },
 
@@ -1082,7 +1192,20 @@ export default {
             company: null,
             email: null,
             tenantId: null,
-            trainingResult:null
+            certificateStartDate:null,
+            certificateEndDate:null,
+            certificateEventLocation:null,
+            certificateEventNumber:null,
+            certificateTrainer:null,
+            certificateTrainer2:null,
+            certificateTrainingNameEnglish:null,
+            certificateTrainingNameGerman:null,
+            certificateTrainingNamePolish:null,
+            certificateTrainingName:null,
+            certificateTrainingDescription:null,
+            certificateTrainingDescriptionEnglish:null,
+            certificateTrainingDescriptionGerman:null,
+            certificateTrainingDescriptionPolish:null
           };
       this.$axios
         .get("/api/booking/"+ booking.id)
@@ -1096,10 +1219,36 @@ export default {
            _this.edituser.language=response.data.participant.language;
            _this.edituser.tenantId=response.data.participant.tenantId;
            _this.edituser.userId=response.data.participant.id;
-           _this.edituser.trainingResult=response.data.trainingResult;
            _this.edituser.selectedStatus=response.data.selectedStatus;
-           _this.$noty.success(
-           _this.$t("participant_added", { name: user.fullname }));
+           _this.edituser.certificateStartDate=response.data.certificateStartDate;
+           _this.edituser.certificateEndDate=response.data.certificateEndDate;
+           _this.edituser.certificateEventLocation=response.data.certificateEventLocation;
+           _this.edituser.certificateEventNumber=response.data.certificateEventNumber;
+           _this.edituser.certificateTrainer=response.data.certificateTrainer;
+           _this.edituser.certificateTrainer2=response.data.certificateTrainer2;
+           _this.edituser.certificateTrainingNameEnglish=response.data.certificateTrainingNameEnglish;
+           _this.edituser.certificateTrainingNameGerman=response.data.certificateTrainingNameGerman;
+           _this.edituser.certificateTrainingNamePolish=response.data.certificateTrainingNamePolish;
+           _this.edituser.certificateTrainingDescriptionEnglish=response.data.certificateTrainingDescriptionEnglish;
+           _this.edituser.certificateTrainingDescriptionGerman=response.data.certificateTrainingDescriptionGerman;
+           _this.edituser.certificateTrainingDescriptionPolish=response.data.certificateTrainingDescriptionPolish;
+
+          let language = _this.$locale;
+          if(language==='en')
+          {
+              _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameEnglish;
+              _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionEnglish;
+          }
+          else if(language==='de')
+          {
+              _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameGerman;
+              _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionGerman;
+          }
+          else if(language==='pl')
+          {
+               _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNamePolish;
+               _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionPolish;
+          }
            _this.fetchBookings();
         })
         .catch(this.onError);
@@ -1112,7 +1261,7 @@ export default {
         window.scrollTo(this.scrollPositionX, this.scrollPositionY)
         }, 400);   
        this.showModal=false;
-        _this.edituser = {
+       this.edituser = {
             firstname: null,
             lastname: null,
             personnelnumber: null,
@@ -1120,8 +1269,21 @@ export default {
             company: null,
             email: null,
             tenantId: null,
-            trainingResult:null,
-            selectedStatus:null
+            selectedStatus:null,
+            certificateStartDate:null,
+            certificateEndDate:null,
+            certificateEventLocation:null,
+            certificateEventNumber:null,
+            certificateTrainer:null,
+            certificateTrainer2:null,
+            certificateTrainingNameEnglish:null,
+            certificateTrainingNameGerman:null,
+            certificateTrainingNamePolish:null,
+             certificateTrainingName:null,
+            certificateTrainingDescription:null,
+            certificateTrainingDescriptionEnglish:null,
+            certificateTrainingDescriptionGerman:null,
+            certificateTrainingDescriptionPolish:null
           };
     },
     participants_previousPage() {
@@ -1699,13 +1861,51 @@ export default {
       var _this = this;
       this.edituser.trainingEventId = this.trainingEvent.id;
       this.edituser.id=this.currentBookingID;
-      if(this.edituser.trainingResult==="FAIL")
-      {
-        this.edituser.selectedStatus="";
-      }
       const username = this.edituser.firstname + " " + this.edituser.lastname;
+      let language = _this.$locale;
+          if(language==='en')
+          {
+              _this.edituser.certificateTrainingNameEnglish=_this.edituser.certificateTrainingName;
+              _this.edituser.certificateTrainingDescriptionEnglish=_this.edituser.certificateTrainingDescription;
+          }
+          else if(language==='de')
+          {
+              _this.edituser.certificateTrainingNameGerman=_this.edituser.certificateTrainingName;
+              _this.edituser.certificateTrainingDescriptionGerman=_this.edituser.certificateTrainingDescription;
+          }
+          else if(language==='pl')
+          {
+               _this.edituser.certificateTrainingNamePolish=_this.edituser.certificateTrainingName;
+               _this.edituser.certificateTrainingDescriptionPolish=_this.edituser.certificateTrainingDescription;
+          }
+      let request={
+            firstname: this.edituser.firstname,
+            lastname: this.edituser.lastname,
+            personnelnumber: this.edituser.personnelnumber,
+            location: this.edituser.location,
+            company: this.edituser.company,
+            email: this.edituser.email,
+            tenantId: this.edituser.tenantId,
+            selectedStatus:this.edituser.selectedStatus,
+            trainingEventId:this.edituser.trainingEventId,
+            id:this.edituser.id,
+            userId:this.edituser.userId,
+            language:this.edituser.language,
+            certificateStartDate:this.edituser.certificateStartDate,
+            certificateEndDate:this.edituser.certificateEndDate,
+            certificateEventLocation:this.edituser.certificateEventLocation,
+            certificateEventNumber:this.edituser.certificateEventNumber,
+            certificateTrainer:this.edituser.certificateTrainer,
+            certificateTrainer2:this.edituser.certificateTrainer2,
+            certificateTrainingNameEnglish:this.edituser.certificateTrainingNameEnglish,
+            certificateTrainingNameGerman:this.edituser.certificateTrainingNameGerman,
+            certificateTrainingNamePolish:this.edituser.certificateTrainingNamePolish,
+            certificateTrainingDescriptionEnglish:this.edituser.certificateTrainingDescriptionEnglish,
+            certificateTrainingDescriptionGerman:this.edituser.certificateTrainingDescriptionGerman,
+            certificateTrainingDescriptionPolish:this.edituser.certificateTrainingDescriptionPolish
+      }
       this.$axios
-        .put("/api/booking/"+ this.currentBookingID, this.edituser)
+        .put("/api/booking/"+ this.currentBookingID, request)
         .then(function (response) {
           _this.$noty.success(
             _this.$t("participant_edited", { name: username })
@@ -1718,12 +1918,28 @@ export default {
             company: null,
             email: null,
             tenantId: null,
-            trainingResult:null,
-            selectedStatus:null
+            selectedStatus:null,
+            certificateStartDate:null,
+            certificateEndDate:null,
+            certificateEventLocation:null,
+            certificateEventNumber:null,
+            certificateTrainer:null,
+            certificateTrainer2:null,
+            certificateTrainingNameEnglish:null,
+            certificateTrainingNameGerman:null,
+            certificateTrainingNamePolish:null,
+            certificateTrainingName:null,
+            certificateTrainingDescription:null,
+            certificateTrainingDescriptionEnglish:null,
+            certificateTrainingDescriptionGerman:null,
+            certificateTrainingDescriptionPolish:null
           };
+        
         })
         .catch(this.onError);
+        
          this.showModal=false;
+       
          setTimeout(() => {
           window.scrollTo(this.scrollPositionX, this.scrollPositionY)
           _this.fetchBookings();
