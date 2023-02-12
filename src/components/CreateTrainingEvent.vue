@@ -1998,16 +1998,3 @@ export default {
   },
 };
 </script>
-<style >
-.modal-content{
-     background-color: var(--beige2);
-     border-radius: 0rem;
-}
-.modal-footer
-{
-     justify-content: flex-start;
-}
-.modal-dialog {
-     max-width: 700px;
-}
-</style>
