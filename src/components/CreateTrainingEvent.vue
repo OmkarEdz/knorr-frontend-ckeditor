@@ -54,7 +54,7 @@
       <v-tab
         class="LanguageselectTab"
         :disabled="!editMode || !$rights.includes('CREATE_BOOKING')"
-        :hidden="!$rights.includes('CREATE_BOOKING')"
+        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
       >
         {{ $t("add_participants") }}
       </v-tab>
@@ -436,7 +436,7 @@
                       </v-tooltip>
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.booker" :disabled="booking.participant.email == null" @click="sendMail(booking)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on">
+                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.booker && !$user.translator" :disabled="booking.participant.email == null" @click="sendMail(booking)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on">
                             <v-badge :value="true" color="primary" overlap>
                               <div slot="badge">
                                 <span v-show="booking.invitationSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
@@ -450,9 +450,14 @@
                       </v-tooltip>
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-show="$rights.includes('CREATE_BOOKING')" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-trash</v-icon></v-btn>
+                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.translator" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-trash</v-icon></v-btn>
                         </template>
                         <span>{{ $t("delete_booking") }}</span>
+                      </v-tooltip>
+                       <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-edit</v-icon></v-btn>
+                        </template>
                       </v-tooltip>
                     </td>
                   </tr>
@@ -510,7 +515,7 @@
                     @keypress.enter="addParticipant()"
                     ></v-text-field>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6" v-show="$rights.includes('CREATE_TRAINING_EVENT')">
+                <div class="col-12 col-sm-6 col-md-6" v-show="$user != null && !$user.external">
                     <v-autocomplete  
                         v-model="adduser.tenantId"
                         hide-details="auto"
@@ -629,6 +634,249 @@
 
         </v-tabs-items>
     </div>
+    <div>
+    <b-modal v-model="showModal" centered  class="innercreatetraining">
+      <template v-slot:modal-header>
+      <h5 class="text-dark">{{ $t("editParticipants") }}</h5>
+      </template>
+      <b-form>
+        <b-row class="mb-0 mt-0">
+          <b-col>
+                <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    id="edit_participant_firstname"
+                    :label="$t('firstname') + '*'"
+                    v-model="edituser.firstname"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>    
+          </b-col>
+          <b-col>
+                <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('lastname') + '*'"
+                    v-model="edituser.lastname"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+               <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('personnelnumber') + '*'"
+                    v-model="edituser.personnelnumber"
+                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+                    @keypress.enter="editParticipant()"
+                ></v-text-field>
+          </b-col>
+          <b-col>
+               <v-autocomplete  
+                        v-model="edituser.tenantId"
+                        hide-details="auto"
+                        class="datainput justify-content-end searchbar align-self-center pb-1"
+                        :items="customers"
+                        item-text='name'
+                        item-value='id'
+                        style="padding-right:2px"
+                        dense
+                        outlined
+                        clearable
+                        :label="$t('customer') + '*'"
+                        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+                        >
+                    </v-autocomplete>
+          </b-col>
+        </b-row>
+        <b-row class="mb-0 mt-0">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('email')"
+                     v-model="edituser.email"
+                    @keypress.enter="editParticipant()"
+                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+                    ></v-text-field>
+          </b-col>
+          <b-col>
+               <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    :label="$t('company')"
+                    v-model="edituser.company"
+                    @keypress.enter="editParticipant()"
+                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+                    ></v-text-field>
+          </b-col>
+        </b-row>
+        <b-row class="mb-0 mt-0">
+          <b-col>
+                <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('location')"
+                     v-model="edituser.location"
+                     @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          <b-col>
+               <v-autocomplete  
+                        hide-details="auto"
+                       :items="$selectableLanguages"
+                        item-text="name"
+                        item-value="key"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('language')"
+                        v-model="edituser.language"
+                        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+                    ></v-autocomplete>
+          </b-col>
+          <br/>
+           <div class="d-block w-100 text-right mr-3">
+                <v-label>
+                  * {{ $t("mandatory_fields") }}
+                </v-label>
+           </div>
+        </b-row>
+          <b-row class="mb-0 mt-0 w-50">
+            <b-col>
+              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1"  v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
+            </b-col>
+          </b-row>
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')" class="mb-0 mt-0">
+             <div class="d-block w-100 ml-3">
+                <v-label>
+                 <h5 class="text-dark">{{ $t("editCertificate") }}</h5>
+                </v-label>
+           </div>
+           <br/>
+           </b-row>
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    :label="$t('trainingName')"
+                    v-model="edituser.certificateTrainingName"
+                    @keypress.enter="editParticipant()"
+                    :disabled="true"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+           <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <div class="col-md-12 pb-4">
+              <div class="html-editor">
+                <label class="html-editor-headline">
+                {{ $t("descriptionOfTraining") }}
+                </label>
+                <vue-editor
+                  v-model="edituser.certificateTrainingDescription"
+                  :editor-toolbar="customToolbar"
+                />
+              </div>
+            </div>
+          
+            </b-row>
+         
+            <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('startDate')"
+                     v-model="edituser.certificateStartDate"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+           <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('endDate')"
+                     v-model="edituser.certificateEndDate"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+              <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('certificateLocation')"
+                    v-model="edituser.certificateEventLocation"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+           <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('certificateEventNumber')"
+                    v-model="edituser.certificateEventNumber"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+            <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('trainer1')"
+                   v-model="edituser.certificateTrainer"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+           <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('trainer2')"
+                    v-model="edituser.certificateTrainer2"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+          </b-col>
+          </b-row>
+          
+      </b-form> 
+      <template v-slot:modal-footer>
+        <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+        <v-btn @click="editParticipant(booking)" outlined depressed tile class="savebutton mb-2">{{ $t("save") }}</v-btn>
+      </template>
+    </b-modal>
+    </div>
     <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0">
 
         <!-- Actions for first and second Tab -->
@@ -653,7 +901,7 @@
         </div>
 
         <!-- Actions for fourth Tab -->
-        <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 3">
+        <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 3">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
@@ -734,7 +982,6 @@
 <script>
 import Card from "./custom/Card.vue";
 import pagination from './custom/pagination.vue'
-
 export default {
   components: {
     Card,
@@ -749,6 +996,41 @@ export default {
 
   data() {
     return {
+        customToolbar: [
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          ["clean"]
+        ],
+      currentBookingID:"",
+      showModal: false,
+      scrollPositionX: 0,
+      scrollPositionY: 0,
+      edituser: {
+        firstname: null,
+        lastname: null,
+        personnelnumber: null,
+        location: null,
+        company: null,
+        email: null,
+        language: null,
+        tenantId: null,
+        selectedStatus:null,
+        certificateStartDate:null,
+        certificateEndDate:null,
+        certificateEventLocation:null,
+        certificateEventNumber:null,
+        certificateTrainer:null,
+        certificateTrainer2:null,
+        certificateTrainingNameEnglish:null,
+        certificateTrainingNameGerman:null,
+        certificateTrainingNamePolish:null,
+        certificateTrainingName:null,
+        certificateTrainingDescription:null,
+        certificateTrainingDescriptionEnglish:null,
+        certificateTrainingDescriptionGerman:null,
+        certificateTrainingDescriptionPolish:null
+      },
       editMode: false,
 
       trainers: [],
@@ -839,6 +1121,7 @@ export default {
       users_ElementPerPage: 50,
       users_sort: null,
       users_order: true,
+      statusOptions: ["Participated", "Participated Successfully", "Successfully Passed the Exam","Failed"]
     };
   },
 
@@ -901,6 +1184,117 @@ export default {
   },
 
   methods: {
+    beforeOpenModal(booking) {
+      this.currentBookingID=booking.id;
+      this.scrollPositionX = window.scrollX;
+      this.scrollPositionY = window.scrollY;
+      var _this = this;
+      _this.edituser = {
+            firstname: null,
+            lastname: null,
+            personnelnumber: null,
+            location: null,
+            company: null,
+            email: null,
+            tenantId: null,
+            certificateStartDate:null,
+            certificateEndDate:null,
+            certificateEventLocation:null,
+            certificateEventNumber:null,
+            certificateTrainer:null,
+            certificateTrainer2:null,
+            certificateTrainingNameEnglish:null,
+            certificateTrainingNameGerman:null,
+            certificateTrainingNamePolish:null,
+            certificateTrainingName:null,
+            certificateTrainingDescription:null,
+            certificateTrainingDescriptionEnglish:null,
+            certificateTrainingDescriptionGerman:null,
+            certificateTrainingDescriptionPolish:null
+          };
+      this.$axios
+        .get("/api/booking/"+ booking.id)
+        .then(function (response) {
+           _this.edituser.firstname=response.data.participant.firstname;
+           _this.edituser.lastname=response.data.participant.lastname;
+           _this.edituser.personnelnumber=response.data.participant.personnelnumber;
+           _this.edituser.location=response.data.participant.location;
+           _this.edituser.company=response.data.participant.originalCompany;
+           _this.edituser.email=response.data.participant.email;
+           _this.edituser.language=response.data.participant.language;
+           _this.edituser.tenantId=_this.customers.find(function(customer) {
+               if(customer.id === response.data.participant.tenantId) {
+                 return customer;
+              }
+            });
+           _this.edituser.userId=response.data.participant.id;
+           _this.edituser.selectedStatus=response.data.selectedStatus;
+           _this.edituser.certificateStartDate=response.data.certificateStartDate;
+           _this.edituser.certificateEndDate=response.data.certificateEndDate;
+           _this.edituser.certificateEventLocation=response.data.certificateEventLocation;
+           _this.edituser.certificateEventNumber=response.data.certificateEventNumber;
+           _this.edituser.certificateTrainer=response.data.certificateTrainer;
+           _this.edituser.certificateTrainer2=response.data.certificateTrainer2;
+           _this.edituser.certificateTrainingNameEnglish=response.data.certificateTrainingNameEnglish;
+           _this.edituser.certificateTrainingNameGerman=response.data.certificateTrainingNameGerman;
+           _this.edituser.certificateTrainingNamePolish=response.data.certificateTrainingNamePolish;
+           _this.edituser.certificateTrainingDescriptionEnglish=response.data.certificateTrainingDescriptionEnglish;
+           _this.edituser.certificateTrainingDescriptionGerman=response.data.certificateTrainingDescriptionGerman;
+           _this.edituser.certificateTrainingDescriptionPolish=response.data.certificateTrainingDescriptionPolish;
+
+          let language = _this.$locale;
+          if(language==='en')
+          {
+              _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameEnglish;
+              _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionEnglish;
+          }
+          else if(language==='de')
+          {
+              _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameGerman;
+              _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionGerman;
+          }
+          else if(language==='pl')
+          {
+               _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNamePolish;
+               _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionPolish;
+          }
+           _this.fetchBookings();
+        })
+        .catch(this.onError);
+
+        this.showModal=true;     
+      },
+
+     afterCloseModal() {
+       setTimeout(() => {
+        window.scrollTo(this.scrollPositionX, this.scrollPositionY)
+        }, 400);   
+       this.showModal=false;
+       this.edituser = {
+            firstname: null,
+            lastname: null,
+            personnelnumber: null,
+            location: null,
+            company: null,
+            email: null,
+            tenantId: null,
+            selectedStatus:null,
+            certificateStartDate:null,
+            certificateEndDate:null,
+            certificateEventLocation:null,
+            certificateEventNumber:null,
+            certificateTrainer:null,
+            certificateTrainer2:null,
+            certificateTrainingNameEnglish:null,
+            certificateTrainingNameGerman:null,
+            certificateTrainingNamePolish:null,
+             certificateTrainingName:null,
+            certificateTrainingDescription:null,
+            certificateTrainingDescriptionEnglish:null,
+            certificateTrainingDescriptionGerman:null,
+            certificateTrainingDescriptionPolish:null
+          };
+    },
     participants_previousPage() {
       this.participants_page = this.participants_page - 1;
       this.fetchTrainingEvents();
@@ -1471,7 +1865,100 @@ export default {
         })
         .catch(this.onError);
     },
-
+    editParticipant()
+    {
+      var _this = this;
+      this.edituser.trainingEventId = this.trainingEvent.id;
+      this.edituser.id=this.currentBookingID;
+      const username = this.edituser.firstname + " " + this.edituser.lastname;
+      let language = _this.$locale;
+          if(language==='en')
+          {
+              _this.edituser.certificateTrainingNameEnglish=_this.edituser.certificateTrainingName;
+              _this.edituser.certificateTrainingDescriptionEnglish=_this.edituser.certificateTrainingDescription;
+          }
+          else if(language==='de')
+          {
+              _this.edituser.certificateTrainingNameGerman=_this.edituser.certificateTrainingName;
+              _this.edituser.certificateTrainingDescriptionGerman=_this.edituser.certificateTrainingDescription;
+          }
+          else if(language==='pl')
+          {
+               _this.edituser.certificateTrainingNamePolish=_this.edituser.certificateTrainingName;
+               _this.edituser.certificateTrainingDescriptionPolish=_this.edituser.certificateTrainingDescription;
+          }
+        if (typeof this.edituser.tenantId === 'object' && this.edituser.tenantId !== null) {  
+          this.edituser.tenantId=this.edituser.tenantId.id;
+        }
+      let request={
+            firstname: this.edituser.firstname,
+            lastname: this.edituser.lastname,
+            personnelnumber: this.edituser.personnelnumber,
+            location: this.edituser.location,
+            company: this.edituser.company,
+            email: this.edituser.email,
+            tenantId: this.edituser.tenantId,
+            selectedStatus:this.edituser.selectedStatus,
+            trainingEventId:this.edituser.trainingEventId,
+            id:this.edituser.id,
+            userId:this.edituser.userId,
+            language:this.edituser.language,
+            certificateStartDate:this.edituser.certificateStartDate,
+            certificateEndDate:this.edituser.certificateEndDate,
+            certificateEventLocation:this.edituser.certificateEventLocation,
+            certificateEventNumber:this.edituser.certificateEventNumber,
+            certificateTrainer:this.edituser.certificateTrainer,
+            certificateTrainer2:this.edituser.certificateTrainer2,
+            certificateTrainingNameEnglish:this.edituser.certificateTrainingNameEnglish,
+            certificateTrainingNameGerman:this.edituser.certificateTrainingNameGerman,
+            certificateTrainingNamePolish:this.edituser.certificateTrainingNamePolish,
+            certificateTrainingDescriptionEnglish:this.edituser.certificateTrainingDescriptionEnglish,
+            certificateTrainingDescriptionGerman:this.edituser.certificateTrainingDescriptionGerman,
+            certificateTrainingDescriptionPolish:this.edituser.certificateTrainingDescriptionPolish
+      }
+      this.$axios
+        .put("/api/booking/"+ this.currentBookingID, request)
+        .then(function (response) {
+          _this.$noty.success(
+            _this.$t("participant_edited", { name: username })
+          );
+          _this.edituser = {
+            firstname: null,
+            lastname: null,
+            personnelnumber: null,
+            location: null,
+            company: null,
+            email: null,
+            tenantId: null,
+            selectedStatus:null,
+            certificateStartDate:null,
+            certificateEndDate:null,
+            certificateEventLocation:null,
+            certificateEventNumber:null,
+            certificateTrainer:null,
+            certificateTrainer2:null,
+            certificateTrainingNameEnglish:null,
+            certificateTrainingNameGerman:null,
+            certificateTrainingNamePolish:null,
+            certificateTrainingName:null,
+            certificateTrainingDescription:null,
+            certificateTrainingDescriptionEnglish:null,
+            certificateTrainingDescriptionGerman:null,
+            certificateTrainingDescriptionPolish:null
+          };
+        
+        })
+        .catch(this.onError);
+        
+         this.showModal=false;
+       
+         setTimeout(() => {
+          window.scrollTo(this.scrollPositionX, this.scrollPositionY)
+          _this.fetchBookings();
+          _this.fetchUsers();
+          }, 400);   
+          document.getElementById("edit_participant_firstname").focus();
+    },
     /**
      * Old Method to add directly one user to Event
      */
@@ -1511,3 +1998,16 @@ export default {
   },
 };
 </script>
+<style >
+.modal-content{
+     background-color: var(--beige2);
+     border-radius: 0rem;
+}
+.modal-footer
+{
+     justify-content: flex-start;
+}
+.modal-dialog {
+     max-width: 700px;
+}
+</style>
