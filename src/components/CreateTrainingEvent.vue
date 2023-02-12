@@ -674,6 +674,7 @@
                     outlined
                      :label="$t('personnelnumber') + '*'"
                     v-model="edituser.personnelnumber"
+                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     @keypress.enter="editParticipant()"
                 ></v-text-field>
           </b-col>
@@ -690,7 +691,7 @@
                         outlined
                         clearable
                         :label="$t('customer') + '*'"
-                        :disabled="true"
+                        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                         >
                     </v-autocomplete>
           </b-col>
@@ -705,6 +706,7 @@
                      :label="$t('email')"
                      v-model="edituser.email"
                     @keypress.enter="editParticipant()"
+                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     ></v-text-field>
           </b-col>
           <b-col>
@@ -716,6 +718,7 @@
                     :label="$t('company')"
                     v-model="edituser.company"
                     @keypress.enter="editParticipant()"
+                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     ></v-text-field>
           </b-col>
         </b-row>
@@ -742,6 +745,7 @@
                         outlined
                         :label="$t('language')"
                         v-model="edituser.language"
+                        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     ></v-autocomplete>
           </b-col>
           <br/>
@@ -774,6 +778,7 @@
                     :label="$t('trainingName')"
                     v-model="edituser.certificateTrainingName"
                     @keypress.enter="editParticipant()"
+                    :disabled="true"
                     ></v-text-field>
           </b-col>
           </b-row>
@@ -1217,7 +1222,11 @@ export default {
            _this.edituser.company=response.data.participant.originalCompany;
            _this.edituser.email=response.data.participant.email;
            _this.edituser.language=response.data.participant.language;
-           _this.edituser.tenantId=response.data.participant.tenantId;
+           _this.edituser.tenantId=_this.customers.find(function(customer) {
+               if(customer.id === response.data.participant.tenantId) {
+                 return customer;
+              }
+            });
            _this.edituser.userId=response.data.participant.id;
            _this.edituser.selectedStatus=response.data.selectedStatus;
            _this.edituser.certificateStartDate=response.data.certificateStartDate;
@@ -1878,6 +1887,9 @@ export default {
                _this.edituser.certificateTrainingNamePolish=_this.edituser.certificateTrainingName;
                _this.edituser.certificateTrainingDescriptionPolish=_this.edituser.certificateTrainingDescription;
           }
+        if (typeof this.edituser.tenantId === 'object' && this.edituser.tenantId !== null) {  
+          this.edituser.tenantId=this.edituser.tenantId.id;
+        }
       let request={
             firstname: this.edituser.firstname,
             lastname: this.edituser.lastname,
