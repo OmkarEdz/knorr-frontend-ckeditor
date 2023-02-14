@@ -447,10 +447,10 @@ export default {
         var training = {};
         training = Object.assign(training, this.training);
       
-        if(training.designations.DE == null && training.designations.EN == null){
-          this.$noty.error(this.$t("english_or_german_mandatory"));
-          return;
-        }
+        // if(training.designations.DE == null && training.designations.EN == null){
+        //   this.$noty.error(this.$t("english_or_german_mandatory"));
+        //   return;
+        // }
         if(training.type == null){
           this.$noty.error(this.$t("empty_value", {name: this.$t("training_type")}));
           return;

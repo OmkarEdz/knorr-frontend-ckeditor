@@ -180,10 +180,10 @@ export default {
         category = Object.assign(category, this.category);
 
       
-        if(category.designations.DE == null && category.designations.EN == null){
-          this.$noty.error(this.$t("english_or_german_mandatory"));
-          return;
-        }
+        // if(category.designations.DE == null && category.designations.EN == null){
+        //   this.$noty.error(this.$t("english_or_german_mandatory"));
+        //   return;
+        // }
         if(category.image == null){
           this.$noty.error(this.$t("please_select_an_image"));
           return;
