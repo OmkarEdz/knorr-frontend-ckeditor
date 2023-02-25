@@ -405,9 +405,9 @@
                     <th @click="participants_sort = 'participant.lastname', participants_order = !participants_order,participants_page = 1, fetchBookings()" class="text-uppercase align-bottom">
                       {{$t("name")}} <v-icon v-show="participants_sort == 'participant.lastname' && participants_order" >fas fa-chevron-down</v-icon><v-icon v-show="participants_sort == 'participant.lastname' && !participants_order" >fas fa-chevron-up</v-icon>
                     </th>
-                    <th @click="participants_sort = 'participant.personnelnumber', participants_order = !participants_order,participants_page = 1, fetchBookings()" class="text-uppercase align-bottom">
+                    <!-- <th @click="participants_sort = 'participant.personnelnumber', participants_order = !participants_order,participants_page = 1, fetchBookings()" class="text-uppercase align-bottom">
                       {{$t("persnumber")}} <v-icon v-show="participants_sort == 'participant.personnelnumber' && participants_order" >fas fa-chevron-down</v-icon><v-icon v-show="participants_sort == 'participant.personnelnumber' && !participants_order" >fas fa-chevron-up</v-icon>
-                    </th>
+                    </th> -->
                     <th v-show="$user != null && $user.external" @click="participants_sort = 'participant.location', participants_order = !participants_order,participants_page = 1, fetchBookings()" class="text-uppercase align-bottom">
                       {{$t("location")}} <v-icon v-show="participants_sort == 'participant.location' && participants_order" >fas fa-chevron-down</v-icon><v-icon v-show="participants_sort == 'participant.location' && !participants_order" >fas fa-chevron-up</v-icon>
                     </th>
@@ -423,7 +423,7 @@
                 <tbody>
                   <tr v-for="booking in bookings" :key="booking.id">
                     <td class="pb-1 text-uppercase align-bottom">{{ booking.participant.lastname }}, {{ booking.participant.firstname }}</td>
-                    <td class="pb-1 text-uppercase align-bottom">{{ booking.participant.personnelnumber }}</td>
+                    <!-- <td class="pb-1 text-uppercase align-bottom">{{ booking.participant.personnelnumber }}</td> -->
                     <td v-show="$user != null && $user.external" class="pb-1 text-uppercase align-bottom">{{ booking.participant.location }}</td>
                     <td v-show="$user != null && !$user.external" class="pb-1 text-uppercase align-bottom">{{ booking.participant.company }}</td>
                     <td class="pb-1 text-uppercase align-bottom">{{ $formatDate(booking.bookingDate) }}</td>
@@ -504,7 +504,7 @@
                     @keypress.enter="addParticipant()"
                     ></v-text-field>
                 </div>
-                <div class="col-12 col-sm-6 col-md-6">
+                <!-- <div class="col-12 col-sm-6 col-md-6">
                     <v-text-field  
                     hide-details="auto"
                     class="datainput justify-content-end align-self-center pb-1"
@@ -514,7 +514,7 @@
                     v-model="adduser.personnelnumber"
                     @keypress.enter="addParticipant()"
                     ></v-text-field>
-                </div>
+                </div> -->
                 <div class="col-12 col-sm-6 col-md-6" v-show="$user != null && !$user.external">
                     <v-autocomplete  
                         v-model="adduser.tenantId"
@@ -665,37 +665,6 @@
                     ></v-text-field>
           </b-col>
         </b-row>
-        <b-row>
-          <b-col>
-               <v-text-field  
-                    hide-details="auto"
-                    class="datainput justify-content-end align-self-center pb-1"
-                    dense
-                    outlined
-                     :label="$t('personnelnumber') + '*'"
-                    v-model="edituser.personnelnumber"
-                     :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
-                    @keypress.enter="editParticipant()"
-                ></v-text-field>
-          </b-col>
-          <b-col>
-               <v-autocomplete  
-                        v-model="edituser.tenantId"
-                        hide-details="auto"
-                        class="datainput justify-content-end searchbar align-self-center pb-1"
-                        :items="customers"
-                        item-text='name'
-                        item-value='id'
-                        style="padding-right:2px"
-                        dense
-                        outlined
-                        clearable
-                        :label="$t('customer') + '*'"
-                        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
-                        >
-                    </v-autocomplete>
-          </b-col>
-        </b-row>
         <b-row class="mb-0 mt-0">
           <b-col>
               <v-text-field  
@@ -748,17 +717,34 @@
                         :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     ></v-autocomplete>
           </b-col>
-          <br/>
+        
+        </b-row>
+          <b-row class="mb-0 mt-0">
+            <b-col>
+              <v-autocomplete  
+                        v-model="edituser.tenantId"
+                        hide-details="auto"
+                        class="datainput justify-content-end searchbar align-self-center pb-1"
+                        :items="customers"
+                        item-text='name'
+                        item-value='id'
+                        style="padding-right:2px"
+                        dense
+                        outlined
+                        clearable
+                        :label="$t('customer') + '*'"
+                        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+                        >
+                    </v-autocomplete>
+            </b-col>
+            <b-col>
+              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1"  v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
+            </b-col>
            <div class="d-block w-100 text-right mr-3">
                 <v-label>
                   * {{ $t("mandatory_fields") }}
                 </v-label>
            </div>
-        </b-row>
-          <b-row class="mb-0 mt-0 w-50">
-            <b-col>
-              <v-autocomplete dense outlined class="datainput justify-content-end align-self-center pb-1"  v-model="edituser.selectedStatus" :items="statusOptions" label="Status"></v-autocomplete>
-            </b-col>
           </b-row>
           <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')" class="mb-0 mt-0">
              <div class="d-block w-100 ml-3">
