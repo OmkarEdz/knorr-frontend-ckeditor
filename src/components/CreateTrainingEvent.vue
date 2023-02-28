@@ -859,8 +859,8 @@
           
       </b-form> 
       <template v-slot:modal-footer>
-        <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-        <v-btn @click="editParticipant(booking)" outlined depressed tile class="savebutton mb-2">{{ $t("save") }}</v-btn>
+        <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+        <v-btn @click="editParticipant(booking)" outlined depressed tile class="save mb-2">{{ $t("save") }}</v-btn>
       </template>
     </b-modal>
     </div>
@@ -871,9 +871,9 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2">{{ $t("delete") }}</v-btn>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
         </div>
 
         <!-- Actions for third Tab -->
@@ -882,7 +882,7 @@
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
           <!-- <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2">{{ $t("delete") }}</v-btn> -->
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn v-show="$user != null && !$user.external" @click="createParticipantsList()" outlined depressed tile class="savebutton mb-2">{{ $t("create_participant_list") }}</v-btn>
           <v-btn outlined depressed tile @click="openSendMailCustomDialog = true" class="mr-2 deletebutton mb-2" >{{ $t("email") }}</v-btn>
         </div>
@@ -892,7 +892,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn @click="addParticipant()" outlined depressed tile class="savebutton mb-2">{{ $t("add_participant") }}</v-btn>
         </div>
 
@@ -924,7 +924,7 @@
       <h3 >{{ $t("send_invitation_mail_again_question") }}</h3>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="openSendMailAgainDialog = false" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+        <v-btn @click="openSendMailAgainDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
         <v-btn @click="sendMailToParticipant(sendMailAgainBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_invitation_mail") }}</v-btn>
       </v-card-actions>
       </v-dialog>
@@ -934,8 +934,8 @@
         <h4>{{ $t("confirm_delete_event") }}</h4>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="openDeleteDialog = false" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-          <v-btn @click="deleteTrainingEvent()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("delete") }}</v-btn>
+          <v-btn @click="openDeleteDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+          <v-btn @click="deleteTrainingEvent()" outlined depressed tile class="deletebutton mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
         </v-card-actions>
       </v-dialog>
     </div>
@@ -954,7 +954,7 @@
                     ></v-text-field>
         <v-card-actions class="px-0">
           <v-spacer></v-spacer>
-          <v-btn @click="openSendMailCustomDialog = false" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn @click="openSendMailCustomDialog = false" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn @click="sendBlankMail()" outlined depressed tile class="savebutton mb-2">{{ $t("send") }}</v-btn> 
         </v-card-actions>
       </v-dialog>
