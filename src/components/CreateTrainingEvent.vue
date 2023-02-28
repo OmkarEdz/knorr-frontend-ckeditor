@@ -828,6 +828,7 @@
                      :label="$t('certificateEventNumber')"
                     v-model="edituser.certificateEventNumber"
                     @keypress.enter="editParticipant()"
+                     :disabled="true"
                     ></v-text-field>
           </b-col>
           </b-row>
