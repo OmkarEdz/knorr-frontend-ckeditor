@@ -1,4 +1,4 @@
-<template>
+b-row<template>
 <div>
   <div>
     <div class="sixteentosix omt-6 omt-md-25"> 
@@ -640,7 +640,7 @@
       <h5 class="text-dark">{{ $t("editParticipants") }}</h5>
       </template>
       <b-form>
-        <b-row class="mb-0 mt-0">
+          <b-row class="mb-0 mt-0">
           <b-col>
                 <v-text-field  
                     hide-details="auto"
@@ -664,8 +664,8 @@
                     @keypress.enter="editParticipant()"
                     ></v-text-field>
           </b-col>
-        </b-row>
-        <b-row class="mb-0 mt-0">
+          </b-row>
+          <b-row class="mb-0 mt-0">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -690,8 +690,8 @@
                      :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     ></v-text-field>
           </b-col>
-        </b-row>
-        <b-row class="mb-0 mt-0">
+          </b-row>
+          <b-row class="mb-0 mt-0">
           <b-col>
                 <v-text-field  
                     hide-details="auto"
@@ -717,8 +717,7 @@
                         :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
                     ></v-autocomplete>
           </b-col>
-        
-        </b-row>
+          </b-row>
           <b-row class="mb-0 mt-0">
             <b-col>
               <v-autocomplete  
@@ -753,8 +752,8 @@
                 </v-label>
            </div>
            <br/>
-           </b-row>
-          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          </b-row>
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -768,7 +767,7 @@
                     ></v-text-field>
           </b-col>
           </b-row>
-           <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
           <div class="col-md-12 pb-4">
               <div class="html-editor">
                 <label class="html-editor-headline">
@@ -780,10 +779,8 @@
                 />
               </div>
             </div>
-          
-            </b-row>
-         
-            <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          </b-row>        
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -807,7 +804,7 @@
                     ></v-text-field>
           </b-col>
           </b-row>
-              <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -832,7 +829,7 @@
                     ></v-text-field>
           </b-col>
           </b-row>
-            <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -855,8 +852,197 @@
                     @keypress.enter="editParticipant()"
                     ></v-text-field>
           </b-col>
+          </b-row>  
+         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display!==null">
+          <b-col>
+              <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('certificateEventNumber')"
+                    v-model="edituser.certificateEventNumber"
+                    @keypress.enter="editParticipant()"
+                     :disabled="true"
+                    ></v-text-field>
+          </b-col>
           </b-row>
-          
+          <div class="row" v-if="edituser.display!==null">
+              <div class="col-md-6">
+                     <div class="border rounded border-dark p-3">
+                       <h2  v-if="edituser.display==='PRACTICAL'">PRACTICAL</h2>
+                       <h2  v-else>THEORY</h2>
+                            <!-- First section content here -->
+                              <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-col>
+                                <v-text-field  
+                                 hide-details="auto"
+                                 class="datainput justify-content-end align-self-center pb-1"
+                                 dense
+                                 outlined
+                                 :label="$t('trainingName')"
+                                 v-model="edituser.certificateTrainingName"
+                                 @keypress.enter="editParticipant()"
+                                 :disabled="true"
+                               ></v-text-field>     
+                               </b-col>
+                               </b-row> 
+                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-col>
+                                <v-text-field  
+                                 hide-details="auto"
+                                 class="datainput justify-content-end align-self-center pb-1"
+                                 dense
+                                 outlined
+                                 :label="$t('certificateLocation')"
+                                 v-model="edituser.certificateEventLocation"
+                                 @keypress.enter="editParticipant()"
+                               ></v-text-field>     
+                               </b-col>
+                               </b-row> 
+                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-col>
+                               <v-text-field  
+                                hide-details="auto"
+                                class="datainput justify-content-end align-self-center pb-1"
+                                dense
+                                outlined
+                                :label="$t('startDate')"
+                                v-model="edituser.certificateStartDate"
+                                @keypress.enter="editParticipant()"
+                                ></v-text-field>
+                                </b-col>
+                               </b-row>  
+                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-col>
+                               <v-text-field  
+                              hide-details="auto"
+                              class="datainput justify-content-end align-self-center pb-1"
+                              dense
+                              outlined
+                              :label="$t('endDate')"
+                              v-model="edituser.certificateEndDate"
+                              @keypress.enter="editParticipant()"
+                              ></v-text-field>
+                              </b-col>
+                               </b-row>  
+                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+                                <b-col>
+                                <v-text-field  
+                                hide-details="auto"
+                                class="datainput justify-content-end align-self-center pb-1"
+                                 dense
+                                 outlined
+                                :label="$t('trainer1')"
+                                 v-model="edituser.certificateTrainer"
+                                @keypress.enter="editParticipant()"
+                                ></v-text-field>
+                               </b-col>
+                               </b-row>  
+                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-col>
+                                <v-text-field  
+                                hide-details="auto"
+                                class="datainput justify-content-end align-self-center pb-1"
+                                dense
+                                outlined
+                               :label="$t('trainer2')"
+                               v-model="edituser.certificateTrainer2"
+                                @keypress.enter="editParticipant()"
+                               ></v-text-field>
+                               </b-col>
+                               </b-row>  
+                      </div>
+                     </div>
+                   <div class="col-md-6">
+                     <div class="border rounded border-dark p-3">
+                      <h2  v-if="edituser.display==='PRACTICAL'">THEORY</h2>
+                       <h2  v-else>PRACTICAL</h2>
+                         <!-- Second section content here -->
+                         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-col>
+                                <v-text-field  
+                                 hide-details="auto"
+                                 class="datainput justify-content-end align-self-center pb-1"
+                                 dense
+                                 outlined
+                                 :label="$t('trainingName')"
+                                 v-model="edituser.certificateTrainingName"
+                                 @keypress.enter="editParticipant()"
+                                 :disabled="true"
+                               ></v-text-field>     
+                               </b-col>
+                               </b-row> 
+                         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                          <b-col>
+                           <v-text-field  
+                            hide-details="auto"
+                            class="datainput justify-content-end align-self-center pb-1"
+                            dense
+                            outlined
+                           :label="$t('certificateLocation')"
+                           v-model="edituser.certificateEventLocationOther"
+                           @keypress.enter="editParticipant()"
+                          ></v-text-field>
+                         </b-col>
+                        </b-row> 
+                          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                           <b-col>
+                           <v-text-field  
+                            hide-details="auto"
+                            class="datainput justify-content-end align-self-center pb-1"
+                            dense
+                            outlined
+                           :label="$t('startDate')"
+                           v-model="edituser.certificateStartDateOther"
+                           @keypress.enter="editParticipant()"
+                         ></v-text-field>
+                        </b-col>
+                        </b-row>  
+                        <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                        <b-col>
+                        <v-text-field  
+                         hide-details="auto"
+                         class="datainput justify-content-end align-self-center pb-1"
+                         dense
+                         outlined
+                        :label="$t('endDate')"
+                        v-model="edituser.certificateEndDateOther"
+                        @keypress.enter="editParticipant()"
+                        ></v-text-field>
+                      </b-col>
+                      </b-row>  
+                       <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                       <b-col>
+                      <v-text-field  
+                       hide-details="auto"
+                       class="datainput justify-content-end align-self-center pb-1"
+                       dense
+                       outlined
+                       :label="$t('trainer1')"
+                       v-model="edituser.certificateTrainerOther"
+                       @keypress.enter="editParticipant()"
+                       ></v-text-field>
+                      </b-col>
+                      </b-row>  
+                      <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                     <b-col>
+                   <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                     :label="$t('trainer2')"
+                    v-model="edituser.certificateTrainer2Other"
+                    @keypress.enter="editParticipant()"
+                    ></v-text-field>
+                   </b-col>
+                  </b-row>                        
+                      </div>
+                  </div>
+              </div>
+
+         
       </b-form> 
       <template v-slot:modal-footer>
         <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
@@ -1009,14 +1195,30 @@ export default {
         certificateEventNumber:null,
         certificateTrainer:null,
         certificateTrainer2:null,
+        certificateStartDateOther:null,
+        certificateEndDateOther:null,
+        certificateEventLocationOther:null,
+        certificateEventNumberOther:null,
+        certificateTrainerOther:null,
+        certificateTrainer2Other:null,
         certificateTrainingNameEnglish:null,
         certificateTrainingNameGerman:null,
         certificateTrainingNamePolish:null,
+        certificateTrainingNameFrench:null,
+        certificateTrainingNameHungarian:null,
+        certificateTrainingNameOtherEnglish:null,
+        certificateTrainingNameOtherGerman:null,
+        certificateTrainingNameOtherPolish:null,
+        certificateTrainingNameOtherFrench:null,
+        certificateTrainingNameOtherHungarian:null,
         certificateTrainingName:null,
+        certificateTrainingNameOther:null,
         certificateTrainingDescription:null,
         certificateTrainingDescriptionEnglish:null,
         certificateTrainingDescriptionGerman:null,
-        certificateTrainingDescriptionPolish:null
+        certificateTrainingDescriptionPolish:null,
+        certificateTrainingDescriptionFrench:null,
+        certificateTrainingDescriptionHungarian:null
       },
       editMode: false,
 
@@ -1190,14 +1392,29 @@ export default {
             certificateEventNumber:null,
             certificateTrainer:null,
             certificateTrainer2:null,
+            certificateStartDateOther:null,
+            certificateEndDateOther:null,
+            certificateEventLocationOther:null,
+            certificateTrainerOther:null,
+            certificateTrainer2Other:null,
             certificateTrainingNameEnglish:null,
             certificateTrainingNameGerman:null,
             certificateTrainingNamePolish:null,
+            certificateTrainingNameFrench:null,
+            certificateTrainingNameHungarian:null,
+            certificateTrainingNameOtherEnglish:null,
+            certificateTrainingNameOtherGerman:null,
+            certificateTrainingNameOtherPolish:null,
+            certificateTrainingNameOtherFrench:null,
+            certificateTrainingNameOtherHungarian:null,
             certificateTrainingName:null,
+             certificateTrainingNameOther:null,
             certificateTrainingDescription:null,
             certificateTrainingDescriptionEnglish:null,
             certificateTrainingDescriptionGerman:null,
-            certificateTrainingDescriptionPolish:null
+            certificateTrainingDescriptionPolish:null,
+            certificateTrainingDescriptionFrench:null,
+            certificateTrainingDescriptionHungarian:null
           };
       this.$axios
         .get("/api/booking/"+ booking.id)
@@ -1222,28 +1439,57 @@ export default {
            _this.edituser.certificateEventNumber=response.data.certificateEventNumber;
            _this.edituser.certificateTrainer=response.data.certificateTrainer;
            _this.edituser.certificateTrainer2=response.data.certificateTrainer2;
+           _this.edituser.certificateStartDateOther=response.data.certificateStartDateOther;
+           _this.edituser.certificateEndDateOther=response.data.certificateEndDateOther;
+           _this.edituser.certificateEventLocationOther=response.data.certificateEventLocationOther;
+           _this.edituser.certificateTrainerOther=response.data.certificateTrainerOther;
+           _this.edituser.certificateTrainer2Other=response.data.certificateTrainer2Other;
            _this.edituser.certificateTrainingNameEnglish=response.data.certificateTrainingNameEnglish;
            _this.edituser.certificateTrainingNameGerman=response.data.certificateTrainingNameGerman;
            _this.edituser.certificateTrainingNamePolish=response.data.certificateTrainingNamePolish;
+           _this.edituser.certificateTrainingNameFrench=response.data.certificateTrainingNameFrench;
+           _this.edituser.certificateTrainingNameHungarian=response.data.certificateTrainingNameHungarian;
+           _this.edituser.certificateTrainingNameOtherEnglish=response.data.certificateTrainingNameOtherEnglish;
+           _this.edituser.certificateTrainingNameOtherGerman=response.data.certificateTrainingNameOtherGerman;
+           _this.edituser.certificateTrainingNameOtherPolish=response.data.certificateTrainingNameOtherPolish;
+           _this.edituser.certificateTrainingNameOtherFrench=response.data.certificateTrainingNameOtherFrench;
+           _this.edituser.certificateTrainingNameOtherHungarian=response.data.certificateTrainingNameOtherHungarian;
            _this.edituser.certificateTrainingDescriptionEnglish=response.data.certificateTrainingDescriptionEnglish;
            _this.edituser.certificateTrainingDescriptionGerman=response.data.certificateTrainingDescriptionGerman;
            _this.edituser.certificateTrainingDescriptionPolish=response.data.certificateTrainingDescriptionPolish;
+           _this.edituser.certificateTrainingDescriptionFrench=response.data.certificateTrainingDescriptionFrench;
+           _this.edituser.certificateTrainingDescriptionHungarian=response.data.certificateTrainingDescriptionHungarian;
 
           let language = _this.$locale;
           if(language==='en')
           {
               _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameEnglish;
+              _this.edituser.certificateTrainingNameOther=_this.edituser.certificateTrainingNameOtherEnglish;
               _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionEnglish;
           }
           else if(language==='de')
           {
               _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameGerman;
+              _this.edituser.certificateTrainingNameOther=_this.edituser.certificateTrainingNameOtherGerman;
               _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionGerman;
           }
           else if(language==='pl')
           {
                _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNamePolish;
+               _this.edituser.certificateTrainingNameOther=_this.edituser.certificateTrainingNameOtherPolish;
                _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionPolish;
+          }
+          else if(language==='fr')
+          {
+               _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameFrench;
+               _this.edituser.certificateTrainingNameOther=_this.edituser.certificateTrainingNameOtherFrench;
+               _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionFrench;
+          }
+          else if(language==='hu')
+          {
+               _this.edituser.certificateTrainingName=_this.edituser.certificateTrainingNameHungarian;
+               _this.edituser.certificateTrainingNameOther=_this.edituser.certificateTrainingNameOtherHungarian;
+               _this.edituser.certificateTrainingDescription=_this.edituser.certificateTrainingDescriptionHungarian;
           }
            _this.fetchBookings();
         })
@@ -1272,14 +1518,29 @@ export default {
             certificateEventNumber:null,
             certificateTrainer:null,
             certificateTrainer2:null,
+            certificateStartDateOther:null,
+            certificateEndDateOther:null,
+            certificateEventLocationOther:null,
+            certificateTrainerOther:null,
+            certificateTrainer2Other:null,
             certificateTrainingNameEnglish:null,
             certificateTrainingNameGerman:null,
             certificateTrainingNamePolish:null,
+            certificateTrainingNameFrench:null,
+            certificateTrainingNameHungarian:null,
+            certificateTrainingNameOtherEnglish:null,
+            certificateTrainingNameOtherGerman:null,
+            certificateTrainingNameOtherPolish:null,
+            certificateTrainingNameOtherFrench:null,
+            certificateTrainingNameOtherHungarian:null,
              certificateTrainingName:null,
+             certificateTrainingNameOther:null,
             certificateTrainingDescription:null,
             certificateTrainingDescriptionEnglish:null,
             certificateTrainingDescriptionGerman:null,
-            certificateTrainingDescriptionPolish:null
+            certificateTrainingDescriptionPolish:null,
+            certificateTrainingDescriptionFrench:null,
+            certificateTrainingDescriptionHungarian:null
           };
     },
     participants_previousPage() {
@@ -1862,17 +2123,32 @@ export default {
           if(language==='en')
           {
               _this.edituser.certificateTrainingNameEnglish=_this.edituser.certificateTrainingName;
+              _this.edituser.certificateTrainingNameOtherEnglish=_this.edituser.certificateTrainingNameOther;
               _this.edituser.certificateTrainingDescriptionEnglish=_this.edituser.certificateTrainingDescription;
           }
           else if(language==='de')
           {
               _this.edituser.certificateTrainingNameGerman=_this.edituser.certificateTrainingName;
+              _this.edituser.certificateTrainingNameOtherGerman=_this.edituser.certificateTrainingNameOther;
               _this.edituser.certificateTrainingDescriptionGerman=_this.edituser.certificateTrainingDescription;
           }
           else if(language==='pl')
           {
                _this.edituser.certificateTrainingNamePolish=_this.edituser.certificateTrainingName;
+                _this.edituser.certificateTrainingNameOtherPolish=_this.edituser.certificateTrainingNameOther;
                _this.edituser.certificateTrainingDescriptionPolish=_this.edituser.certificateTrainingDescription;
+          }
+          else if(language==='fr')
+          {
+               _this.edituser.certificateTrainingNameFrench=_this.edituser.certificateTrainingName;
+                _this.edituser.certificateTrainingNameOtherFrench=_this.edituser.certificateTrainingNameOther;
+               _this.edituser.certificateTrainingDescriptionFrench=_this.edituser.certificateTrainingDescription;
+          }
+          else if(language==='hu')
+          {
+               _this.edituser.certificateTrainingNameHungarian=_this.edituser.certificateTrainingName;
+                _this.edituser.certificateTrainingNameOtherHungarian=_this.edituser.certificateTrainingNameOther;
+               _this.edituser.certificateTrainingDescriptionHungarian=_this.edituser.certificateTrainingDescription;
           }
         if (typeof this.edituser.tenantId === 'object' && this.edituser.tenantId !== null) {  
           this.edituser.tenantId=this.edituser.tenantId.id;
@@ -1896,12 +2172,27 @@ export default {
             certificateEventNumber:this.edituser.certificateEventNumber,
             certificateTrainer:this.edituser.certificateTrainer,
             certificateTrainer2:this.edituser.certificateTrainer2,
+            certificateStartDateOther:this.edituser.certificateStartDateOther,
+            certificateEndDateOther:this.edituser.certificateEndDateOther,
+            certificateEventLocationOther:this.edituser.certificateEventLocationOther,
+            certificateEventNumberOther:this.edituser.certificateEventNumberOther,
+            certificateTrainerOther:this.edituser.certificateTrainerOther,
+            certificateTrainer2Other:this.edituser.certificateTrainer2Other,
             certificateTrainingNameEnglish:this.edituser.certificateTrainingNameEnglish,
             certificateTrainingNameGerman:this.edituser.certificateTrainingNameGerman,
             certificateTrainingNamePolish:this.edituser.certificateTrainingNamePolish,
+            certificateTrainingNameFrench:this.edituser.certificateTrainingNameFrench,
+            certificateTrainingNameHungarian:this.edituser.certificateTrainingNameHungarian,
+             certificateTrainingNameOtherEnglish:this.edituser.certificateTrainingNameOtherEnglish,
+            certificateTrainingNameOtherGerman:this.edituser.certificateTrainingNameOtherGerman,
+            certificateTrainingNameOtherPolish:this.edituser.certificateTrainingNameOtherPolish,
+            certificateTrainingNameOtherFrench:this.edituser.certificateTrainingNameOtherFrench,
+            certificateTrainingNameOtherHungarian:this.edituser.certificateTrainingNameOtherHungarian,
             certificateTrainingDescriptionEnglish:this.edituser.certificateTrainingDescriptionEnglish,
             certificateTrainingDescriptionGerman:this.edituser.certificateTrainingDescriptionGerman,
-            certificateTrainingDescriptionPolish:this.edituser.certificateTrainingDescriptionPolish
+            certificateTrainingDescriptionPolish:this.edituser.certificateTrainingDescriptionPolish,
+            certificateTrainingDescriptionFrench:this.edituser.certificateTrainingDescriptionFrench,
+            certificateTrainingDescriptionHungarian:this.edituser.certificateTrainingDescriptionHungarian
       }
       this.$axios
         .put("/api/booking/"+ this.currentBookingID, request)
@@ -1924,14 +2215,31 @@ export default {
             certificateEventNumber:null,
             certificateTrainer:null,
             certificateTrainer2:null,
+             certificateStartDateOther:null,
+            certificateEndDateOther:null,
+            certificateEventLocationOther:null,
+            certificateEventNumberOther:null,
+            certificateTrainerOther:null,
+            certificateTrainer2Other:null,
             certificateTrainingNameEnglish:null,
             certificateTrainingNameGerman:null,
             certificateTrainingNamePolish:null,
+            certificateTrainingNameFrench:null,
+            certificateTrainingNameHungarian:null,
+             certificateTrainingNameOtherEnglish:null,
+            certificateTrainingNameOtherGerman:null,
+            certificateTrainingNameOtherPolish:null,
+            certificateTrainingNameOtherFrench:null,
+            certificateTrainingNameOtherHungarian:null,
             certificateTrainingName:null,
+            certificateTrainingNameOther:null,
             certificateTrainingDescription:null,
             certificateTrainingDescriptionEnglish:null,
             certificateTrainingDescriptionGerman:null,
-            certificateTrainingDescriptionPolish:null
+            certificateTrainingDescriptionPolish:null,
+            certificateTrainingDescriptionFrench:null,
+            certificateTrainingDescriptionHungarian:null
+
           };
         
         })
