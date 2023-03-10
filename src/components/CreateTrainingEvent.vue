@@ -753,7 +753,7 @@ b-row<template>
            </div>
            <br/>
           </b-row>
-          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -780,14 +780,14 @@ b-row<template>
               </div>
             </div>
           </b-row>        
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
           <b-col>
               <v-text-field  
                     hide-details="auto"
                     class="datainput justify-content-end align-self-center pb-1"
                     dense
                     outlined
-                     :label="$t('startDate')"
+                     :label="$t('startDate') + ' (yyyy-mm-dd)'"
                      v-model="edituser.certificateStartDate"
                     @keypress.enter="editParticipant()"
                     ></v-text-field>
@@ -798,13 +798,13 @@ b-row<template>
                     class="datainput justify-content-end align-self-center pb-1"
                     dense
                     outlined
-                     :label="$t('endDate')"
+                     :label="$t('endDate')  + ' (yyyy-mm-dd)'"
                      v-model="edituser.certificateEndDate"
                     @keypress.enter="editParticipant()"
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -829,7 +829,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===null">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -853,7 +853,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>  
-         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display!==null">
+         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===true">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -867,11 +867,11 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <div class="row" v-if="edituser.display!==null">
+          <div class="row" v-if="edituser.display===true">
               <div class="col-md-6">
                      <div class="border rounded border-dark p-3">
-                       <h2  v-if="edituser.display==='PRACTICAL'">PRACTICAL</h2>
-                       <h2  v-else>THEORY</h2>
+                       <h5>{{$t("theory")}}</h5>
+                       
                             <!-- First section content here -->
                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
                                <b-col>
@@ -907,7 +907,7 @@ b-row<template>
                                 class="datainput justify-content-end align-self-center pb-1"
                                 dense
                                 outlined
-                                :label="$t('startDate')"
+                                :label="$t('startDate')+ ' (yyyy-mm-dd)'"
                                 v-model="edituser.certificateStartDate"
                                 @keypress.enter="editParticipant()"
                                 ></v-text-field>
@@ -920,7 +920,7 @@ b-row<template>
                               class="datainput justify-content-end align-self-center pb-1"
                               dense
                               outlined
-                              :label="$t('endDate')"
+                              :label="$t('endDate')+ ' (yyyy-mm-dd)'"
                               v-model="edituser.certificateEndDate"
                               @keypress.enter="editParticipant()"
                               ></v-text-field>
@@ -956,8 +956,7 @@ b-row<template>
                      </div>
                    <div class="col-md-6">
                      <div class="border rounded border-dark p-3">
-                      <h2  v-if="edituser.display==='PRACTICAL'">THEORY</h2>
-                       <h2  v-else>PRACTICAL</h2>
+                       <h5>{{$t("practical")}}</h5>
                          <!-- Second section content here -->
                          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
                                <b-col>
@@ -967,7 +966,7 @@ b-row<template>
                                  dense
                                  outlined
                                  :label="$t('trainingName')"
-                                 v-model="edituser.certificateTrainingName"
+                                 v-model="edituser.certificateTrainingNameOther"
                                  @keypress.enter="editParticipant()"
                                  :disabled="true"
                                ></v-text-field>     
@@ -993,7 +992,7 @@ b-row<template>
                             class="datainput justify-content-end align-self-center pb-1"
                             dense
                             outlined
-                           :label="$t('startDate')"
+                           :label="$t('startDate')+ ' (yyyy-mm-dd)'"
                            v-model="edituser.certificateStartDateOther"
                            @keypress.enter="editParticipant()"
                          ></v-text-field>
@@ -1006,7 +1005,7 @@ b-row<template>
                          class="datainput justify-content-end align-self-center pb-1"
                          dense
                          outlined
-                        :label="$t('endDate')"
+                        :label="$t('endDate')+ ' (yyyy-mm-dd)'"
                         v-model="edituser.certificateEndDateOther"
                         @keypress.enter="editParticipant()"
                         ></v-text-field>
@@ -1040,7 +1039,7 @@ b-row<template>
                   </b-row>                        
                       </div>
                   </div>
-              </div>
+          </div>
 
          
       </b-form> 
@@ -1197,6 +1196,7 @@ export default {
         certificateTrainer2:null,
         certificateStartDateOther:null,
         certificateEndDateOther:null,
+        display:null,
         certificateEventLocationOther:null,
         certificateEventNumberOther:null,
         certificateTrainerOther:null,
@@ -1394,6 +1394,7 @@ export default {
             certificateTrainer2:null,
             certificateStartDateOther:null,
             certificateEndDateOther:null,
+            display:null,
             certificateEventLocationOther:null,
             certificateTrainerOther:null,
             certificateTrainer2Other:null,
@@ -1441,6 +1442,7 @@ export default {
            _this.edituser.certificateTrainer2=response.data.certificateTrainer2;
            _this.edituser.certificateStartDateOther=response.data.certificateStartDateOther;
            _this.edituser.certificateEndDateOther=response.data.certificateEndDateOther;
+           _this.edituser.display=response.data.display;
            _this.edituser.certificateEventLocationOther=response.data.certificateEventLocationOther;
            _this.edituser.certificateTrainerOther=response.data.certificateTrainerOther;
            _this.edituser.certificateTrainer2Other=response.data.certificateTrainer2Other;
@@ -1520,6 +1522,7 @@ export default {
             certificateTrainer2:null,
             certificateStartDateOther:null,
             certificateEndDateOther:null,
+            display:false,
             certificateEventLocationOther:null,
             certificateTrainerOther:null,
             certificateTrainer2Other:null,
@@ -2174,6 +2177,7 @@ export default {
             certificateTrainer2:this.edituser.certificateTrainer2,
             certificateStartDateOther:this.edituser.certificateStartDateOther,
             certificateEndDateOther:this.edituser.certificateEndDateOther,
+            display:this.edituser.display,
             certificateEventLocationOther:this.edituser.certificateEventLocationOther,
             certificateEventNumberOther:this.edituser.certificateEventNumberOther,
             certificateTrainerOther:this.edituser.certificateTrainerOther,
@@ -2217,6 +2221,7 @@ export default {
             certificateTrainer2:null,
              certificateStartDateOther:null,
             certificateEndDateOther:null,
+            display:null,
             certificateEventLocationOther:null,
             certificateEventNumberOther:null,
             certificateTrainerOther:null,

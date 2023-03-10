@@ -1,5 +1,7 @@
 {
     "de": {
+        "theory":"THEORIE",
+        "practical":"PRAKTISCH",
         "training course event":"Schulungsveranstaltung",
         "documents in":"Möchten Sie die Dokumente in",
         "USBform":"USB-Formular",
@@ -863,6 +865,8 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "theory":"THEORY",
+        "practical":"PRACTICAL",
         "training course event":"Training Course Event",
         "documents in":"Do you want the documents in",
         "USBform":"USB Form",
@@ -1728,6 +1732,8 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "theory":"TEORIA",
+        "practical":"PRAKTYCZNY",
         "training course event":"Wydarzenie dotyczące kursu szkoleniowego",
         "documents in":"Chcesz dokumenty w",
         "USBform":"Formularz USB",
@@ -2590,6 +2596,8 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "theory":"THÉORIE",
+    "practical":"PRATIQUE",
     "training course event":"Événement de cours de formation",
     "documents in":"Voulez-vous les documents dans",
     "USBform":"Formulaire USB",
@@ -3455,6 +3463,8 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "theory":"ELMÉLET",
+    "practical":"GYAKORLATI",
     "training course event":"Képzési tanfolyam rendezvény",
     "documents in":"Be akarod adni a dokumentumokat?",
     "USBform":"USB űrlap",
