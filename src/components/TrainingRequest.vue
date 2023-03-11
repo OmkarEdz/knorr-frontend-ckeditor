@@ -363,6 +363,10 @@
                         v-model="request.trainingAmountNeeded"
                         ></v-text-field>
                     </div>
+                     <div class="col-12" id="trainingRequestDocument">
+                        <Upload  v-model="request.trainingDocumentList" multiple allowOtherFileTypes />
+                     </div>
+           
                 </div>
                 <div class="col-md-6 disablerow" v-if="editMode">
                     <div class="col-md-12 pt-0">
@@ -648,6 +652,7 @@ export default {
           additionalNeededVehicles: null,
           comments: null,
           overhaulingTraining: false,
+          trainingDocumentList:[]
         }
       }
     },
