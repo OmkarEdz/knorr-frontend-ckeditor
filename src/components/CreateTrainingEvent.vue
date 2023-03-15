@@ -1885,6 +1885,7 @@ export default {
             {
               _this.$noty.success(
               _this.$t("trainingEvent_drafted", { name: response.data.designation })
+              );
             }
             _this.$router.push("/training-events");
           })
