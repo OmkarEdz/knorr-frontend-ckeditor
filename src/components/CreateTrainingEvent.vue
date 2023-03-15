@@ -874,6 +874,10 @@
           <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="savebutton mr-2 mb-2"> <v-icon dark left>mdi-minus-circle</v-icon>cancel</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>draft</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='cancelled'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> Activate</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> Undraft</v-btn>
         </div>
 
         <!-- Actions for third Tab -->
@@ -978,11 +982,12 @@ export default {
   props: {
     //   categoryName: String,
     trainingEventId: Number,
-    trainingRequestId: Number,
+    trainingRequestId: Number
   },
 
   data() {
     return {
+       eventStatus:"normal",
         customToolbar: [
           ["bold", "italic", "underline"],
           [{ list: "ordered" }, { list: "bullet" }],
@@ -1113,6 +1118,18 @@ export default {
   },
 
   mounted() {
+    if(this.$route.query.eventStatus==='cancelled')
+    {
+      this.eventStatus='cancelled';
+    }
+    else if(this.$route.query.eventStatus==='drafted')
+    {
+       this.eventStatus='drafted'; 
+    }
+    else
+    {
+      this.eventStatus='normal';
+    }
     this.fetchTrainers();
     this.fetchTranslators();
     this.fetchLocations();
@@ -1709,6 +1726,189 @@ export default {
       }
     },
 
+    activeOrInactiveTrainingEvent(eventFlagCode)
+    {
+      var _this = this;
+      this.trainingEvent.rooms = this.rooms;
+      var trainingEvent = {};
+      trainingEvent = Object.assign(trainingEvent, this.trainingEvent);
+      const updatedTrainingEvent = Object.assign({}, this.trainingEvent, { eventflag: eventFlagCode });
+      trainingEvent = Object.assign(trainingEvent, updatedTrainingEvent);
+     if(eventFlagCode==='0' || eventFlagCode==='1')
+     {
+      // Validation for empty fields
+      if (trainingEvent.language == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("language") }));
+        return;
+      }
+      if (trainingEvent.status == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("status") }));
+        return;
+      }
+      if (trainingEvent.examType == null) {
+        this.$noty.error(
+          this.$t("empty_value", { name: this.$t("examType") })
+        );
+        return;
+      }
+      if (trainingEvent.trainerId == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("first_trainer") }));
+        return;
+      }
+      if (trainingEvent.trainerId == trainingEvent.trainer2Id) {
+        this.$noty.error(this.$t("invalid_value", { name: this.$t("second_trainer") }));
+        return;
+      }
+      if (trainingEvent.trainingId == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("training") }));
+        return;
+      }
+
+      // Validation for Min and Max Participants
+      if(trainingEvent.minParticipants === undefined || trainingEvent.minParticipants === ""){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+      if(trainingEvent.maxParticipants === undefined || trainingEvent.maxParticipants === ""){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("maxParticipants")}));
+        return;
+      }
+
+      // Try Parse Values
+      try {
+        if(isNaN(trainingEvent.minParticipants)){
+          trainingEvent.minParticipants = parseInt(trainingEvent.minParticipants);
+        }
+      } catch (error) {
+        console.error(error);
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+      try {
+        if(isNaN(trainingEvent.maxParticipants)){
+          trainingEvent.maxParticipants = parseInt(trainingEvent.maxParticipants);
+        }
+      } catch (error) {
+        console.error(error);
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+
+
+      if(trainingEvent.minParticipants < 0){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+      if(trainingEvent.maxParticipants < 0){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("maxParticipants")}));
+        return;
+      }
+      if(trainingEvent.minParticipants > trainingEvent.maxParticipants){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("maxParticipants")}));
+        return;
+      }
+      if(trainingEvent.startTime == null || !trainingEvent.startTime.includes(":") || isNaN(trainingEvent.startTime.replace(":", ""))){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("begin_time")}));
+        return;
+      }
+      if(trainingEvent.endTime == null ||!trainingEvent.endTime.includes(":") || isNaN(trainingEvent.endTime.replace(":", ""))){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("end_time")}));
+        return;
+      }
+
+      if(this.selectedLocationId != null && (trainingEvent.roomId == null || trainingEvent.roomId == "")){
+        this.$noty.error(this.$t("empty_room_but_location"));
+        return;
+      }
+
+      const training = this.getArrayElementById("trainings", trainingEvent.trainingId);
+      if(training.type == "VIRTUAL"){
+        if(trainingEvent.onlineLink == null || trainingEvent.onlineLink == ""){
+          this.$noty.error(this.$t("empty_value_for_virtual", {name: this.$t("onlineLink")}));
+          return;
+        }
+        if(trainingEvent.roomId != null && trainingEvent.roomId != ""){
+          this.$noty.error(this.$t("unallowed_value_for_virtual", {name: this.$t("room")}));
+          this.selectedLocationId = null;
+          this.trainingEvent.roomId = null;
+          return;
+        }
+      }else if(training.type == "PRESENCE"){
+        // Issue#160 Räume können unbekannt sein, daher ist leer erlaubt, Validierung soll aber greifen, wenn nur Ort ausgewählt
+        if(this.selectedLocationId != null && (trainingEvent.roomId == null || trainingEvent.roomId == "")){
+          this.$noty.error(this.$t("empty_value_for_presence", {name: this.$t("room")}));
+          return;
+        }
+        if(trainingEvent.onlineLink != null && trainingEvent.onlineLink != ""){
+          this.$noty.error(this.$t("unallowed_value_for_presence", {name: this.$t("onlineLink")}));
+          return;
+        }
+      }
+
+      // Validation for Start and End Dates
+      if(trainingEvent.startDate != null && trainingEvent.startDate != "" && trainingEvent.endDate != null && trainingEvent.endDate != ""){
+        const startDt = new Date(trainingEvent.startDate);
+        const endDt = new Date(trainingEvent.endDate);
+        if(startDt > endDt){
+          this.$noty.error(this.$t("invalid_value", {name: this.$t("begin_date")}));
+          return;
+        }
+        const startTm = new Date(trainingEvent.startDate + "T" + trainingEvent.startTime);
+        const endTm = new Date(trainingEvent.endDate + "T" + trainingEvent.endTime);
+        if(startTm > endTm){
+          this.$noty.error(this.$t("invalid_value", {name: this.$t("start_time")}));
+          return;
+        }
+      }
+}
+
+      delete trainingEvent.training;
+
+      if (this.editMode) {
+        // Edit Training
+        this.$axios
+          .put("/api/training/event/" + this.trainingEventId, trainingEvent)
+          .then(function (response) {
+            if(eventFlagCode==='0')
+            {
+            _this.$noty.success(
+              _this.$t("trainingEvent_edited", { name: response.data.designation })
+            );
+            }
+            else if(eventFlagCode==='1')
+            {
+              _this.$noty.success(
+              _this.$t("trainingEvent_cancelled", { name: response.data.designation })
+            ); 
+            }
+            else if(eventFlagCode==='2')
+            {
+              _this.$noty.success(
+              _this.$t("trainingEvent_drafted", { name: response.data.designation })
+            }
+            _this.$router.push("/training-events");
+          })
+          .catch(this.onError);
+      } else {
+        // Create new Training
+
+        const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
+
+        this.$axios
+          .post(url, this.trainingEvent)
+          .then(function (response) {
+
+            _this.$noty.success(
+              _this.$t("trainingEvent_saved", { name: response.data.designation })
+            );
+            _this.trainingEventId = response.data.id;
+            _this.editMode = true;
+            _this.fetchEditingTrainingEvent();
+          })
+          .catch(this.onError);
+      }
+    },
+   
     deleteTrainingEvent() {
       if (this.trainingEventId == null) {
         console.error("You are not editing an existing trainingEvent.");
