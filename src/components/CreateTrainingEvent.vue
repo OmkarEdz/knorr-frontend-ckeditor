@@ -753,7 +753,7 @@ b-row<template>
            </div>
            <br/>
           </b-row>
-          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
+          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -780,7 +780,7 @@ b-row<template>
               </div>
             </div>
           </b-row>        
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -804,7 +804,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -829,7 +829,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===false">
+          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -1522,7 +1522,7 @@ export default {
      afterCloseModal() {
        setTimeout(() => {
         window.scrollTo(this.scrollPositionX, this.scrollPositionY)
-        }, 400);   
+        }, 1000);   
        this.showModal=false;
        this.edituser = {
             firstname: null,
@@ -2469,7 +2469,7 @@ export default {
           window.scrollTo(this.scrollPositionX, this.scrollPositionY)
           _this.fetchBookings();
           _this.fetchUsers();
-          }, 400);   
+          }, 1000);   
           document.getElementById("edit_participant_firstname").focus();
     },
     /**
