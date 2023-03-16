@@ -874,10 +874,12 @@
           <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
-          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="savebutton mr-2 mb-2"> <v-icon dark left>mdi-minus-circle</v-icon>cancel</v-btn>
-          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>draft</v-btn>
-          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='cancelled'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> Activate</v-btn>
-          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> Undraft</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="savebutton mr-2 mb-2"> <v-icon dark left>mdi-minus-circle</v-icon>{{ $t("cancelEvent") }}</v-btn>
+          <!-- <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn> -->
+           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'"  outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='cancelled'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("activate") }}</v-btn>
+          <!-- <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn> -->
+            <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn>
         </div>
 
         <!-- Actions for third Tab -->
@@ -1564,10 +1566,16 @@ export default {
     },
 
     saveTrainingEvent() {
+    
       var _this = this;
       this.trainingEvent.rooms = this.rooms;
       var trainingEvent = {};
-      trainingEvent = Object.assign(trainingEvent, this.trainingEvent);
+      //trainingEvent = Object.assign(trainingEvent, this.trainingEvent);
+     let eventFlagCode = _this.eventStatus === 'cancelled' ? '1' :
+                      _this.eventStatus === 'drafted' ? '2' :
+                      '0';
+     let updatedTrainingEvent = Object.assign({}, _this.trainingEvent, { eventflag: eventFlagCode });
+     trainingEvent = Object.assign(trainingEvent, updatedTrainingEvent);
 
       // Validation for empty fields
       if (trainingEvent.language == null) {
@@ -1872,22 +1880,26 @@ export default {
             if(eventFlagCode==='0')
             {
             _this.$noty.success(
-              _this.$t("trainingEvent_edited", { name: response.data.designation })
+              _this.$t("trainingEvent_activated", { name: response.data.designation })
             );
+            _this.$router.push("/training-events");
             }
             else if(eventFlagCode==='1')
             {
               _this.$noty.success(
               _this.$t("trainingEvent_cancelled", { name: response.data.designation })
             ); 
+             _this.$router.push({path: '/inactive-events',query: { eventStatus: 'cancelled' }});
             }
             else if(eventFlagCode==='2')
             {
               _this.$noty.success(
               _this.$t("trainingEvent_drafted", { name: response.data.designation })
               );
+              _this.$router.push({path: '/inactive-events',query: { eventStatus: 'drafted' }});
             }
-            _this.$router.push("/training-events");
+            
+           
           })
           .catch(this.onError);
       } else {
