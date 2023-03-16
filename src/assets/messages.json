@@ -1,5 +1,6 @@
 {
     "de": {
+        "cancelledtrainingevents":"Abgesagte Veranstaltungen",
         "viewCancelledEvents":"Abgesagte Veranstaltungen anzeigen",
         "viewDraftedEvents":"Geplante Ereignisse anzeigen",
         "cancelEvent":"Stornieren",
@@ -874,6 +875,7 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "cancelledtrainingevents":"Cancelled Events",
         "viewCancelledEvents":"View Cancelled Events",
         "viewDraftedEvents":"View Drafted Events",
         "cancelEvent":"Cancel",
@@ -1749,6 +1751,7 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "cancelledtrainingevents":"Anulowane wydarzenia",
         "viewCancelledEvents":"Zobacz anulowane wydarzenia",
         "viewDraftedEvents":"Wyświetl wersje robocze wydarzeń",
         "cancelEvent":"Anulować",
@@ -2622,6 +2625,7 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "cancelledtrainingevents":"Événements annulés",
     "viewCancelledEvents":"Afficher les événements annulés",
     "viewDraftedEvents":"Afficher les événements rédigés",
     "cancelEvent":"Annuler",
@@ -3498,6 +3502,7 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "cancelledtrainingevents":"Törölt események",
     "viewCancelledEvents":"A törölt események megtekintése",
     "viewDraftedEvents":"Tervezett események megtekintése",
     "cancelEvent":"Megszünteti",
