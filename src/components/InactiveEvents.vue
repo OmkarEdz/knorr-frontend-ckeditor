@@ -167,7 +167,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.$route.query.eventStatus);
     if(this.$route.query.eventStatus==='cancelled')
     {
       this.eventStatus='cancelled';
