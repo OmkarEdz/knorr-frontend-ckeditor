@@ -13,11 +13,12 @@
     --blue: #004581;
     --grey-font: #5F5F5F;
     --grey-hover-color: #bfb497;
+    --save-color: #05b537;
 
     /* Calendar Colors */
     --calendar-red: #fe6d6e;
     --calendar-yellow: #fde976;
-    --calendar-green: #6df779;
+    --calendar-green: #0ee920;
     --calendar-turquoise: #66ece8;
     --calendar-blue: #6c70df;
     --calendar-purple: #eb6be0;
@@ -2414,6 +2415,13 @@ div.bg-blue{
     text-transform: capitalize;
   }
 
+  .save{
+    background-color: var(--save-color);
+    color: white !important;
+    border: none !important;
+    text-transform: capitalize;
+  }
+
   .savebutton.bg-white{
     color: var(--main-color) !important;
   }
@@ -2425,10 +2433,17 @@ div.bg-blue{
     text-transform: capitalize;
   }
 
+  .backbutton{
+    background-color: white;
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
+    text-transform: capitalize;
+  }
+
   .deletebutton{
-    background-color: var(--beige);
-    color: white !important;
-    border: none !important;
+    background-color: white;
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
     text-transform: capitalize;
   }
 

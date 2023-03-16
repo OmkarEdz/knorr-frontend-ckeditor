@@ -186,9 +186,9 @@
       </div>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="deleteAppointment()" v-show="!appointment.clickable && appointment.id != null" outlined depressed tile class="savebutton mr-2 mb-2 bg-white color-blue">{{ $t("delete") }}</v-btn>
-        <v-btn @click="openAddDialog = false" outlined depressed tile class="savebutton mr-2 mb-2 bg-white color-blue">{{ $t("cancel") }}</v-btn>
-        <v-btn @click="saveAppointment()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+        <v-btn @click="deleteAppointment()" v-show="!appointment.clickable && appointment.id != null" outlined depressed tile class="deletebutton mr-2 mb-2 bg-white color-blue"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+        <v-btn @click="openAddDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2 bg-white color-blue"> {{ $t("cancel") }}</v-btn>
+        <v-btn @click="saveAppointment()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
       </v-card-actions>
     </v-dialog>
   </div>

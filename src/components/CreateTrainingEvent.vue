@@ -1044,8 +1044,8 @@ b-row<template>
          
       </b-form> 
       <template v-slot:modal-footer>
-        <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-        <v-btn @click="editParticipant(booking)" outlined depressed tile class="savebutton mb-2">{{ $t("save") }}</v-btn>
+        <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+        <v-btn @click="editParticipant(booking)" outlined depressed tile class="save mb-2">{{ $t("save") }}</v-btn>
       </template>
     </b-modal>
     </div>
@@ -1056,9 +1056,15 @@ b-row<template>
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2">{{ $t("delete") }}</v-btn>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="savebutton mr-2 mb-2"> <v-icon dark left>mdi-minus-circle</v-icon>{{ $t("cancelEvent") }}</v-btn>
+          <!-- <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn> -->
+           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'"  outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='cancelled'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("activate") }}</v-btn>
+          <!-- <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn> -->
+            <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn>
         </div>
 
         <!-- Actions for third Tab -->
@@ -1067,7 +1073,7 @@ b-row<template>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
           <!-- <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2">{{ $t("delete") }}</v-btn> -->
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn v-show="$user != null && !$user.external" @click="createParticipantsList()" outlined depressed tile class="savebutton mb-2">{{ $t("create_participant_list") }}</v-btn>
           <v-btn outlined depressed tile @click="openSendMailCustomDialog = true" class="mr-2 deletebutton mb-2" >{{ $t("email") }}</v-btn>
         </div>
@@ -1077,7 +1083,7 @@ b-row<template>
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn @click="addParticipant()" outlined depressed tile class="savebutton mb-2">{{ $t("add_participant") }}</v-btn>
         </div>
 
@@ -1109,7 +1115,7 @@ b-row<template>
       <h3 >{{ $t("send_invitation_mail_again_question") }}</h3>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="openSendMailAgainDialog = false" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+        <v-btn @click="openSendMailAgainDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
         <v-btn @click="sendMailToParticipant(sendMailAgainBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_invitation_mail") }}</v-btn>
       </v-card-actions>
       </v-dialog>
@@ -1119,8 +1125,8 @@ b-row<template>
         <h4>{{ $t("confirm_delete_event") }}</h4>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="openDeleteDialog = false" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-          <v-btn @click="deleteTrainingEvent()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("delete") }}</v-btn>
+          <v-btn @click="openDeleteDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+          <v-btn @click="deleteTrainingEvent()" outlined depressed tile class="deletebutton mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
         </v-card-actions>
       </v-dialog>
     </div>
@@ -1139,7 +1145,7 @@ b-row<template>
                     ></v-text-field>
         <v-card-actions class="px-0">
           <v-spacer></v-spacer>
-          <v-btn @click="openSendMailCustomDialog = false" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn @click="openSendMailCustomDialog = false" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn @click="sendBlankMail()" outlined depressed tile class="savebutton mb-2">{{ $t("send") }}</v-btn> 
         </v-card-actions>
       </v-dialog>
@@ -1163,11 +1169,12 @@ export default {
   props: {
     //   categoryName: String,
     trainingEventId: Number,
-    trainingRequestId: Number,
+    trainingRequestId: Number
   },
 
   data() {
     return {
+       eventStatus:"normal",
         customToolbar: [
           ["bold", "italic", "underline"],
           [{ list: "ordered" }, { list: "bullet" }],
@@ -1315,6 +1322,18 @@ export default {
   },
 
   mounted() {
+    if(this.$route.query.eventStatus==='cancelled')
+    {
+      this.eventStatus='cancelled';
+    }
+    else if(this.$route.query.eventStatus==='drafted')
+    {
+       this.eventStatus='drafted'; 
+    }
+    else
+    {
+      this.eventStatus='normal';
+    }
     this.fetchTrainers();
     this.fetchTranslators();
     this.fetchLocations();
@@ -1811,10 +1830,16 @@ export default {
     },
 
     saveTrainingEvent() {
+    
       var _this = this;
       this.trainingEvent.rooms = this.rooms;
       var trainingEvent = {};
-      trainingEvent = Object.assign(trainingEvent, this.trainingEvent);
+      //trainingEvent = Object.assign(trainingEvent, this.trainingEvent);
+     let eventFlagCode = _this.eventStatus === 'cancelled' ? '1' :
+                      _this.eventStatus === 'drafted' ? '2' :
+                      '0';
+     let updatedTrainingEvent = Object.assign({}, _this.trainingEvent, { eventflag: eventFlagCode });
+     trainingEvent = Object.assign(trainingEvent, updatedTrainingEvent);
 
       // Validation for empty fields
       if (trainingEvent.language == null) {
@@ -1973,6 +1998,194 @@ export default {
       }
     },
 
+    activeOrInactiveTrainingEvent(eventFlagCode)
+    {
+      var _this = this;
+      this.trainingEvent.rooms = this.rooms;
+      var trainingEvent = {};
+      trainingEvent = Object.assign(trainingEvent, this.trainingEvent);
+      const updatedTrainingEvent = Object.assign({}, this.trainingEvent, { eventflag: eventFlagCode });
+      trainingEvent = Object.assign(trainingEvent, updatedTrainingEvent);
+     if(eventFlagCode==='0' || eventFlagCode==='1')
+     {
+      // Validation for empty fields
+      if (trainingEvent.language == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("language") }));
+        return;
+      }
+      if (trainingEvent.status == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("status") }));
+        return;
+      }
+      if (trainingEvent.examType == null) {
+        this.$noty.error(
+          this.$t("empty_value", { name: this.$t("examType") })
+        );
+        return;
+      }
+      if (trainingEvent.trainerId == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("first_trainer") }));
+        return;
+      }
+      if (trainingEvent.trainerId == trainingEvent.trainer2Id) {
+        this.$noty.error(this.$t("invalid_value", { name: this.$t("second_trainer") }));
+        return;
+      }
+      if (trainingEvent.trainingId == null) {
+        this.$noty.error(this.$t("empty_value", { name: this.$t("training") }));
+        return;
+      }
+
+      // Validation for Min and Max Participants
+      if(trainingEvent.minParticipants === undefined || trainingEvent.minParticipants === ""){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+      if(trainingEvent.maxParticipants === undefined || trainingEvent.maxParticipants === ""){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("maxParticipants")}));
+        return;
+      }
+
+      // Try Parse Values
+      try {
+        if(isNaN(trainingEvent.minParticipants)){
+          trainingEvent.minParticipants = parseInt(trainingEvent.minParticipants);
+        }
+      } catch (error) {
+        console.error(error);
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+      try {
+        if(isNaN(trainingEvent.maxParticipants)){
+          trainingEvent.maxParticipants = parseInt(trainingEvent.maxParticipants);
+        }
+      } catch (error) {
+        console.error(error);
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+
+
+      if(trainingEvent.minParticipants < 0){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("minParticipants")}));
+        return;
+      }
+      if(trainingEvent.maxParticipants < 0){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("maxParticipants")}));
+        return;
+      }
+      if(trainingEvent.minParticipants > trainingEvent.maxParticipants){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("maxParticipants")}));
+        return;
+      }
+      if(trainingEvent.startTime == null || !trainingEvent.startTime.includes(":") || isNaN(trainingEvent.startTime.replace(":", ""))){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("begin_time")}));
+        return;
+      }
+      if(trainingEvent.endTime == null ||!trainingEvent.endTime.includes(":") || isNaN(trainingEvent.endTime.replace(":", ""))){
+        this.$noty.error(this.$t("invalid_value", {name: this.$t("end_time")}));
+        return;
+      }
+
+      if(this.selectedLocationId != null && (trainingEvent.roomId == null || trainingEvent.roomId == "")){
+        this.$noty.error(this.$t("empty_room_but_location"));
+        return;
+      }
+
+      const training = this.getArrayElementById("trainings", trainingEvent.trainingId);
+      if(training.type == "VIRTUAL"){
+        if(trainingEvent.onlineLink == null || trainingEvent.onlineLink == ""){
+          this.$noty.error(this.$t("empty_value_for_virtual", {name: this.$t("onlineLink")}));
+          return;
+        }
+        if(trainingEvent.roomId != null && trainingEvent.roomId != ""){
+          this.$noty.error(this.$t("unallowed_value_for_virtual", {name: this.$t("room")}));
+          this.selectedLocationId = null;
+          this.trainingEvent.roomId = null;
+          return;
+        }
+      }else if(training.type == "PRESENCE"){
+        // Issue#160 Räume können unbekannt sein, daher ist leer erlaubt, Validierung soll aber greifen, wenn nur Ort ausgewählt
+        if(this.selectedLocationId != null && (trainingEvent.roomId == null || trainingEvent.roomId == "")){
+          this.$noty.error(this.$t("empty_value_for_presence", {name: this.$t("room")}));
+          return;
+        }
+        if(trainingEvent.onlineLink != null && trainingEvent.onlineLink != ""){
+          this.$noty.error(this.$t("unallowed_value_for_presence", {name: this.$t("onlineLink")}));
+          return;
+        }
+      }
+
+      // Validation for Start and End Dates
+      if(trainingEvent.startDate != null && trainingEvent.startDate != "" && trainingEvent.endDate != null && trainingEvent.endDate != ""){
+        const startDt = new Date(trainingEvent.startDate);
+        const endDt = new Date(trainingEvent.endDate);
+        if(startDt > endDt){
+          this.$noty.error(this.$t("invalid_value", {name: this.$t("begin_date")}));
+          return;
+        }
+        const startTm = new Date(trainingEvent.startDate + "T" + trainingEvent.startTime);
+        const endTm = new Date(trainingEvent.endDate + "T" + trainingEvent.endTime);
+        if(startTm > endTm){
+          this.$noty.error(this.$t("invalid_value", {name: this.$t("start_time")}));
+          return;
+        }
+      }
+}
+
+      delete trainingEvent.training;
+
+      if (this.editMode) {
+        // Edit Training
+        this.$axios
+          .put("/api/training/event/" + this.trainingEventId, trainingEvent)
+          .then(function (response) {
+            if(eventFlagCode==='0')
+            {
+            _this.$noty.success(
+              _this.$t("trainingEvent_activated", { name: response.data.designation })
+            );
+            _this.$router.push("/training-events");
+            }
+            else if(eventFlagCode==='1')
+            {
+              _this.$noty.success(
+              _this.$t("trainingEvent_cancelled", { name: response.data.designation })
+            ); 
+             _this.$router.push({path: '/inactive-events',query: { eventStatus: 'cancelled' }});
+            }
+            else if(eventFlagCode==='2')
+            {
+              _this.$noty.success(
+              _this.$t("trainingEvent_drafted", { name: response.data.designation })
+              );
+              _this.$router.push({path: '/inactive-events',query: { eventStatus: 'drafted' }});
+            }
+            
+           
+          })
+          .catch(this.onError);
+      } else {
+        // Create new Training
+
+        const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
+
+        this.$axios
+          .post(url, this.trainingEvent)
+          .then(function (response) {
+
+            _this.$noty.success(
+              _this.$t("trainingEvent_saved", { name: response.data.designation })
+            );
+            _this.trainingEventId = response.data.id;
+            _this.editMode = true;
+            _this.fetchEditingTrainingEvent();
+          })
+          .catch(this.onError);
+      }
+    },
+   
     deleteTrainingEvent() {
       if (this.trainingEventId == null) {
         console.error("You are not editing an existing trainingEvent.");
