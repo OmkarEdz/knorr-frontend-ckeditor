@@ -99,7 +99,7 @@ export default {
   },
 
   computed: {
-    fileNames: {
+    fileNames: {  
       get() {
         if(typeof this.value == "string"){
           return [this.value];
@@ -139,7 +139,7 @@ export default {
         .then(function (response) {
           _this.newFilesSelected = true;
           if(_this.multiple){
-            _this.fileNames.push(response.data);
+            _this.fileNames.push(response.data);         
           }else{
             if(_this.fileNames != null && _this.fileNames.length > 0){
               // Remove single file from Server (if not multiple selected!)
@@ -147,7 +147,7 @@ export default {
             }
             _this.fileNames = response.data;
           }
-          _this.files = [];
+         _this.files = [];
         })
         .catch(this.onError);
       }
