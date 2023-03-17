@@ -47,7 +47,7 @@
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.locationFormatted}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.tenant != null ? trainingEvent.tenant.name : null}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.freeSpaces}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{ $t(trainingEvent.status)}}</td>
+                <td class="pb-1 text-uppercase align-bottom">{{ $t(trainingEvent.status)}}{{ $t("cancelled") }}</td>
               </tr>
             </tbody>
           </v-simple-table>
