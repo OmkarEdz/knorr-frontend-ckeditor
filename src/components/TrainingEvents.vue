@@ -69,7 +69,6 @@
           <div class="mt-6"></div>
           <v-btn :to="`/create-training-event`" outlined depressed tile class="savebutton mr-2">{{ $t("create_trainingEvent") }}</v-btn>
           <v-btn :href="`/api/training/event/export`" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mr-2">{{ $t("export_csv") }}</v-btn>
-          <v-btn :href="`/training-cancelled-events`" outlined depressed tile class="savebutton mob-mb-2">{{ $t("view cancelled events") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block">
           <h3 class="text-uppercase">{{ $t("search") }}</h3>
