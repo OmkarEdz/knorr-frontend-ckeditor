@@ -41,6 +41,7 @@ import Cookies from './components/Cookies.vue'
 import TrainingRequest from './components/TrainingRequest.vue'
 import TrainingRequestOverview from './components/TrainingRequestOverview.vue'
 import ContactForm from './components/Contact.vue'
+import FullCalendarUpdated from './components/FullCalendarUpdated.vue'
 
 import ContactPersons from './components/ContactPersons.vue'
 import ToolDetails from './components/ToolDetails.vue'
@@ -159,6 +160,7 @@ const router = new VueRouter({
         { path: "/edit-user", component: CreateUser, props: route => ({ userId: route.query.userId }) },
         { path: "/forgot-password", component: ForgotPassword },
         { path: "/reset-password", component: ResetPassword, props: route => ({ token: route.query.token, newUser: route.query.newUser }) },
+        { path: "/full-calendar-updated", component: FullCalendarUpdated },
 
         { path: "/contactpersons", component: ContactPersons },
         { path: "/request", component: TrainingRequest, props: route => ({ trainingId: route.query.trainingId, trainingRequestId: route.query.trainingRequestId }) },
