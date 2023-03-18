@@ -1,5 +1,9 @@
 {
     "de": {
+        "popularTraining":"BELIEBT",
+        "openTraining":"OFFENE TRAININGSEINHEITEN",
+        "openTrainingSessions":"Alle offenen Schulungssitzungen anzeigen",
+        "popular":"Beliebtes Training",
         "cancelled":"(ABGESAGT)",
         "cancelledtrainingevents":"Abgesagte Veranstaltungen",
         "viewCancelledEvents":"Abgesagte Veranstaltungen anzeigen",
@@ -876,6 +880,10 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "popularTraining":"POPULAR",
+        "openTraining":"OPEN TRAINING SESSIONS",
+        "openTrainingSessions":"View all open training sessions",
+        "popular":"Popular Training",
         "cancelled":"(CANCELLED)",
         "cancelledtrainingevents":"Cancelled Events",
         "viewCancelledEvents":"View Cancelled Events",
@@ -1753,6 +1761,10 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "popularTraining":"POPULARNY",
+        "openTraining":"TRENINGI OTWARTE",
+        "openTrainingSessions":"Zobacz wszystkie otwarte sesje szkoleniowe",
+        "popular":"Popularne szkolenie",
         "cancelled":"(ODWOŁANY)",
         "cancelledtrainingevents":"Anulowane wydarzenia",
         "viewCancelledEvents":"Zobacz anulowane wydarzenia",
@@ -2628,6 +2640,10 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "popularTraining":"POPULAIRE",
+    "openTraining":"SÉANCES DE FORMATION OUVERTES",
+    "openTrainingSessions":"Voir toutes les formations ouvertes",
+    "popular":"Formation populaire",
     "cancelled":"(ANNULÉ)",
     "cancelledtrainingevents":"Événements annulés",
     "viewCancelledEvents":"Afficher les événements annulés",
@@ -3506,6 +3522,10 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "popularTraining":"NÉPSZERŰ",
+    "openTraining":"NYÍLT KÉPZÉSEK",
+    "openTrainingSessions":"Az összes nyitott edzés megtekintése",
+    "popular":"Népszerű képzés",
     "cancelled":"(TÖRÖLVE)",
     "cancelledtrainingevents":"Törölt események",
     "viewCancelledEvents":"A törölt események megtekintése",
