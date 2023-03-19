@@ -42,6 +42,7 @@ import TrainingRequest from './components/TrainingRequest.vue'
 import TrainingRequestOverview from './components/TrainingRequestOverview.vue'
 import ContactForm from './components/Contact.vue'
 import FullCalendarUpdated from './components/FullCalendarUpdated.vue'
+import Trainings from './components/Trainings.vue'
 
 import ContactPersons from './components/ContactPersons.vue'
 import ToolDetails from './components/ToolDetails.vue'
@@ -90,6 +91,7 @@ Vue.use(Venues)
 Vue.use(TrainingEvents)
 Vue.use(InactiveEvents)
 Vue.use(CreateTrainingEvent)
+Vue.use(Trainings)
 
 // Widgets
 Vue.use(Contact)
@@ -150,6 +152,7 @@ const router = new VueRouter({
         { path: "/training/:pathMatch(.*)*", component: TrainingDetails },
         { path: "/training-events", component: TrainingEvents },
         { path: "/inactive-events:pathMatch(.*)*", component: InactiveEvents },
+        { path: "/trainings:pathMatch(.*)*", component: Trainings },
         { path: "/create-training-event", component: CreateTrainingEvent, props: route => ({ trainingRequestId: route.query.trainingRequestId }) },
         { path: "/edit-training-event", component: CreateTrainingEvent, props: route => ({ trainingEventId: route.query.trainingEventId }) },
         { path: "/create-venue", component: CreateVenue },
@@ -374,7 +377,7 @@ new Vue({
             var location = window.location.href;
             if(location.startsWith("http://") || location.startsWith("https://")) location = location.substring(location.indexOf("//") + 2);
             console.log(location);
-            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies"];
+            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings"];
             const unallowedRoutes = ["/request?trainingRequestId"];
             var routeAllowed = false;
 
