@@ -1,5 +1,8 @@
 {
     "de": {
+        "partTimeFullTimeText":"Wählen Sie Teilzeit- oder Vollzeit-Trainer aus",
+        "partTime":"TEILZEIT",
+        "fullTime":"VOLLZEIT",
         "cancelled":"(ABGESAGT)",
         "cancelledtrainingevents":"Abgesagte Veranstaltungen",
         "viewCancelledEvents":"Abgesagte Veranstaltungen anzeigen",
@@ -876,6 +879,9 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "partTimeFullTimeText":"Select Part time or Full Time Trainer",
+        "partTime":"PART TIME",
+        "fullTime":"FULL TIME",
         "cancelled":"(CANCELLED)",
         "cancelledtrainingevents":"Cancelled Events",
         "viewCancelledEvents":"View Cancelled Events",
@@ -1753,6 +1759,9 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "partTimeFullTimeText":"Wybierz Trener na pół etatu lub Pełnoetatowy",
+        "partTime":"CZĘŚĆ GODZINY",
+        "fullTime":"PEŁNY ETAT",
         "cancelled":"(ODWOŁANY)",
         "cancelledtrainingevents":"Anulowane wydarzenia",
         "viewCancelledEvents":"Zobacz anulowane wydarzenia",
@@ -2628,6 +2637,9 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "partTimeFullTimeText":"Sélectionnez Formateur à temps partiel ou à temps plein",
+    "partTime":"À TEMPS PARTIEL",
+    "fullTime":"À TEMPS PLEIN",
     "cancelled":"(ANNULÉ)",
     "cancelledtrainingevents":"Événements annulés",
     "viewCancelledEvents":"Afficher les événements annulés",
@@ -3506,6 +3518,9 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "partTimeFullTimeText":"Válassza a Részmunkaidős vagy a Teljes munkaidős oktatót",
+    "partTime":"RÉSZIDŐ",
+    "fullTime":"TELJES IDŐ",
     "cancelled":"(TÖRÖLVE)",
     "cancelledtrainingevents":"Törölt események",
     "viewCancelledEvents":"A törölt események megtekintése",
