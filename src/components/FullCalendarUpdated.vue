@@ -1382,8 +1382,66 @@ export default {
 
       changeMonth() {
         this.monthCount = this.monthsList.indexOf(this.monthFilter) - 1;
+        // alert(this.monthCount);
         if(this.monthCount == -1 ){
           this.todayClick();
+        }else if(this.monthCount == 4 ){
+          this.nd.setMonth(4,2);
+          Date.prototype.GetFirstDayOfWeek = function() {
+          return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
+        }
+        Date.prototype.getWeek = function() {
+          var onejan = new Date(this.getFullYear(), 0, 1);
+          return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+        }
+        let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
+        var year = this.nd.getFullYear();
+        var ndate = this.nd.getDate();
+        var nday = this.nd.getDay();
+        var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
+        nav = weekOfMonth;
+        this.fdweek = this.nd.GetFirstDayOfWeek();
+        this.getweekdt = this.nd.GetFirstDayOfWeek();
+        var startDate = new Date(this.nd.getFullYear(), 0, 1);
+        var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
+        this.weekNumber = Math.ceil(days / 7);
+
+        this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
+        this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.friday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+
+        this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
+        this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+        this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+
+        const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
+          const lweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()+6));
+          var fmondt = fweekdt.split(' ')[0];
+          var lmondt = lweekdt.split(' ')[0];
+          var fdaydt = fweekdt.split(' ')[1];
+          fdaydt  = fdaydt.split(',')[0];
+          var ldaydt = lweekdt.split(' ')[1];
+          var fyeardt = fweekdt.split(',')[1];
+          var lyeardt = lweekdt.split(',')[1];
+          this.fdweek.setDate(this.fdweek.getDate()-6);
+          this.getweekdt.setDate(this.getweekdt.getDate()-6);
+          if(fyeardt == lyeardt && fmondt == lmondt){
+            this.weekDisplay = (fmondt+" "+fdaydt+" - "+ldaydt+fyeardt);
+          }
+          if(fyeardt == lyeardt && fmondt != lmondt){
+            this.weekDisplay = (fmondt+" "+fdaydt+" - "+lmondt+" "+ldaydt+fyeardt);
+          }
+          if(fyeardt != lyeardt && fmondt != lmondt){
+            this.weekDisplay = (fweekdt+" - "+lweekdt);
+          }
         }else{
         this.nd.setMonth(this.monthCount,0);
         Date.prototype.GetFirstDayOfWeek = function() {
