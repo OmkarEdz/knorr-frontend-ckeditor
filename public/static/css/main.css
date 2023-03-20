@@ -2610,6 +2610,11 @@ div.bg-blue{
     .mob-mb-2 {margin-top: 8px;}
   }
 
+  @media (max-width:1360px){
+    #weekviewcontainer {overflow: auto;}
+    .weekviewcontainerWrap {display: block; width: 1300px;}
+  }
+
   @media (max-width:488px){
     .mob-mb-2 {margin-top: 8px;}
   }
