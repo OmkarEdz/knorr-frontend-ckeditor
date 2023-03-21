@@ -977,6 +977,7 @@ export default {
         sundayDate: null,
         weekDisplay: null,
         monthCount: null,
+        yearCount: null,
         trainerIndex: null,
         allObjectsMonth: [],
         nd: new Date(),
@@ -1316,6 +1317,10 @@ export default {
       },
 
       changeYear(){
+        this.yearCount = this.yearsList.indexOf(this.yearFilter) - 1;
+        if(this.yearCount == -1 ){
+          this.todayClick();
+        }else{
         var newYr = this.yearFilter;
         this.selectedYear = newYr;
         this.fdweek.getDate();
@@ -1380,6 +1385,7 @@ export default {
 
           this.fetchAppointmentsByTrainers();
           this.fetchAppointmentsByRooms();
+        }
       },  
 
       changeMonth() {
