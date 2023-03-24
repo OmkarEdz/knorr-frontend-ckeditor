@@ -42,6 +42,8 @@ import TrainingRequest from './components/TrainingRequest.vue'
 import TrainingRequestOverview from './components/TrainingRequestOverview.vue'
 import ContactForm from './components/Contact.vue'
 import FullCalendarUpdated from './components/FullCalendarUpdated.vue'
+import OtpVerification from './components/OtpVerification.vue'
+import DownloadDocuments from './components/DownloadDocuments.vue'
 import Trainings from './components/Trainings.vue'
 
 import ContactPersons from './components/ContactPersons.vue'
@@ -164,6 +166,8 @@ const router = new VueRouter({
         { path: "/forgot-password", component: ForgotPassword },
         { path: "/reset-password", component: ResetPassword, props: route => ({ token: route.query.token, newUser: route.query.newUser }) },
         { path: "/full-calendar-updated", component: FullCalendarUpdated },
+        { path: "/otp-verification", component: OtpVerification },
+        { path: "/download-documents", component: DownloadDocuments },
 
         { path: "/contactpersons", component: ContactPersons },
         { path: "/request", component: TrainingRequest, props: route => ({ trainingId: route.query.trainingId, trainingRequestId: route.query.trainingRequestId }) },
