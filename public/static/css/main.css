@@ -2606,6 +2606,33 @@ div.bg-blue{
   .calendar-day > div.training_as_trainer > div .checkItem > div, .calendar-day > div.room_blocked > div .checkItem > div{height: 100%;} */
   /* calendar css end here */
 
+
+  /* for otp screens */
+  .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center, .optScreensWrap .v-toolbar__content .col-md ~ .justify-content-between {display:none;}
+  .optScreensWrap .v-application .kb-header-logo.mb-4 {margin-bottom: 40px!important;}
+  .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {margin-top: 120px !important;border-bottom: 27px solid #004581;}
+  .optScreensWrap .v-application--wrap .v-bottom-navigation {display:none !important;}
+  .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap .kachelimage {top: 0;left: 0;display: flex;align-items: center;justify-content: center;}
+  .otp-screen-wrap .otp-white-wrapper {max-width: 445px;padding: 50px;border: 1px solid #B8B8B8;background: rgba(255, 255, 255, 0.9);text-align: center;}
+  .otp-screen-wrap .otp-white-wrapper .otp-head {margin-bottom: 16px;font-weight: 600;font-size: 22px;line-height: 30px;letter-spacing: 0.08em;text-transform: uppercase;color: #000000;}
+  .otp-screen-wrap .otp-white-wrapper .inner-form-head {font-weight: 400;font-size: 18px;line-height: 25px;text-align: center;color: #000000;margin-bottom:13px;}
+  .otp-screen-wrap .otp-white-wrapper .inner-form-info {font-size: 16px;line-height: 22px;text-align: center;color: #000000;}
+  .otp-screen-wrap .otp-white-wrapper .opt-form-wrap .otp-input {background:#fff;margin: 28px auto;max-width: 170px;border-radius: 0px;}
+  .otp-screen-wrap .otp-white-wrapper .opt-form-wrap .otp-input.v-text-field--outlined.v-input--dense .v-label {font-size: 18px;line-height: 20px;color: #A8A8A8;text-transform: uppercase;}
+  .otp-screen-wrap .otp-white-wrapper .opt-form-wrap .savebutton .v-icon {margin-left: 7px;line-height: 14px;font-size: 20px;}
+  .otp-screen-wrap .otp-white-wrapper.download-doc-wrapper {width: 100%;max-width: 900px;padding: 50px;border: 1px solid #B8B8B8;background: rgba(255, 255, 255, 0.9);text-align: left;}
+  .otp-screen-wrap .otp-white-wrapper .otp-head {margin-bottom:23px;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap {display: flex;flex-direction: column;padding: 0px;margin: 0px;list-style: none;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li {margin-bottom:8px;display: flex;justify-content: space-between;align-items: center;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .file-name {width: 80%;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .file-name .v-icon {color:#D60000;margin-right: 10px;font-size: 16px;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .file-name a {font-size: 14px;line-height: 19px;text-decoration-line: underline;color: #07477F;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .file-name a:hover {color:#000;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton {height: 28px;font-weight: 600;font-size: 10px;line-height: 14px;}
+  .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton .v-icon {font-size: 12px;margin-left: 10px;}
+
+
+
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}
   }
@@ -2613,6 +2640,29 @@ div.bg-blue{
   @media (max-width:1360px){
     #weekviewcontainer {overflow: auto;}
     .weekviewcontainerWrap {display: block; width: 1300px;}
+  }
+
+  @media (max-width:1200px){
+    .optScreensWrap .v-application .pt-md-10 {padding-top: 30px!important;padding-bottom: 15px !important;}
+    .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {padding-bottom: 57.5%;margin-top: 60px !important;}
+    .optScreensWrap .v-application .align-self-center {justify-content: center !important;}
+    .optScreensWrap .v-toolbar__content .v-btn.v-btn--icon.v-size--default {display: none !important;}
+  }
+
+  @media (max-width:1024px){
+    .otp-screen-wrap .otp-white-wrapper.download-doc-wrapper {max-width: 90%;}
+  }
+
+  @media (max-width:768px){
+    .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {padding-bottom: 80%;margin-top: 60px !important;}
+    .otp-screen-wrap .otp-white-wrapper, .otp-screen-wrap .otp-white-wrapper.download-doc-wrapper {padding: 30px;}
+  }
+
+  @media (max-width:545px){
+    .optScreensWrap .resimg {display: block !important;}
+    .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {padding-bottom: 100%;}
+    .otp-screen-wrap .otp-white-wrapper {padding: 20px;width: 90%;}
+    .otp-screen-wrap .otp-white-wrapper .otp-head {font-size: 18px;line-height: 20px;}
   }
 
   @media (max-width:488px){
