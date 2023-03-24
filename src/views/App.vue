@@ -354,6 +354,7 @@ export default {
       footdrawer:true,
       selectedlanguage:null,
       possiblelanguages: [],
+      currentRouteName:null,
       standardRoutes: [
         {
           key: "objects",
@@ -422,6 +423,9 @@ export default {
     this.getCurrentLanguage();
     this.getLanguages();
 
+    if(this.$route.path == '/otp-verification' || this.$route.path == '/download-documents'){
+      document.body.classList.add('optScreensWrap');
+    } else{}
   },
 
   computed: {
