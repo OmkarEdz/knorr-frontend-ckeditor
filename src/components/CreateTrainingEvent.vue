@@ -47,13 +47,13 @@ b-row<template>
       </v-tab>
       <v-tab
         class="LanguageselectTab"
-        :disabled="!editMode"
+        :disabled="!editMode || eventStatus==='drafted'"
       >
         <span>{{ $t("participants") }}</span>
       </v-tab>
       <v-tab
         class="LanguageselectTab"
-        :disabled="!editMode || !$rights.includes('CREATE_BOOKING')"
+        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
         :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
       >
         {{ $t("add_participants") }}
@@ -1060,11 +1060,9 @@ b-row<template>
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="savebutton mr-2 mb-2"> <v-icon dark left>mdi-minus-circle</v-icon>{{ $t("cancelEvent") }}</v-btn>
-          <!-- <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn> -->
-           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'"  outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn>
           <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='cancelled'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("activate") }}</v-btn>
-          <!-- <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn> -->
-            <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn>
+          <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn>
         </div>
 
         <!-- Actions for third Tab -->
@@ -1983,9 +1981,8 @@ export default {
         // Create new Training
 
         const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
-
         this.$axios
-          .post(url, this.trainingEvent)
+          .post(url, trainingEvent)
           .then(function (response) {
             _this.$noty.success(
               _this.$t("trainingEvent_saved", { name: response.data.designation })
@@ -2172,12 +2169,29 @@ export default {
         const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
 
         this.$axios
-          .post(url, this.trainingEvent)
+          .post(url, trainingEvent)
           .then(function (response) {
-
+          if(eventFlagCode==='0')
+            {
             _this.$noty.success(
-              _this.$t("trainingEvent_saved", { name: response.data.designation })
+              _this.$t("trainingEvent_activated", { name: response.data.designation })
             );
+            _this.$router.push("/training-events");
+            }
+            else if(eventFlagCode==='1')
+            {
+              _this.$noty.success(
+              _this.$t("trainingEvent_cancelled", { name: response.data.designation })
+            ); 
+             _this.$router.push({path: '/inactive-events',query: { eventStatus: 'cancelled' }});
+            }
+            else if(eventFlagCode==='2')
+            {
+              _this.$noty.success(
+              _this.$t("trainingEvent_drafted", { name: response.data.designation })
+              );
+              _this.$router.push({path: '/inactive-events',query: { eventStatus: 'drafted' }});
+            }
             _this.trainingEventId = response.data.id;
             _this.editMode = true;
             _this.fetchEditingTrainingEvent();
