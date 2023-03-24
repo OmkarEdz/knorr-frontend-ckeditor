@@ -179,6 +179,21 @@
                         <span class="headlinecolor text-h6"> {{$t("training_event")}}</span>
                     </div>
                     <div class="col-12">
+                       {{$t("documents in")+ '*'}}
+                       <v-radio-group v-model="request.documentType"  dense class=" justify-content-end align-self-center">
+                         <v-radio
+                             :key="'usb'"
+                             :label="$t('USBform')"
+                             :value="'USB'"
+                         ></v-radio>
+                         <v-radio
+                             :key="'print'"
+                             :label="$t('printedForm')+$t('printedSet')"
+                             :value="'PRINT'"
+                          > </v-radio>
+                        </v-radio-group>
+                    </div>
+                    <div class="col-12">
                         <v-text-field  
                         hide-details="auto"
                         class="datainput justify-content-end align-self-center pb-1"
@@ -348,6 +363,10 @@
                         v-model="request.trainingAmountNeeded"
                         ></v-text-field>
                     </div>
+                     <div class="col-12" id="trainingRequestDocument">
+                        <Upload  v-model="request.trainingDocumentList" multiple allowOtherFileTypes />
+                     </div>
+           
                 </div>
                 <div class="col-md-6 disablerow" v-if="editMode">
                     <div class="col-md-12 pt-0">
@@ -531,9 +550,10 @@
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
           <v-btn v-show="!editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_request") }}</v-btn>
-          <v-btn v-show="editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("back") }}</v-btn>
-          <v-btn v-show="editMode" @click="deleteRequest()" outlined depressed tile class="mr-2 mb-2">{{ $t("delete") }}</v-btn>
+          <v-btn v-show="editMode" @click="sendRequest()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon>  {{ $t("back") }}</v-btn>
+          <v-btn v-show="editMode" @click="deleteRequest()" outlined depressed tile class="deletebutton mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+           <v-btn v-show="editMode" @click="download()" outlined depressed tile class="mr-2 mb-2"> <v-icon color="#444" small >fas fa-file-pdf</v-icon> {{ $t("downloadpdf") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block" v-show="editMode">
           <h3>{{ $t("customer") }}</h3>
@@ -603,6 +623,7 @@ export default {
           customerName: null,
           customerLocation: null,
           customerNumber: null,
+          documentType:"USB",
           street: null,
           hnr: null,
           zip: null,
@@ -631,6 +652,7 @@ export default {
           additionalNeededVehicles: null,
           comments: null,
           overhaulingTraining: false,
+          trainingDocumentList:[]
         }
       }
     },
@@ -788,6 +810,11 @@ export default {
           this.$noty.error(this.$t("empty_value", {name: this.$t("contactPerson")}));
           return;
         }
+        if(request.documentType==null)
+        {
+          this.$noty.error(this.$t("empty_value", {name: this.$t("documents in")}));
+          return;
+        }
         if(request.location == null){
           this.$noty.error(this.$t("empty_value", {name: this.$t("training_location")}));
           return;
@@ -892,7 +919,23 @@ export default {
         if(this.trainingRequestId == null) return;
         this.$router.push("/create-training-event?trainingRequestId=" + this.trainingRequestId);
       },
-
+      download()
+      {
+        if(this.trainingRequestId == null) return;
+        var _this = this;
+        this.$axios
+          .get("/api/training/request/" + _this.trainingRequestId + "/download", { responseType: 'blob' })
+          .then(function (response) {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', 'training_request_'+_this.trainingRequestId+'.pdf')
+            document.body.appendChild(link)
+            link.click()
+          })
+          .catch(this.onError)
+          .finally(this.onFinally);
+      }
     }
 }
 </script>

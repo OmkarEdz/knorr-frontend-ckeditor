@@ -3,7 +3,7 @@
   <div class="sixteentosix omt-6 omt-md-25">
     <div class="kachelimage header-image" style="background: url('/static/img/graph_pen.jpg')">
       <div class="headline">
-        <div class="text-subtitle-2 text-md-h5">{{ $t("trainingevents") }}</div>
+        <div class="text-subtitle-2 text-md-h5">{{ $t("cancelledtrainingevents") }}</div>
       </div>
     </div>
   </div>
@@ -16,16 +16,16 @@
           <v-simple-table class="trainingEventstable" style="width:100%" hide-default-footer>
             <thead>
               <tr>
-                <th @click="sort = 'descriptionText.description', order = !order,page = 1, fetchTrainingEvents()" class="text-uppercase align-bottom">
+                <th @click="sort = 'descriptionText.description', order = !order,page = 1, fetchCancelledTrainingEvents()" class="text-uppercase align-bottom">
                   {{$t("training")}} <v-icon v-show="sort == 'descriptionText.description' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'descriptionText.description' && !order" >fas fa-chevron-up</v-icon>
                 </th>
-                <th @click="sort = 'startDate', order = !order,page = 1, fetchTrainingEvents()" class="text-uppercase align-bottom">
+                <th @click="sort = 'startDate', order = !order,page = 1, fetchCancelledTrainingEvents()" class="text-uppercase align-bottom">
                   {{$t("date")}} <v-icon v-show="sort == 'startDate' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'startDate' && !order" >fas fa-chevron-up</v-icon>
                 </th>
-                <th @click="sort = 'eventNumber', order = !order,page = 1, fetchTrainingEvents()" class="text-uppercase align-bottom">
+                <th @click="sort = 'eventNumber', order = !order,page = 1, fetchCancelledTrainingEvents()" class="text-uppercase align-bottom">
                   {{$t("eventNr")}} <v-icon v-show="sort == 'eventNumber' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'eventNumber' && !order" >fas fa-chevron-up</v-icon>
                 </th>
-                <th @click="sort = 'room.location.id', order = !order,page = 1, fetchTrainingEvents()" class="text-uppercase align-bottom">
+                <th @click="sort = 'room.location.id', order = !order,page = 1, fetchCancelledTrainingEvents()" class="text-uppercase align-bottom">
                   {{$t("location")}} <v-icon v-show="sort == 'room.location.id' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'room.location.id' && !order" >fas fa-chevron-up</v-icon>
                 </th>
                 <th class="text-uppercase align-bottom">
@@ -34,20 +34,20 @@
                 <th class="text-uppercase align-bottom">
                   {{$t("free_spaces")}}
                 </th>
-                <th @click="sort = 'status', order = !order,page = 1, fetchTrainingEvents()" class="text-uppercase align-bottom">
+                <th @click="sort = 'status', order = !order,page = 1, fetchCancelledTrainingEvents()" class="text-uppercase align-bottom">
                   {{$t("type")}} <v-icon v-show="sort == 'status' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'status' && !order" >fas fa-chevron-up</v-icon>
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="trainingEvent in trainingEvents" :key="trainingEvent.id" @click="$router.push('/edit-training-event?trainingEventId=' + trainingEvent.id)">
+              <tr v-for="trainingEvent in trainingEvents" :key="trainingEvent.id" @click="$router.push('/edit-training-event?trainingEventId=' + trainingEvent.id+ '&eventStatus='+eventStatus)">
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.training ? trainingEvent.training.designationsMap[$locale] : ""}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.startDateFormatted}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.eventNumber}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.locationFormatted}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.tenant != null ? trainingEvent.tenant.name : null}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.freeSpaces}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{ $t(trainingEvent.status)}}</td>
+                <td class="pb-1 text-uppercase align-bottom">{{ $t(trainingEvent.status)}}{{ $t("cancelled") }}</td>
               </tr>
             </tbody>
           </v-simple-table>
@@ -67,11 +67,9 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-           <v-btn :to="`/create-training-event`" outlined depressed tile class="save mr-2 mb-2">{{ $t("create_trainingEvent") }}</v-btn>
-           <v-btn :to="{ path: '/inactive-events', query: { eventStatus: 'cancelled' } }" outlined depressed tile class="savebutton mr-2 mb-2"><v-icon dark left>mdi-minus-circle</v-icon>{{ $t("viewCancelledEvents") }}</v-btn>
-           <!-- <v-btn :to="{ path: '/inactive-events', query: { eventStatus: 'drafted' } }" outlined depressed tile class="savebutton mr-2 mt-2" ><v-icon>mdi-pencil-outline</v-icon>{{ $t("viewDraftedEvents") }}</v-btn> -->
-            <v-btn outlined depressed tile class="savebutton mr-2 mb-2" ><v-icon>mdi-pencil-outline</v-icon>{{ $t("viewDraftedEvents") }}</v-btn>
-           <v-btn :href="`/api/training/event/export`" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("export_csv") }}</v-btn>
+         
+           <v-btn :to="`/training-events`" outlined depressed tile class="savebutton mr-2">View Active Events</v-btn>
+       
         </div>
         <div class="col-xl-12 right-side-block">
           <h3 class="text-uppercase">{{ $t("search") }}</h3>
@@ -84,7 +82,7 @@
             dense
             outlined
             v-model="search"
-            @keypress.enter="fetchTrainingEvents()"
+            @keypress.enter="fetchCancelledTrainingEvents()"
             :label="$t('search')"><template v-slot:append>
                   <v-icon color="#003A60">fas fa-search</v-icon>
                 </template></v-text-field>
@@ -98,7 +96,7 @@
               item-value='id'
               style="padding-right:2px"
               dense
-              @change="fetchTrainingEvents()"
+              @change="fetchCancelledTrainingEvents()"
               v-show="$rights.includes('CREATE_TRAINING_EVENT') && !this.$user.external"
               outlined
               clearable
@@ -116,7 +114,7 @@
             v-model="onlyMyBookingsFilter"
             class="no-margin-top"
             :label="$t('only_my_trainings')"
-            @click="fetchTrainingEvents()"
+            @click="fetchCancelledTrainingEvents()"
           ></v-checkbox>
         </div>
         <Contact />
@@ -138,6 +136,7 @@ export default {
 
   data() {
     return {
+      eventStatus:"normal",
       page: 1,
       totalPages: 1,
       ElementPerPage: 50,
@@ -168,7 +167,19 @@ export default {
   },
 
   mounted() {
-    this.fetchTrainingEvents();
+    if(this.$route.query.eventStatus==='cancelled')
+    {
+      this.eventStatus='cancelled';
+    }
+    else if(this.$route.query.eventStatus==='drafted')
+    {
+       this.eventStatus='drafted'; 
+    }
+    else
+    {
+      this.eventStatus='normal';
+    }
+    this.fetchCancelledTrainingEvents();
   },
 
   updated(){
@@ -181,11 +192,11 @@ export default {
   methods: {
     previousPage() {
       this.page = this.page - 1;
-      this.fetchTrainingEvents();
+      this.fetchCancelledTrainingEvents();
     },
     nextPage() {
       this.page = this.page + 1;
-      this.fetchTrainingEvents();
+      this.fetchCancelledTrainingEvents();
     },
     onError(err) {
       if (
@@ -198,7 +209,7 @@ export default {
         console.error(err);
       }
     },
-    fetchTrainingEvents() {
+    fetchCancelledTrainingEvents() {
       var _this = this;
       this.$axios
         .get(this.routes.trainingEvents, {
@@ -209,7 +220,8 @@ export default {
             sort: _this.sort,
             order: _this.order ? "ASC":"DESC",
             page: _this.page -1,
-            size: _this.ElementPerPage
+            size: _this.ElementPerPage,
+            eventflag:_this.eventStatus === 'cancelled' ? '1' : _this.eventStatus === 'drafted' ? '2' : '0'
           }
         })
         .then(function (response) {
@@ -261,7 +273,7 @@ export default {
     },
     
     updatePage() {
-      this.fetchTrainingEvents();
+      this.fetchCancelledTrainingEvents();
     },
   },
 };

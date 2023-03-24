@@ -13,11 +13,13 @@
     --blue: #004581;
     --grey-font: #5F5F5F;
     --grey-hover-color: #bfb497;
+    --save-color: #05b537;
+    --pink-background:#f8f8f8;
 
     /* Calendar Colors */
     --calendar-red: #fe6d6e;
     --calendar-yellow: #fde976;
-    --calendar-green: #6df779;
+    --calendar-green: #0ee920;
     --calendar-turquoise: #66ece8;
     --calendar-blue: #6c70df;
     --calendar-purple: #eb6be0;
@@ -2418,6 +2420,13 @@ div.bg-blue{
     text-transform: capitalize;
   }
 
+  .save{
+    background-color: var(--save-color);
+    color: white !important;
+    border: none !important;
+    text-transform: capitalize;
+  }
+
   .savebutton.bg-white{
     color: var(--main-color) !important;
   }
@@ -2429,10 +2438,17 @@ div.bg-blue{
     text-transform: capitalize;
   }
 
+  .backbutton{
+    background-color: white;
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
+    text-transform: capitalize;
+  }
+
   .deletebutton{
-    background-color: var(--beige);
-    color: white !important;
-    border: none !important;
+    background-color: white;
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
     text-transform: capitalize;
   }
 
@@ -2487,9 +2503,23 @@ div.bg-blue{
       font-family: 'noto-sans', sans-serif !important;
     }
   }
+  .modal-content{
+     background-color: var(--beige2);
+     border-radius: 0rem;
+  }
+  .modal-footer{
+     justify-content: flex-start;
+  }
+  .modal-dialog {
+     max-width: 700px;
+  }
   
     
   /* EDZ start here */
+  .opentrainings
+  {
+    background-color: var(--pink-background);
+  }
 
   .fullCalendarWrap {margin:200px 50px 50px;}
   .fullCalendarWrap .fc-col-header, .fullCalendarWrap .fc-daygrid-body, .fullCalendarWrap .fc-scrollgrid-sync-table {width: 100% !important;}

@@ -90,7 +90,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn @click="backClicked()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("back") }}</v-btn>
+          <v-btn @click="backClicked()" outlined depressed tile class="backbutton mr-2 mb-2"><v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn :to="`/create-training?category=${categoryName}`" v-show="subcategories.length == 0 && $rights.includes('CREATE_TRAINING')" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("create_training") }}</v-btn>
           <v-btn :to="`/create-category`" v-show="$rights.includes('CREATE_TRAINING')" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("create_category") }}</v-btn>
           <v-btn v-if="category != null" :to="`/edit-category?categoryId=${category.id}`" v-show="$rights.includes('CREATE_TRAINING')" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("edit_category") }}</v-btn>
