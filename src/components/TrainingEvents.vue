@@ -69,8 +69,7 @@
           <div class="mt-6"></div>
            <v-btn :to="`/create-training-event`" outlined depressed tile class="save mr-2 mb-2">{{ $t("create_trainingEvent") }}</v-btn>
            <v-btn :to="{ path: '/inactive-events', query: { eventStatus: 'cancelled' } }" outlined depressed tile class="savebutton mr-2 mb-2"><v-icon dark left>mdi-minus-circle</v-icon>{{ $t("viewCancelledEvents") }}</v-btn>
-           <!-- <v-btn :to="{ path: '/inactive-events', query: { eventStatus: 'drafted' } }" outlined depressed tile class="savebutton mr-2 mt-2" ><v-icon>mdi-pencil-outline</v-icon>{{ $t("viewDraftedEvents") }}</v-btn> -->
-            <v-btn outlined depressed tile class="savebutton mr-2 mb-2" ><v-icon>mdi-pencil-outline</v-icon>{{ $t("viewDraftedEvents") }}</v-btn>
+           <v-btn :to="{ path: '/inactive-events', query: { eventStatus: 'drafted' } }" outlined depressed tile class="savebutton mr-2 mb-2" ><v-icon>mdi-pencil-outline</v-icon>{{ $t("viewDraftedEvents") }}</v-btn>
            <v-btn :href="`/api/training/event/export`" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("export_csv") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block">
