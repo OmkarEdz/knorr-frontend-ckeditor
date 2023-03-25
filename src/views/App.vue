@@ -522,10 +522,11 @@ export default {
     },
 
     setLanguage(shortForm){
-      if(!window.location.href.includes('?')){
+      if(!window.location.href.includes('?') && !window.location.href.includes('?lang=')){
         window.location.href = window.location.href + "?lang=" + shortForm; 
       }else{
-        window.location.href = window.location.href + "&lang=" + shortForm;
+        var updatedUrl = window.location.href.replace(/&lang=\w{2}$/, "");
+        window.location.href = updatedUrl + "&lang=" + shortForm;
       }
     },
 
