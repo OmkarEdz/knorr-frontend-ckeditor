@@ -65,9 +65,20 @@ b-row<template>
 
           <!-- Tab for Editing Training Event -->
           <v-tab-item>
+             <div class="col-sm-6 col-md-6 mt-2">
+                        <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1 "
+                        dense
+                        outlined
+                        :label="$t('eventNumber')"
+                        v-model="trainingEvent.eventNumber"
+                        ></v-text-field>
+              </div>
             <div class="row disablerow justify-content-between">
 
                 <div class="col-md-6 row disablerow">
+                  
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("general")}}</span>
                     </div>
@@ -215,16 +226,6 @@ b-row<template>
                         class="datainput justify-content-end align-self-center pb-1"
                         dense
                         outlined
-                        :label="$t('eventNumber')"
-                        v-model="trainingEvent.eventNumber"
-                        ></v-text-field>
-                    </div>
-                    <div class="col-sm-12 col-md-12">
-                        <v-text-field  
-                        hide-details="auto"
-                        class="datainput justify-content-end align-self-center pb-1"
-                        dense
-                        outlined
                         :label="$t('serviceOrderNumber')"
                         v-model="trainingEvent.serviceOrderNumber"
                         ></v-text-field>
@@ -344,6 +345,7 @@ b-row<template>
 
           <!-- Tab for Preview or Details -->
           <v-tab-item>
+            <div class="headlinecolor text-h6 col-md-6 border border-primary" ><b>{{ $t("eventNumber") }}:</b> <span class="text-dark pl-2">{{ trainingEvent.eventNumber }}</span></div>
             <div class="mx-0 pa-0 text-content row disablerow justify-content-between align-items-start">
                 <div class="col-md-6 px-0">
                   <div class="col-md-12 pt-0">
@@ -351,7 +353,7 @@ b-row<template>
                   </div>
                   <div class="col-md-12" v-if="trainingEvent.training != null"><b>{{ $t("training") }}:</b> {{ trainingEvent.training.designationsMap[$locale] }}</div>
                   <div class="col-md-12" v-if="trainingEvent.training == null && trainingEvent.trainingId != null"><b>{{ $t("training") }}:</b> {{ getArrayElementById("trainings", trainingEvent.trainingId).designationsMap[$locale] }}</div>
-                  <div class="col-md-12" v-if="trainingEvent.eventNumber != null && trainingEvent.eventNumber != ''"><b>{{ $t("eventNumber") }}:</b> {{ trainingEvent.eventNumber }}</div>
+                
                   <div class="col-md-12" v-if="trainingEvent.serviceOrderNumber != null && trainingEvent.serviceOrderNumber != ''"><b>{{ $t("serviceOrderNumber") }}:</b> {{ trainingEvent.serviceOrderNumber }}</div>
                   <div class="col-md-12"><b>{{ $t("date") }}:</b> {{ trainingEvent.startDateFormatted }}</div>
                   <div class="col-md-12"><b>{{ $t("time") }}:</b> {{ trainingEvent.timesFormatted }}</div>
