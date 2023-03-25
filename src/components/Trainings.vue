@@ -19,9 +19,9 @@
        <table class="table table-bordered table-md opentrainings" >
        <tbody>
           <tr v-for="(training, index) in uniqueTrainings" :key="training.value" class="border-top border-bottom" >
-          <td style="border-color: #333;" class="col-1 border-right-0">{{ index + 1 }}.</td>
+          <td style="border-color: #333;" class="col-0 border-right-0">{{ index + 1 }}.</td>
           <td style="border-color: #333; text-decoration: underline;"  class="col-9 border-left-0 border-right-0"><a :href="'/request?trainingId=' + training.value">{{ training.text }}</a></td>
-          <td style="border-color: #333;" class="border-left-0 col-2"><span class="mr-5" v-if="training.isPopular"><v-icon>mdi-star</v-icon>   {{$t('popularTraining')}} </span></td>
+          <td style="border-color: #333;" class="border-left-0 col-3"><span class="mr-5" v-if="training.isPopular"><v-icon>mdi-star</v-icon>   {{$t('popularTraining')}} </span></td>
          </tr>
       </tbody>
       </table>
