@@ -337,7 +337,7 @@
           <!-- Important: When changing the Link to the Privacy Policy, the link needs to be changed in mail_footer.html too! -->
           <v-btn target="_blank" :href="`/files/images/KB_DS-Hinweise_knorr-bremse.com_DE_20220310_Website_${$locale}.pdf`" :ripple="false" text class="py-6 footerbtn text-uppercase no-background-hover">{{$t("privacy")}}</v-btn>
           <v-btn :ripple="false" href="/cookies" text class="py-6 footerbtn text-uppercase no-background-hover">{{$t("cookies")}}</v-btn>
-          <v-btn @click="log()" target="_blank" :href="selectedlanguage == 'DE' ? '/files/images/Leistungsbedingungen_KB_Rail_Services_Trainingsakademie_Germany.pdf' : selectedlanguage == 'PL' ? '/files/images/Leistungsbedinungen_KB_RailServices_Trainingsakademie_Germany_pl.pdf' : '/files/images/General_performance_KB_RailServices_Trainingsakademie_Germany.pdf'" :ripple="false" text class="py-6 footerbtn text-uppercase no-background-hover">{{$t("agb")}}</v-btn>
+          <v-btn @click="log()" target="_blank" :href="selectedlanguage == 'DE' ? '/files/images/Leistungsbedingungen_KB_Rail_Services_Trainingsakademie_Germany.pdf' : selectedlanguage == 'PL' ? '/files/images/Leistungsbedinungen_KB_RailServices_Trainingsakademie_Germany_pl.pdf' :  selectedlanguage == 'FR' ? '/files/images/Leistungsbedinungen_KB_RailServices_Trainingsakademie_Germany_fr.pdf': selectedlanguage == 'HU' ? '/files/images/Leistungsbedinungen_KB_RailServices_Trainingsakademie_Germany_hu.pdf' : '/files/images/General_performance_KB_RailServices_Trainingsakademie_Germany.pdf'" :ripple="false" text class="py-6 footerbtn text-uppercase no-background-hover">{{$t("agb")}}</v-btn>
           <v-btn @click="showCatalog()" :ripple="false" text class="py-6 footerbtn text-uppercase no-background-hover">{{$t("catalog")}}</v-btn>
           <v-btn :ripple="false" text class="py-6 footerbtn text-uppercase no-background-hover" to="/contact">{{$t("contact")}}</v-btn>
         </div>
@@ -354,6 +354,7 @@ export default {
       footdrawer:true,
       selectedlanguage:null,
       possiblelanguages: [],
+      currentRouteName:null,
       standardRoutes: [
         {
           key: "objects",
@@ -422,6 +423,9 @@ export default {
     this.getCurrentLanguage();
     this.getLanguages();
 
+    if(this.$route.path == '/otp-verification' || this.$route.path == '/download-documents'){
+      document.body.classList.add('optScreensWrap');
+    } else{}
   },
 
   computed: {
@@ -518,10 +522,11 @@ export default {
     },
 
     setLanguage(shortForm){
-      if(!window.location.href.includes('?')){
+      if(!window.location.href.includes('?') && !window.location.href.includes('?lang=')){
         window.location.href = window.location.href + "?lang=" + shortForm; 
       }else{
-        window.location.href = window.location.href + "&lang=" + shortForm;
+        var updatedUrl = window.location.href.replace(/&lang=\w{2}$/, "");
+        window.location.href = updatedUrl + "&lang=" + shortForm;
       }
     },
 

@@ -175,6 +175,12 @@
             <div class="col-md-12">
               <Upload v-model="training.documents" multiple allowOtherFileTypes />
             </div>
+             <v-checkbox
+                    v-model="training.isPopular"
+                    class="ml-3"
+                    :label="$t('popular')"
+                    hide-details="auto"
+                ></v-checkbox>
           </div>
 
           <div class="col-md-12 px-0">
@@ -239,9 +245,9 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn v-show="editMode" @click="deleteTraining()" outlined depressed tile class="deletebutton mr-2 mb-2">{{ $t("delete") }}</v-btn>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-          <v-btn @click="saveTraining()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="editMode" @click="deleteTraining()" outlined depressed tile class="deletebutton mr-2 mb-2"><v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <v-btn @click="saveTraining()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
         </div>
         <Contact />
     </div>
@@ -305,6 +311,7 @@ export default {
           maxParticipants: null,
           showUpcomingSchedules: true,
           selectedLocations: [],
+          isPopular:false
         }
       }
     },
@@ -447,10 +454,10 @@ export default {
         var training = {};
         training = Object.assign(training, this.training);
       
-        if(training.designations.DE == null && training.designations.EN == null){
-          this.$noty.error(this.$t("english_or_german_mandatory"));
-          return;
-        }
+        // if(training.designations.DE == null && training.designations.EN == null){
+        //   this.$noty.error(this.$t("english_or_german_mandatory"));
+        //   return;
+        // }
         if(training.type == null){
           this.$noty.error(this.$t("empty_value", {name: this.$t("training_type")}));
           return;

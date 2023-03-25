@@ -325,9 +325,9 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn v-show="editMode" @click="deleteUser()" outlined depressed tile class="mr-2 mb-2 deletebutton">{{ $t("delete") }}</v-btn>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-          <v-btn @click="saveUser()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn v-show="editMode" @click="deleteUser()" outlined depressed tile class="mr-2 mb-2 deletebutton"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <v-btn @click="saveUser()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
         </div>
         <Contact />
       </div>

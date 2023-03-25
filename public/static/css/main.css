@@ -13,11 +13,13 @@
     --blue: #004581;
     --grey-font: #5F5F5F;
     --grey-hover-color: #bfb497;
+    --save-color: #05b537;
+    --pink-background:#f8f8f8;
 
     /* Calendar Colors */
     --calendar-red: #fe6d6e;
     --calendar-yellow: #fde976;
-    --calendar-green: #6df779;
+    --calendar-green: #0ee920;
     --calendar-turquoise: #66ece8;
     --calendar-blue: #6c70df;
     --calendar-purple: #eb6be0;
@@ -993,6 +995,10 @@ div.bg-blue{
 .calendar-month .calendar-first-row{
   display: grid;
   grid-template-columns: 100px 1271px;
+}
+
+.calendar-month .calendar-first-row.calendar-first-row-unset{
+  grid-template-columns: unset;
 }
 
 .calendar-month.calendar-month-28 .calendar-first-row{
@@ -2414,6 +2420,13 @@ div.bg-blue{
     text-transform: capitalize;
   }
 
+  .save{
+    background-color: var(--save-color);
+    color: white !important;
+    border: none !important;
+    text-transform: capitalize;
+  }
+
   .savebutton.bg-white{
     color: var(--main-color) !important;
   }
@@ -2425,10 +2438,17 @@ div.bg-blue{
     text-transform: capitalize;
   }
 
+  .backbutton{
+    background-color: white;
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
+    text-transform: capitalize;
+  }
+
   .deletebutton{
-    background-color: var(--beige);
-    color: white !important;
-    border: none !important;
+    background-color: white;
+    color: var(--accent-color) !important;
+    border: 2px solid var(--accent-color) !important;
     text-transform: capitalize;
   }
 
@@ -2483,5 +2503,119 @@ div.bg-blue{
       font-family: 'noto-sans', sans-serif !important;
     }
   }
+  .modal-content{
+     background-color: var(--beige2);
+     border-radius: 0rem;
+  }
+  .modal-footer{
+     justify-content: flex-start;
+  }
+  .modal-dialog {
+     max-width: 700px;
+  }
   
     
+  /* EDZ start here */
+  .opentrainings
+  {
+    background-color: var(--pink-background);
+  }
+
+  .fullCalendarWrap {margin:200px 50px 50px;}
+  .fullCalendarWrap .fc-col-header, .fullCalendarWrap .fc-daygrid-body, .fullCalendarWrap .fc-scrollgrid-sync-table {width: 100% !important;}
+  .fullCalendarWrap .fc .fc-toolbar.fc-header-toolbar {justify-content: flex-start;}
+  .fullCalendarWrap .fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:last-child {order:-1;margin-right: 20px;}
+
+
+  .calendar-month.calendar-month-custom .calendar-content-row {display: flex;width: 100%;}
+  .calendar-month.calendar-month-custom .calendar-content-row > div {flex:1;}
+
+  /* calendar css start here */
+  #weekviewcontainer {max-width: 95%;margin: 50px auto;}
+  #weekviewcontainer table {width: 100%;border-collapse: collapse;}
+  #weekviewcontainer th, #weekviewcontainer td {padding: 6px 8px;min-width: 160px;max-width: 160px;border: 1px solid #fff;font-weight: 400;font-size: 14px;line-height: 19px;text-align: left;}
+  #weekviewcontainer th {background: #BFB499;text-transform: capitalize;font-size: 14px !important;}
+  .redColor {color: #7F0308;}
+  #weekviewcontainer td {background: #EAE4DA;vertical-align: top;}
+  #weekviewcontainer td.calendar-day {padding: 0px;position: relative;vertical-align: baseline;}
+  #grouphead{display:flex;background: #07477F;border:1px solid #fff;border-bottom:0px;padding: 8px;align-items: center;justify-content: space-between;}
+  #weekviewcontainer button {width: 60px;padding: 1px 6px;cursor:pointer;background: #135A98;border: 1px solid #5596CF;margin-right: 5px;height: 28px;color:#fff;font-weight: 400;font-size: 13px;line-height: 14px;border-radius: 0px;}
+  #weekviewcontainer button:focus {outline: 0;box-shadow: unset;}
+  #weekviewcontainer button:hover {background:#07477f;}
+  #weekviewcontainer .btn-arrow {width: 30px;}
+  #weekviewcontainer .btn-arrow.disabled {pointer-events: none;cursor: no-drop;opacity: 0.5;}
+  #weekviewcontainer .btn-arrow i {font-size: 14px;color: #fff;}
+  .left-group {display: flex;align-items: center;}
+  #weekDisplay {font-weight: 700;color:#fff;font-size: 16px;line-height: 20px;margin-left: 10px;}
+  #weekviewcontainer td p {margin: 0px;}
+  .trainerName {font-weight: 400;font-size: 12px;line-height: 16px;color: #000000de;}
+  .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000000de;}
+  .trainerType {font-size: 12px;line-height: 11px;background: #fff;width: max-content;padding: 3px 5px;border-radius: 2px;color: #000000de;margin-top:5px !important;text-transform:capitalize;}
+  .partTimeType {background: #FFFCE3;}
+  .traningData {vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;}
+  .traningData .clickable-link {text-decoration:underline;}
+  .traningData p {font-weight: 500;font-size: 10px;margin:0;line-height: 14px;color:#fff;}
+  .pink_traning {background: #FC6E71;}
+  .lightBlue_traning {background: #6DECE7;}
+  .purple_traning {background: #6D73DC;}
+  .white_traning {background: #fff;color: #000000de;}
+  .white_traning p, .lightBlue_traning p {color:#000;}
+  /* #weekviewcontainer table tbody {display:none;} 
+  #weekviewcontainer table tbody[data-index="0"] {display:table-row-group;}*/
+
+  .right-group {display: flex;}
+  .custom-select-dropdown {position: relative;margin-left: 8px;}
+  .select-input input {position:relative;cursor:pointer;pointer-events: none;color:#fff;font-family: 'Noto Sans';max-width: 150px;background: #135A98;border: 1px solid #5596CF;padding: 3px 25px 3px 15px;text-align: center;font-weight: 400;font-size: 13px;line-height: 16px;color: #FFFFFF;}
+  .select-input input::placeholder {font-weight: 400;font-size: 13px;line-height: 16px;color: #FFFFFF;}
+  .select-input input:focus {outline: 0px;}
+  .select-input:after {content: "\F35D";font-family: 'Material Design Icons';font-size: 26px;color: #fff;position: absolute;right: 10px;width: 10px;height: 20px;display: flex;align-items: center;justify-content: center;top: 4px;}
+  .custom-select-dropdown-list {display: none;position: absolute;width: -webkit-fill-available;margin: 0px;padding: 0px;list-style: none;background: #135A98;border: solid #5596CF;border-width: 0px 1px 1px 1px;max-height: 443px;overflow-y: auto;}
+  .custom-select-dropdown-list li {line-height: 1;}
+  .custom-select-dropdown-list li a {padding: 3px 10px;text-decoration: none;color: #fff;font-size: 13px;line-height: 1.5;display: block;width: auto;}
+  .custom-select-dropdown-list li a:hover {opacity: 0.8;}
+  .custom-select-dropdown-list li a.clicked {pointer-events: none;background: #07477f;}
+  .custom-select-dropdown.active .custom-select-dropdown-list {display: block;}
+
+  #grouphead .custom-select-dropdown .v-input__slot {cursor: pointer;min-height:27px;padding:3px 25px 3px 15px;color:#fff;max-width: 160px;background: #135A98;border: 1px solid #5596CF;}
+  #grouphead .custom-select-dropdown .v-input__slot:hover {background:#07477f;}
+  #grouphead .custom-select-dropdown .v-input__slot fieldset {display:none;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label {position:unset !important;font-weight: 400;font-size: 13px;line-height: 22px;color: #FFFFFF;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label--active {display:none;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label ~ input {cursor: pointer;padding: 0px;color: #fff;font-weight: 400;font-size: 13px;line-height: 20px;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner {margin:0px;position:absolute;padding: 0px;right: -20px;top: -2px;bottom: 0;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {color: #fff !important;font-size: 30px;}
+
+  .maincontaincontent[data-location="view-all"] .trainer-row {display:table-row !important;}
+
+  /* for trainer type */
+  .maincontaincontent[data-trainer-type="full-time"] .part-time-training {display: none !important;}
+  .maincontaincontent[data-trainer-type="part-time"] .full-time-training {display: none !important;}
+
+  .maincontaincontent[data-location="view-all"][data-trainer-type="full-time"] .part-time-training {display: none !important;}
+  .maincontaincontent[data-location="view-all"][data-trainer-type="part-time"] .full-time-training {display: none !important;}
+  .trainer-row {display: none;}
+  .calendar-day > div {display:none;}
+  .calendar-day > div.training_as_trainer, .calendar-day > div.room_blocked, .calendar-day > div[set]{display:block;position:relative;}
+  tbody.Germany .location,
+  tbody.Poland .location,
+  tbody.Austria .location {display:none;}
+  tbody.Germany .location.GERMANY,
+  tbody.Poland .location.POLAND,
+  tbody.Austria .location.AUSTRIA {display: table-row;}
+  /* .calendar-day > div.training_as_trainer > div , .calendar-day > div.room_blocked > div {width: 100%;height: 100%;position: absolute;top: 0px;}
+  .calendar-day > div.training_as_trainer > div .checkItem > div, .calendar-day > div.room_blocked > div .checkItem > div{height: 100%;} */
+  /* calendar css end here */
+
+  @media (max-width:1602px) and (min-width:1200px){
+    .mob-mb-2 {margin-top: 8px;}
+  }
+
+  @media (max-width:1360px){
+    #weekviewcontainer {overflow: auto;}
+    .weekviewcontainerWrap {display: block; width: 1300px;}
+  }
+
+  @media (max-width:488px){
+    .mob-mb-2 {margin-top: 8px;}
+  }
+

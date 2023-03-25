@@ -33,7 +33,14 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn @click="$routerBack()" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("back") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <div class="right-side divider"></div>
+          <div class="mt-6"></div>
+          <h4 class="text-uppercase mb-5">{{ $t("openTraining") }}</h4>
+          <div v-for="(training, index) in uniqueTrainings.slice(0, 5)" :key="index" class="mb-2">
+          <a style="border-color: #333; text-decoration: underline;"  :href="'/request?trainingId=' + training.value">{{ training.text }}</a>
+          </div>  
+         <a class="mt-5" style="border-color: #333; text-decoration: underline;"  href="/trainings" > {{ $t("openTrainingSessions") }}</a>
         </div>
         <Contact />
       </div>
@@ -98,6 +105,7 @@ export default {
 
   data() {
     return {
+      trainings: [],
       isOffers:null,
       isTools:null,
       tool: null,
@@ -194,8 +202,13 @@ export default {
 
 
   computed: {
-    
-  },
+    uniqueTrainings() {
+      return Array.from(new Set(this.trainings.map(training => training.value)))
+        .map(value => {
+          return this.trainings.find(training => training.value === value)
+        })
+    }
+},
 
   watch: {
     tool(val) {
@@ -204,6 +217,7 @@ export default {
   },
 
   mounted() {
+    this.fetchTrainings();
     this.toolName = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
     if(this.toolName.includes("?")){
         this.toolName = this.toolName.substring(0, this.toolName.indexOf("?"));
@@ -218,6 +232,25 @@ export default {
   },
 
   methods: {
+     fetchTrainings() {
+        var _this = this;
+        this.$axios
+          .get("/api/training")
+          .then(function (response) {
+            const trainings = response.data.content;
+            for (let i = 0; i < trainings.length; i++) {
+              const training = trainings[i];
+              _this.trainings.push({
+                text: training.designationsMap[_this.$locale],
+                value: training.id,
+                isPopular:training.isPopular
+              });
+            }
+            _this.$forceUpdate();
+          })
+          .catch(this.onError);
+      },
+ 
     onError(err) {
       if (
         err.response != null &&
