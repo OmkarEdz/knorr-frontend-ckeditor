@@ -1049,9 +1049,11 @@ export default {
 
       //new functions start
       todayClick() {
+        this.yearFilter = null;
+        this.monthFilter = null;
         this.nd = new Date();
         var currentDay = nd.getMonth();
-        this.allObjectsMonth = this.allObjects[currentDay];
+        this.selectedYear = this.nd.getFullYear();
         Date.prototype.GetFirstDayOfWeek = function() {
           return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
         }
@@ -1128,6 +1130,8 @@ export default {
         }
         this.fdweek.setDate(this.fdweek.getDate()-6);
         this.getweekdt.setDate(this.getweekdt.getDate()-6);
+        this.fetchAppointmentsByTrainers();
+        this.fetchAppointmentsByRooms();
       },
       prevWeek() {
         if(this.weekNumber > 1 ){
