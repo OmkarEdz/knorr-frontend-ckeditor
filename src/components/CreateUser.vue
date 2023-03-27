@@ -103,7 +103,8 @@
                         </template>-->
                         </v-autocomplete> 
                     </div>
-                    <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-12">
+                    <!-- To uncomment later -->
+                    <!-- <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-12">
                         <v-checkbox
                             v-model="user.trainer"
                             class="no-margin-top"
@@ -112,7 +113,22 @@
                             hide-details="auto"
                             :messages="hintMessages.trainermessage"
                         ></v-checkbox>
-                    </div>
+                        <div>
+                        <p class="mt-5">{{$t("partTimeFullTimeText")}}</p>
+                        <v-radio-group v-model="user.trainerType"  dense class="justify-content-end align-self-center">
+                         <v-radio
+                             :key="'partTime'"
+                             :label="$t('partTime')"
+                             :value="'partTime'"
+                         ></v-radio>
+                         <v-radio
+                             :key="'fullTime'"
+                             :label="$t('fullTime')"
+                             :value="'fullTime'"
+                          > </v-radio>
+                        </v-radio-group>
+                        </div>
+                    </div> -->
                     <div v-show="userTypes[selectedTab] == 'translator'" class="col-sm-12 col-md-12 ">
                         <v-autocomplete  
                         hide-details="auto"
@@ -274,8 +290,8 @@
                             v-model="user.showPublic"
                             class="no-margin-top"
                             :label="$t('showPublic')"
-                        ></v-checkbox>
-                    </div>
+                        ></v-checkbox>                        
+                    </div>                
                 </div>
 
                 <div v-bind:class="userTypes[selectedTab] == 'all'? 'col-md-4' : 'hide'" class="disablerow">
@@ -466,6 +482,7 @@ export default {
         participant:false,
         booker:false,
         blocked: false,
+        trainerType:"fullTime"
       },
 
       rooms: [],

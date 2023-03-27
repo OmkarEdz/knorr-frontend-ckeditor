@@ -1,5 +1,8 @@
 {
     "de": {
+        "partTimeFullTimeText":"Wählen Sie Teilzeit- oder Vollzeit-Trainer aus",
+        "partTime":"TEILZEIT",
+        "fullTime":"VOLLZEIT",
         "popularTraining":"BELIEBT",
         "openTraining":"OFFENE TRAININGSEINHEITEN",
         "openTrainingSessions":"Alle offenen Schulungssitzungen anzeigen",
@@ -882,13 +885,13 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "partTimeFullTimeText":"Select Part time or Full Time Trainer",
+        "partTime":"PART TIME",
         "popularTraining":"POPULAR",
         "openTraining":"OPEN TRAINING SESSIONS",
-        "openTrainingSessions":"View all open training sessions",
         "popular":"Popular Training",
         "cancelled":"(CANCELLED)",
         "cancelledtrainingevents":"Cancelled Events",
-        "drafted":"(DRAFTED)",
         "draftedTrainingEvents":"Drafted Events",
         "viewCancelledEvents":"View Cancelled Events",
         "viewDraftedEvents":"View Drafted Events",
@@ -1766,6 +1769,9 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "partTimeFullTimeText":"Wybierz Trener na pół etatu lub Pełnoetatowy",
+        "partTime":"CZĘŚĆ GODZINY",
+        "fullTime":"PEŁNY ETAT",
         "popularTraining":"POPULARNY",
         "openTraining":"TRENINGI OTWARTE",
         "openTrainingSessions":"Zobacz wszystkie otwarte sesje szkoleniowe",
@@ -2647,6 +2653,9 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "partTimeFullTimeText":"Sélectionnez Formateur à temps partiel ou à temps plein",
+    "partTime":"À TEMPS PARTIEL",
+    "fullTime":"À TEMPS PLEIN",
     "popularTraining":"POPULAIRE",
     "openTraining":"SÉANCES DE FORMATION OUVERTES",
     "openTrainingSessions":"Voir toutes les formations ouvertes",
@@ -3531,6 +3540,9 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "partTimeFullTimeText":"Válassza a Részmunkaidős vagy a Teljes munkaidős oktatót",
+    "partTime":"RÉSZIDŐ",
+    "fullTime":"TELJES IDŐ",
     "popularTraining":"NÉPSZERŰ",
     "openTraining":"NYÍLT KÉPZÉSEK",
     "openTrainingSessions":"Az összes nyitott edzés megtekintése",
