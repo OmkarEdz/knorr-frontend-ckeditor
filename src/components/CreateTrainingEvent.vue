@@ -461,6 +461,11 @@ b-row<template>
                           <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-edit</v-icon></v-btn>
                         </template>
                       </v-tooltip>
+                        <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">mdi-file-document-outline</v-icon></v-btn>
+                        </template>
+                      </v-tooltip>
                     </td>
                   </tr>
                   <tr v-show="bookings.length == 0">
@@ -1392,6 +1397,10 @@ export default {
   },
 
   methods: {
+    openFeedBack(booking)
+    {
+        this.$router.push({path: '/feedback-form',query: { trainingEventId:this.trainingEventId , bookingId: booking.id }});
+    },
     beforeOpenModal(booking) {
       this.currentBookingID=booking.id;
       this.scrollPositionX = window.scrollX;
