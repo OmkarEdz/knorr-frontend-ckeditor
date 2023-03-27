@@ -14,6 +14,7 @@
     --grey-font: #5F5F5F;
     --grey-hover-color: #bfb497;
     --save-color: #05b537;
+    --pink-background:#f8f8f8;
 
     /* Calendar Colors */
     --calendar-red: #fe6d6e;
@@ -2515,6 +2516,10 @@ div.bg-blue{
   
     
   /* EDZ start here */
+  .opentrainings
+  {
+    background-color: var(--pink-background);
+  }
 
   .fullCalendarWrap {margin:200px 50px 50px;}
   .fullCalendarWrap .fc-col-header, .fullCalendarWrap .fc-daygrid-body, .fullCalendarWrap .fc-scrollgrid-sync-table {width: 100% !important;}
@@ -2603,6 +2608,11 @@ div.bg-blue{
 
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}
+  }
+
+  @media (max-width:1360px){
+    #weekviewcontainer {overflow: auto;}
+    .weekviewcontainerWrap {display: block; width: 1300px;}
   }
 
   @media (max-width:488px){

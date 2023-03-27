@@ -175,6 +175,12 @@
             <div class="col-md-12">
               <Upload v-model="training.documents" multiple allowOtherFileTypes />
             </div>
+             <v-checkbox
+                    v-model="training.isPopular"
+                    class="ml-3"
+                    :label="$t('popular')"
+                    hide-details="auto"
+                ></v-checkbox>
           </div>
 
           <div class="col-md-12 px-0">
@@ -305,6 +311,7 @@ export default {
           maxParticipants: null,
           showUpcomingSchedules: true,
           selectedLocations: [],
+          isPopular:false
         }
       }
     },

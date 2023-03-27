@@ -3,7 +3,8 @@
   <div class="sixteentosix omt-6 omt-md-25">
     <div class="kachelimage header-image" style="background: url('/static/img/graph_pen.jpg')">
       <div class="headline">
-        <div class="text-subtitle-2 text-md-h5">{{ $t("cancelledtrainingevents") }}</div>
+        <div class="text-subtitle-2 text-md-h5" v-if="eventStatus==='cancelled'">{{ $t("cancelledtrainingevents") }}</div>
+        <div class="text-subtitle-2 text-md-h5" v-if="eventStatus==='drafted'">{{ $t("draftedTrainingEvents") }}</div>
       </div>
     </div>
   </div>
@@ -47,7 +48,9 @@
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.locationFormatted}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.tenant != null ? trainingEvent.tenant.name : null}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{trainingEvent.freeSpaces}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{ $t(trainingEvent.status)}}{{ $t("cancelled") }}</td>
+                <td class="pb-1 text-uppercase align-bottom" v-if="eventStatus==='cancelled'">{{ $t(trainingEvent.status)}}{{ $t("cancelled") }}</td>
+                <td class="pb-1 text-uppercase align-bottom" v-if="eventStatus==='drafted'">{{ $t(trainingEvent.status)}}{{ $t("drafted") }}</td>
+
               </tr>
             </tbody>
           </v-simple-table>
