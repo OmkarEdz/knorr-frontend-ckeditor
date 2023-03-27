@@ -160,7 +160,7 @@
             </div>
           </v-radio-group>
         <p>The proportions of theory and practice were well chosen</p>
-            <v-radio-group class="feedback-radio"  v-model="thero">
+            <v-radio-group class="feedback-radio"  v-model="theorypractice">
              <div class="d-flex">
                <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
               <v-radio label="2. Good" value="Good" class="mr-5 pr-5"></v-radio>
@@ -174,7 +174,7 @@
           </v-radio-group>
 
 <p>The teaching methods used supported me very well in my learning process</p>
-        <v-radio-group class="feedback-radio" v-model="receivedInvitation">
+        <v-radio-group class="feedback-radio" v-model="supportedlearningprocess">
              <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
               <v-radio label="2. Good" value="Good" class="mr-5 pr-5"></v-radio>
@@ -194,7 +194,7 @@
       <!-- Fifth section -->
         <h5> Training implementation</h5>
   
-        <v-radio-group class="feedback-radio" v-model="receivedInvitation">
+        <v-radio-group class="feedback-radio" v-model="learningspeed">
                 <p>The learning speed was reasonable</p>
             <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -208,7 +208,7 @@
             </div>
           </v-radio-group>
 
-            <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+            <v-radio-group class="feedback-radio" v-model="involvedtraining">
                       <p>I was able to get involved in the training</p>
              <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -222,7 +222,7 @@
             </div>
           </v-radio-group>
 
-             <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+             <v-radio-group class="feedback-radio" v-model="newthings">
                       <p>I learned a lot of new things</p>
              <div class="d-flex">
                <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -239,7 +239,7 @@
     <div >
       <!-- Sixth section -->
         <h5> Trainer section</h5>
-        <v-radio-group class="feedback-radio" v-model="receivedInvitation">
+        <v-radio-group class="feedback-radio" v-model="trainerwellprepared">
                 <p>The trainer was well prepared</p>
             <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -252,7 +252,7 @@
               <v-radio label="6. Deficient" value="Deficient" class="mr-5 pr-5 "></v-radio>
             </div>
           </v-radio-group>
-            <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+            <v-radio-group class="feedback-radio" v-model="trainerprofessional">
                       <p>The trainer seemed professional</p>
              <div class="d-flex">
                <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -266,7 +266,7 @@
             </div>
           </v-radio-group>
 
-             <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+             <v-radio-group class="feedback-radio" v-model="trainerexplained">
                       <p>The trainer explained the contents of the training well</p>
              <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -280,7 +280,7 @@
             </div>
           </v-radio-group>
 
-           <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+           <v-radio-group class="feedback-radio" v-model="trainerorganized">
                       <p>The trainer organized the learning process well</p>
              <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -297,7 +297,7 @@
     <div >  
       <!-- Seventh section -->
         <h5>Conclusion</h5>
-        <v-radio-group class="feedback-radio" v-model="receivedInvitation">
+        <v-radio-group class="feedback-radio" v-model="benefitseveryday">
                 <p>Benefits for everyday working life</p>
             <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -311,7 +311,7 @@
             </div>
           </v-radio-group>
 
-            <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+            <v-radio-group class="feedback-radio" v-model="recommendKnorr">
                       <p>I would recommend the Knorr-Bremse Rail Aacademy as a training provider</p>
              <div class="d-flex">
               <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
@@ -325,7 +325,7 @@
             </div>
           </v-radio-group>
 
-             <v-radio-group class="feedback-radio" v-model="satisfiedPreparation">
+             <v-radio-group class="feedback-radio" v-model="recommendtraining">
                       <p>I would recommend the training to others</p>
              <div class="d-flex">
              <v-radio label="1. Excellent" value="Excellent" class="mr-5 pr-5"></v-radio>
