@@ -103,7 +103,8 @@
                         </template>-->
                         </v-autocomplete> 
                     </div>
-                    <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-12">
+                    <!-- To uncomment later -->
+                    <!-- <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-12">
                         <v-checkbox
                             v-model="user.trainer"
                             class="no-margin-top"
@@ -127,7 +128,7 @@
                           > </v-radio>
                         </v-radio-group>
                         </div>
-                    </div>
+                    </div> -->
                     <div v-show="userTypes[selectedTab] == 'translator'" class="col-sm-12 col-md-12 ">
                         <v-autocomplete  
                         hide-details="auto"
