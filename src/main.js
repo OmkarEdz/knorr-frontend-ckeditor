@@ -142,7 +142,7 @@ const router = new VueRouter({
         { path: "/login", component: Login, props: route => ({ routingTarget: route.query.routingTarget }) },
         { path: "/users", component: Users },
         { path: "/tenants", component: Tenants },
-        { path: "/calendar", component: Schedule },
+        { path: "/full-calendar-updated", component: Schedule },
         { path: "/venues", component: Venues },
         { path: "/roles", component: Roles },
         { path: "/categories", component: Category },
@@ -165,7 +165,7 @@ const router = new VueRouter({
         { path: "/edit-user", component: CreateUser, props: route => ({ userId: route.query.userId }) },
         { path: "/forgot-password", component: ForgotPassword },
         { path: "/reset-password", component: ResetPassword, props: route => ({ token: route.query.token, newUser: route.query.newUser }) },
-        { path: "/full-calendar-updated", component: FullCalendarUpdated },
+        { path: "/calendar", component: FullCalendarUpdated },
         { path: "/otp-verification", component: OtpVerification },
         { path: "/download-documents", component: DownloadDocuments },
 
