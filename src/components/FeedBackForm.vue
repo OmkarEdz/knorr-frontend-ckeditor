@@ -355,7 +355,7 @@
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
           <v-btn  outlined depressed tile class="savebutton mr-2 mb-2" @click="submitfeedback()">{{ $t("send_request") }}</v-btn>
-          <v-btn  outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("back") }}</v-btn>
+          <v-btn  outlined depressed tile class="cancelbutton mr-2 mb-2" @click="$routerBack()">{{ $t("back") }}</v-btn>
         </div>
         <Contact />
       </div>
@@ -399,8 +399,8 @@ export default {
     },
 
      mounted() {
-      this.bookingId=this.$route.query.bookingId;
-      this.trainingEventId=this.$route.query.trainingEventId;
+      this.request.bookingId=this.$route.query.bookingId;
+      this.request.trainingEventId=this.$route.query.trainingEventId;
       this.fetchEditingTrainingEvent();
       this.fetchFeedBackForm();
      },
@@ -409,12 +409,12 @@ export default {
       fetchEditingTrainingEvent() {
        var _this = this;
        this.$axios
-        .get("/api/training/event/" + this.trainingEventId)
+        .get("/api/training/event/" + this.request.trainingEventId)
         .then(function (response) {
           _this.request.trainerName = response.data.trainer.fullname;
           _this.request.trainingName = response.data.training.designationsMap[_this.$locale];
           _this.request.trainingDate=response.data.startDateFormatted ;
-          _this.request.trainingLocation=response.data.locationFormatted
+          _this.request.trainingLocation=response.data.locationFormatted;
           })
           .catch(this.onError);
     },
@@ -422,42 +422,47 @@ export default {
     fetchFeedBackForm() {
        var _this = this;
        this.$axios
-        .get("/api/booking/feedback/" + this.bookingId)
+        .get("/api/booking/feedback/" + parseInt(this.request.bookingId, 10))
         .then(function (response) {
-          _this.request.receivedInvitation=response.data.receivedInvitation;
-          _this.request.satisfiedPreparation=response.data.satisfiedPreparation;
-          _this.request.suitableTrainingRoom=response.data.suitableTrainingRoom;
-          _this.request.expectedTrainingRoom=response.data.expectedTrainingRoom;
-          _this.request.breakTimes=response.data.breakTimes;
-          _this.request.cleanTrainingRoom=response.data.cleanTrainingRoom;
-          _this.request.easyTrainingMaterial=response.data.easyTrainingMaterial;
-          _this.request.theorypractice=response.data.theorypractice;
-          _this.request.supportedlearningprocess=response.data.supportedlearningprocess;
-          _this.request.learningspeed=response.data.learningspeed;
-          _this.request.involvedtraining=response.data.involvedtraining;
-          _this.request.newthings=response.data.newthings;
-          _this.request.trainerwellprepared=response.data.trainerwellprepared;
-          _this.request.trainingLocation=response.data.trainerprofessional;
-          _this.request.trainingLocation=response.data.trainerexplained;
-          _this.request.trainingLocation=response.data.trainerorganized;
-          _this.request.trainingLocation=response.data.benefitseveryday;
-          _this.request.trainingLocation=response.data.recommendKnorr;
-          _this.request.trainingLocation=response.data.recommendtraining;
+          _this.request.receivedInvitation=response.data.feedback.receivedInvitation;
+          _this.request.satisfiedPreparation=response.data.feedback.satisfiedPreparation;
+          _this.request.suitableTrainingRoom=response.data.feedback.suitableTrainingRoom;
+          _this.request.expectedTrainingRoom=response.data.feedback.expectedTrainingRoom;
+          _this.request.breakTimes=response.data.feedback.breakTimes;
+          _this.request.cleanTrainingRoom=response.data.feedback.cleanTrainingRoom;
+          _this.request.easyTrainingMaterial=response.data.feedback.easyTrainingMaterial;
+          _this.request.theorypractice=response.data.feedback.theorypractice;
+          _this.request.supportedlearningprocess=response.data.feedback.supportedlearningprocess;
+          _this.request.learningspeed=response.data.feedback.learningspeed;
+          _this.request.involvedtraining=response.data.feedback.involvedtraining;
+          _this.request.newthings=response.data.feedback.newthings;
+          _this.request.trainerwellprepared=response.data.feedback.trainerwellprepared;
+          _this.request.trainerprofessional=response.data.feedback.trainerprofessional;
+          _this.request.trainerexplained=response.data.feedback.trainerexplained;
+          _this.request.trainerorganized=response.data.feedback.trainerorganized;
+          _this.request.benefitseveryday=response.data.feedback.benefitseveryday;
+          _this.request.recommendKnorr=response.data.feedback.recommendKnorr;
+          _this.request.recommendtraining=response.data.feedback.recommendtraining;
           })
           .catch(this.onError);
-    }
-   },
-   submitfeedback()
+    },
+    submitfeedback()
     {
+        let _this=this;
+        this.request.bookingId=parseInt(this.request.bookingId, 10);
         this.$axios
-        .post("/api/booking/feedback", request)
+        .post("/api/booking/feedback", this.request)
         .then(function (response) {
-         
+          _this.$noty.success(
+              _this.$t("feedback_submitted")
+            );
         })
         .catch(this.onError)
         .finally(() => {
         });
     }
+   }
+
 }
 </script>
 <style >

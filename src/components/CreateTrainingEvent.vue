@@ -456,16 +456,19 @@ b-row<template>
                         </template>
                         <span>{{ $t("delete_booking") }}</span>
                       </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444" outlined >mdi-file-document-outline</v-icon></v-btn>
+                        </template>
+                        <span>{{ $t("feedback_form") }}</span>
+                      </v-tooltip>
                        <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-edit</v-icon></v-btn>
                         </template>
+                        <span>{{ $t("edit_booking") }}</span>
                       </v-tooltip>
-                        <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">mdi-file-document-outline</v-icon></v-btn>
-                        </template>
-                      </v-tooltip>
+                      
                     </td>
                   </tr>
                   <tr v-show="bookings.length == 0">

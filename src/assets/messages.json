@@ -1,5 +1,8 @@
 {
     "de": {
+        "feedback_form":"Feedback-Formular",
+        "edit_booking":"Buchung bearbeiten",
+        "feedback_submitted":"Feedback-Formular wurde eingereicht",
         "feedBackForm": "Feedback-Formular",
         "informationSection": "Informationsbereich",
          "nameOftheTraining": "Name des Trainings",
@@ -919,6 +922,9 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "feedback_form":"FeedBack Form",
+        "edit_booking":"Edit Booking",
+        "feedback_submitted":"FeedBack Form has been submitted",
         "feedBackForm":"FeedBack Form",
         "informationSection":"Information section",
         "nameOftheTraining":"Name of the training",
@@ -1840,6 +1846,9 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "feedback_form":"Formularz zwrotny",
+        "edit_booking":"Edytuj rezerwację",
+        "feedback_submitted":"Formularz opinii został przesłany",
         "feedBackForm": "Formularz opinii",
         "informationSection": "Sekcja informacyjna",
         "nameOftheTraining": "Nazwa szkolenia",
@@ -2758,6 +2767,9 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "feedback_form":"Formulaire de commentaires",
+    "edit_booking":"Modifier la réservation",
+    "feedback_submitted":"Le formulaire de commentaires a été envoyé",
     "feedBackForm": "Formulaire de feedback",
     "informationSection": "Section d'information",
     "nameOftheTraining": "Nom de la formation",
@@ -3679,6 +3691,9 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "feedback_form":"Visszajelző űrlap",
+    "edit_booking":"Foglalás szerkesztése",
+    "feedback_submitted":"A visszajelzési űrlap elküldve",
     "feedBackForm": "Visszajelzés űrlap",
     "informationSection": "Információs rész",
     "nameOftheTraining": "A képzés neve",
