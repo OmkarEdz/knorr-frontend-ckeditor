@@ -22,22 +22,22 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8090',
+        target: 'https://knorr-bremse-trainingbackend-production.up.railway.app',
         ws: true,
         changeOrigin: true
       },
     '/logout': {
-      target: 'http://localhost:8090',
+      target: 'https://knorr-bremse-trainingbackend-production.up.railway.app',
         ws: true,
         changeOrigin: true
     },
     '/files': {
-      target: 'http://localhost:8090',
+      target: 'https://knorr-bremse-trainingbackend-production.up.railway.app',
         ws: true,
         changeOrigin: true
     },
     '/*?': {
-      target: 'http://localhost:8090',
+      target: 'https://knorr-bremse-trainingbackend-production.up.railway.app',
         ws: true,
         changeOrigin: true
     }

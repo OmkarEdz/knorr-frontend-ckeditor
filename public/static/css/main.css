@@ -2631,6 +2631,8 @@ div.bg-blue{
   .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton {height: 28px;font-weight: 600;font-size: 10px;line-height: 14px;}
   .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton .v-icon {font-size: 12px;margin-left: 10px;}
 
+  tbody {display:none;}
+  tbody[data-id="0"] {display:table-row-group;}
 
 
   @media (max-width:1602px) and (min-width:1200px){
