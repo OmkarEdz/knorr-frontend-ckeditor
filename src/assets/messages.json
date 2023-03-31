@@ -887,6 +887,7 @@
     "en": {
         "partTimeFullTimeText":"Select Part time or Full Time Trainer",
         "partTime":"PART TIME",
+        "fullTime":"FULL TIME",
         "popularTraining":"POPULAR",
         "openTraining":"OPEN TRAINING SESSIONS",
         "popular":"Popular Training",
