@@ -890,6 +890,7 @@
         "fullTime":"FULL TIME",
         "popularTraining":"POPULAR",
         "openTraining":"OPEN TRAINING SESSIONS",
+        "openTrainingSessions":"View all open training sessions",
         "popular":"Popular Training",
         "cancelled":"(CANCELLED)",
         "cancelledtrainingevents":"Cancelled Events",
