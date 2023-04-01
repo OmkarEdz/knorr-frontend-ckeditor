@@ -3,15 +3,15 @@
   <div class="sixteentosix omt-6 omt-md-25 otp-screen-wrap">
     <div class="kachelimage header-image" style="background: url('/static/img/header_homepage.jpg')">
       <div class="otp-white-wrapper download-doc-wrapper">
-        <h2 class="otp-head">Download Documents</h2>
-        <p v-if="documents.length===0">There are no documents to download for this training.</p>
+        <h2 class="otp-head">{{ $t("downloadDocuments") }}</h2>
+        <p v-if="documents.length===0">{{ $t("noDocuments") }}</p>
         <ul class="pdf-list-wrap" v-for="document in documents" :key="document">
             <li>
                 <div class="file-name">
                     <v-icon>fa-regular fa-file-pdf</v-icon>
                     <a @click="showFile(document)">{{document}}</a>
                 </div>
-                <v-btn outlined depressed tile class="savebutton" @click="showFile(document)">{{ $t("Download") }} <v-icon>fa-solid fa-download</v-icon></v-btn>
+                <v-btn outlined depressed tile class="savebutton" @click="showFile(document)">{{ $t("download") }} <v-icon>fa-solid fa-download</v-icon></v-btn>
             </li>
         </ul>
       </div>
