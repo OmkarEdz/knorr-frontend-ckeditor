@@ -747,7 +747,7 @@ b-row<template>
                 </v-label>
            </div>
           </b-row>
-          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')" class="mb-0 mt-0">
+          <b-row  class="mb-0 mt-0">
              <div class="d-block w-100 ml-3">
                 <v-label>
                  <h5 class="text-dark">{{ $t("editCertificate") }}</h5>
@@ -755,7 +755,7 @@ b-row<template>
            </div>
            <br/>
           </b-row>
-          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
+          <b-row v-if="(edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -769,7 +769,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+          <b-row >
           <div class="col-md-12 pb-4">
               <div class="html-editor">
                 <label class="html-editor-headline">
@@ -782,7 +782,7 @@ b-row<template>
               </div>
             </div>
           </b-row>        
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
+          <b-row class="mb-0 mt-0" v-if="(edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -806,7 +806,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
+          <b-row class="mb-0 mt-0" v-if=" (edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -831,7 +831,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>
-          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && (edituser.display===false || edituser.display===null)">
+          <b-row class="mb-0 mt-0" v-if="(edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -855,7 +855,7 @@ b-row<template>
                     ></v-text-field>
           </b-col>
           </b-row>  
-         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') && edituser.display===true">
+         <b-row class="mb-0 mt-0" v-if="edituser.display===true">
           <b-col>
               <v-text-field  
                     hide-details="auto"
@@ -875,7 +875,7 @@ b-row<template>
                        <h5>{{$t("theory")}}</h5>
                        
                             <!-- First section content here -->
-                              <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                              <b-row class="mb-0 mt-0" >
                                <b-col>
                                 <v-text-field  
                                  hide-details="auto"
@@ -889,7 +889,7 @@ b-row<template>
                                ></v-text-field>     
                                </b-col>
                                </b-row> 
-                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-row class="mb-0 mt-0" >
                                <b-col>
                                 <v-text-field  
                                  hide-details="auto"
@@ -902,7 +902,7 @@ b-row<template>
                                ></v-text-field>     
                                </b-col>
                                </b-row> 
-                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-row class="mb-0 mt-0" >
                                <b-col>
                                <v-text-field  
                                 hide-details="auto"
@@ -915,7 +915,7 @@ b-row<template>
                                 ></v-text-field>
                                 </b-col>
                                </b-row>  
-                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-row class="mb-0 mt-0" >
                                <b-col>
                                <v-text-field  
                               hide-details="auto"
@@ -928,7 +928,7 @@ b-row<template>
                               ></v-text-field>
                               </b-col>
                                </b-row>  
-                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT')">
+                               <b-row class="mb-0 mt-0" >
                                 <b-col>
                                 <v-text-field  
                                 hide-details="auto"
@@ -941,7 +941,7 @@ b-row<template>
                                 ></v-text-field>
                                </b-col>
                                </b-row>  
-                               <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                               <b-row class="mb-0 mt-0" >
                                <b-col>
                                 <v-text-field  
                                 hide-details="auto"
@@ -960,7 +960,7 @@ b-row<template>
                      <div class="border rounded border-dark p-3">
                        <h5>{{$t("practical")}}</h5>
                          <!-- Second section content here -->
-                         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                         <b-row class="mb-0 mt-0" >
                                <b-col>
                                 <v-text-field  
                                  hide-details="auto"
@@ -974,7 +974,7 @@ b-row<template>
                                ></v-text-field>     
                                </b-col>
                                </b-row> 
-                         <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                         <b-row class="mb-0 mt-0" >
                           <b-col>
                            <v-text-field  
                             hide-details="auto"
@@ -987,7 +987,7 @@ b-row<template>
                           ></v-text-field>
                          </b-col>
                         </b-row> 
-                          <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                          <b-row class="mb-0 mt-0">
                            <b-col>
                            <v-text-field  
                             hide-details="auto"
@@ -1000,7 +1000,7 @@ b-row<template>
                          ></v-text-field>
                         </b-col>
                         </b-row>  
-                        <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                        <b-row class="mb-0 mt-0">
                         <b-col>
                         <v-text-field  
                          hide-details="auto"
@@ -1013,7 +1013,7 @@ b-row<template>
                         ></v-text-field>
                       </b-col>
                       </b-row>  
-                       <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                       <b-row class="mb-0 mt-0" >
                        <b-col>
                       <v-text-field  
                        hide-details="auto"
@@ -1026,7 +1026,7 @@ b-row<template>
                        ></v-text-field>
                       </b-col>
                       </b-row>  
-                      <b-row class="mb-0 mt-0" v-if="$rights.includes('CREATE_TRAINING_EVENT') ">
+                      <b-row class="mb-0 mt-0" >
                      <b-col>
                    <v-text-field  
                     hide-details="auto"
@@ -1317,7 +1317,7 @@ export default {
       users_ElementPerPage: 50,
       users_sort: null,
       users_order: true,
-      statusOptions: ["Participated", "Participated Successfully", "Successfully Passed the Exam","Failed"]
+      statusOptions: ["Participated", "Successfully Passed the Exam","Failed"]
     };
   },
 
