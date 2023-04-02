@@ -2594,8 +2594,8 @@ div.bg-blue{
   .maincontaincontent[data-location="view-all"][data-trainer-type="full-time"] .part-time-training {display: none !important;}
   .maincontaincontent[data-location="view-all"][data-trainer-type="part-time"] .full-time-training {display: none !important;}
   .trainer-row {display: none;}
-  .calendar-day > div {display:none;}
-  .calendar-day > div.training_as_trainer, .calendar-day > div.room_blocked, .calendar-day > div[set]{display:block;position:relative;}
+  .calendar-day > div > div {display:none;}
+  .calendar-day > div > div.training_as_trainer, .calendar-day > div > div.room_blocked, .calendar-day > div > div[set]{display:block;position:relative;}
   tbody.Germany .location,
   tbody.Poland .location,
   tbody.Austria .location {display:none;}
@@ -2631,8 +2631,8 @@ div.bg-blue{
   .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton {height: 28px;font-weight: 600;font-size: 10px;line-height: 14px;}
   .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton .v-icon {font-size: 12px;margin-left: 10px;}
 
-  tbody {display:none;}
-  tbody[data-id="0"] {display:table-row-group;}
+  /* tbody {display:none;}
+  tbody[data-id="0"] {display:table-row-group;} */
 
 
   @media (max-width:1602px) and (min-width:1200px){
