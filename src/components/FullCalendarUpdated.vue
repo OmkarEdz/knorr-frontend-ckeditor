@@ -74,7 +74,8 @@
               item-value='id'
               dense
               outlined
-              :label="$t('View all trainers')">
+              :label="$t('View all trainers')"
+              @change="changeTrainerType()">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -113,8 +114,8 @@
               <th></th>
           </tr>
         </thead>
-        <tbody v-bind:class="locationFilter">
-          <tr class="calendar-content-row" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:id="itemIndex">
+        <tbody v-bind:class="locationFilter" v-bind:id="trainersFilterEdited">
+          <tr class="calendar-content-row trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainer.trainerType">
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ getTrainerById(trainerAppointment.trainer).fullname }}</p>
@@ -2315,6 +2316,7 @@ export default {
         locationsList: ["View all locations", "Germany", "Austria", "Poland"],
         trainersFilter: [],
         trainersList: ["View all Trainers", "Full Time", "Part Time"],
+        trainersFilterEdited: [],
 
         allObjects: [],
         
@@ -2384,15 +2386,6 @@ export default {
       this.fetchAppointments();
       this.fetchTrainers();
       this.fetchAppointmentTypes();
-
-      // var monthCounter = 0;
-      // var i = 0;
-      // while (i <= 12) {
-      //   this.months.push(monthCounter);
-      //   i++;
-      //   monthCounter++;
-      //   if(monthCounter > 12) monthCounter = 0;
-      // }
 
       this.weekNumber = Math.ceil(days / 7);
       this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
@@ -2611,6 +2604,9 @@ export default {
         this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
         this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
         this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
+        if(this.fdweek.getMonth() == 0){
+          this.allObjectsMonthPrev = 0;
+        }
       },
 
       nextWeek() {
@@ -2706,6 +2702,9 @@ export default {
         this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
         this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
         this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
+        if(this.fdweek.getMonth() == 0){
+          this.allObjectsMonthPrev = 0;
+        }
       },
 
       changeYear(){
@@ -2905,10 +2904,18 @@ export default {
 
           this.fetchAppointmentsByTrainers();
           this.fetchAppointmentsByRooms();
-          this.allObjectsMonth = this.allObjects[this.fdweek.getMonth().getMonth()];
-          this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth().getMonth() - 1];
-          this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth().getMonth() + 1];
+          this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
+          this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
+          this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
+          if(this.fdweek.getMonth() == 0){
+            this.allObjectsMonthPrev = 0;
+          }
+
         }
+      },
+
+      changeTrainerType(){
+        this.trainersFilterEdited = this.trainersFilter.replaceAll(' ','');
       },
       //new functions end
 
