@@ -383,7 +383,7 @@
                      </div>
            
                 </div>
-                <div class="col-md-6 disablerow" v-if="editMode">
+                <div class="col-md-6 disablerow" >
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("logistics_by_customer")}}</span>
                     </div>
@@ -453,7 +453,7 @@
                         ></v-text-field>
                     </div>
                 </div>
-                <div class="col-md-6 disablerow" v-if="editMode">
+                <div class="col-md-6 disablerow" >
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("additional_information")}}</span>
                     </div>
