@@ -2605,8 +2605,8 @@ div.bg-blue{
 
   tbody#FullTime .trainerType,
   tbody#PartTime .trainerType {display:none;}
-  tbody#FullTime .trainerType.FullTime,
-  tbody#PartTime .trainerType.PartTime {display: table-row;}
+  tbody#FullTime .trainerType.fullTime,
+  tbody#PartTime .trainerType.partTime {display: table-row;}
 
   /* calendar css end here */
 
