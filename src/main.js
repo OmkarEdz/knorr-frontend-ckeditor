@@ -384,8 +384,8 @@ new Vue({
             var location = window.location.href;
             if(location.startsWith("http://") || location.startsWith("https://")) location = location.substring(location.indexOf("//") + 2);
             console.log(location);
-            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings","/feedback-form"];
-            const unallowedRoutes = ["/request?trainingRequestId"];
+            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings"];
+            const unallowedRoutes = ["/request?trainingRequestId","/feedback-form"];
             var routeAllowed = false;
 
             // Check allowedRoutes
