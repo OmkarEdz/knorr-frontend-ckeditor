@@ -458,7 +458,7 @@ b-row<template>
                       </v-tooltip>
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444" outlined >mdi-file-document-outline</v-icon></v-btn>
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444" outlined >mdi-file-document-outline</v-icon></v-btn>
                         </template>
                         <span>{{ $t("feedback_form") }}</span>
                       </v-tooltip>
