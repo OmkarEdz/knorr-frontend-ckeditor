@@ -12,10 +12,12 @@
         <!-- Left Area -->
     <div class="col-xl-8 innercreatetraining"> 
     <v-row>
-    <v-col cols="6">
-    <div>
+    <v-col cols="12">
+    <div >
       <!-- First section -->
          <h5>  {{$t("informationSection")}} </h5>
+         <v-row>
+          <v-col cols="6">
           <v-text-field
             hide-details="auto"
             class="datainput justify-content-end align-self-center pb-5 pt-2"
@@ -25,6 +27,8 @@
             v-model="request.trainingName"
             :disabled="true"
           ></v-text-field>
+           </v-col>
+           <v-col cols="6">
           <v-text-field
             hide-details="auto"
             class="datainput justify-content-end align-self-center pb-5"
@@ -34,6 +38,10 @@
             v-model="request.trainerName"
             :disabled="true"
           ></v-text-field>
+           </v-col>
+        </v-row>
+       <v-row>
+       <v-col cols="6">
           <v-text-field
             hide-details="auto"
             class="datainput justify-content-end align-self-center pb-5"
@@ -43,6 +51,8 @@
             v-model="request.trainingDate"
             :disabled="true"
           ></v-text-field>
+           </v-col>
+           <v-col cols="6">
           <v-text-field
             hide-details="auto"
             class="datainput justify-content-end align-self-center pb-5"
@@ -52,296 +62,807 @@
             v-model="request.trainingLocation"
             :disabled="true"
           ></v-text-field>
-       
+        </v-col>
+    </v-row>
     </div>
-    <div >
-      <!-- Second section -->
-        <h5> {{ $t('preparationSection')}}</h5>
-  
-        <v-radio-group class="feedback-radio" v-model="request.receivedInvitation">
-                <p>{{ $t('receivedInvitation')}}</p>
-            <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>  
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+   <div>
+    <p class="font-weight-bold">{{ $t('pleaseRate') }}</p>
+    <p>{{ $t('rateOptions') }}</p>
+  <!-- Second section -->
+  <table class="border border-dark table table-bordered">
+    <thead>
+    <tr>
+      <th class="invitation-column" >{{ $t('preparationSection') }}</th>
+      <th class="text-center">1</th>
+      <th class="text-center">2</th>
+      <th class="text-center">3</th>
+      <th class="text-center">4</th>
+      <th class="text-center">5</th>
+      <th class="text-center">6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="invitation-column">
+        <p>{{ $t('receivedInvitation')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.receivedInvitation" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
-
-            <v-radio-group class="feedback-radio" v-model="request.satisfiedPreparation">
-                      <p>{{ $t('satisfiedPreparation')}}</p>
-             <div class="d-flex">
-             <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-               <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
-    </div>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.receivedInvitation" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.receivedInvitation" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.receivedInvitation" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.receivedInvitation" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.receivedInvitation" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+    <tr>
+      <td class="invitation-column">
+        <p>{{ $t('satisfiedPreparation')}}</p>
+      </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
+            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Excellent"></v-radio>
+             </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
+            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Good"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
+            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Satisfactory"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+           <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
+            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Sufficient"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
+            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation"  value="Insufficient"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
+            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation"  value="Deficient"></v-radio>
+            </v-radio-group  >
+          </td>
+    </tr>
+    </tbody>
+    </table>
+   </div>
     <div >
       <!-- Third section -->
-        <h5> {{ $t('trainingRoom')}}</h5>
-      
-        <v-radio-group class="feedback-radio" v-model="request.suitableTrainingRoom">
-            <p>{{ $t('suitableTrainingRoom')}}</p>
-           <div class="d-flex">
-             <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-                <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+  
+      <table class="border border-dark table table-bordered">
+    <thead>
+    <tr>
+      <th class="invitation-column" >{{ $t('trainingRoom')}}</th>
+      <th class="text-center">1</th>
+      <th class="text-center">2</th>
+      <th class="text-center">3</th>
+      <th class="text-center">4</th>
+      <th class="text-center">5</th>
+      <th class="text-center">6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="invitation-column">
+        <p>{{ $t('suitableTrainingRoom')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.suitableTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
-      
-            <v-radio-group class="feedback-radio" v-model="request.expectedTrainingRoom">
-                <p>{{ $t('expectedTrainingRoom')}}</p>
-             <div class="d-flex">
-               <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
-
-
-        <v-radio-group class="feedback-radio" v-model="request.breakTimes">
-          <p>{{ $t('breakTimes')}}</p>
-             <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-             <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
-      
-        <v-radio-group class="feedback-radio" v-model="request.cleanTrainingRoom">
-              <p>{{ $t('cleanTrainingRoom')}}</p>
-            <div class="d-flex">
-             <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.suitableTrainingRoom" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.suitableTrainingRoom" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.suitableTrainingRoom" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.suitableTrainingRoom" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.suitableTrainingRoom" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+    <tr>
+      <td class="invitation-column">
+        <p>{{ $t('expectedTrainingRoom')}}</p>
+      </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.expectedTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+             </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.expectedTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Good"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.expectedTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+           <v-radio-group class="text-center" v-model="request.expectedTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.expectedTrainingRoom" >
+            <v-radio class="feedback-radio"   value="Insufficient"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.expectedTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group  >
+          </td>
+    </tr>
+      <tr>
+      <td class="invitation-column">
+        <p>{{ $t('breakTimes')}}</p>
+      </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.breakTimes" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+             </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.breakTimes" >
+            <v-radio class="feedback-radio"  value="Good"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.breakTimes" >
+            <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+           <v-radio-group class="text-center" v-model="request.breakTimes" >
+            <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.breakTimes" >
+            <v-radio class="feedback-radio"   value="Insufficient"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.breakTimes" >
+            <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group  >
+          </td>
+    </tr>
+     <tr>
+      <td class="invitation-column">
+        <p>{{ $t('cleanTrainingRoom')}}</p>
+      </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.cleanTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+             </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.cleanTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Good"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.cleanTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+           <v-radio-group class="text-center" v-model="request.cleanTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+            <v-radio-group class="text-center" v-model="request.cleanTrainingRoom" >
+            <v-radio class="feedback-radio"   value="Insufficient"></v-radio>
+            </v-radio-group  >
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.cleanTrainingRoom" >
+            <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group  >
+          </td>
+    </tr>
+    </tbody>
+    </table>
     </div>
     <div >
       <!-- Fourth section -->
-        <h5> {{ $t('trainingStructure')}}</h5>
+        <table class="border border-dark table table-bordered">
+    <thead>
+    <tr>
+      <th class="invitation-column" >{{ $t('trainingStructure')}}</th>
+      <th class="text-center">1</th>
+      <th class="text-center">2</th>
+      <th class="text-center">3</th>
+      <th class="text-center">4</th>
+      <th class="text-center">5</th>
+      <th class="text-center">6</th>
+    </tr>
+  </thead>
+<tbody>
+    <tr>
+      <td class="invitation-column">
         <p>{{ $t('easyTrainingMaterial')}}</p>
-        <v-radio-group class="feedback-radio" v-model="request.easyTrainingMaterial">
-           <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-             <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.easyTrainingMaterial" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
-        <p>{{ $t('theorypractice')}}</p>
-            <v-radio-group class="feedback-radio"  v-model="request.theorypractice">
-             <div class="d-flex">
-               <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-               <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.easyTrainingMaterial" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.easyTrainingMaterial" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.easyTrainingMaterial" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.easyTrainingMaterial" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.easyTrainingMaterial" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
 
-<p>{{ $t('supportedlearningprocess')}}</p>
-        <v-radio-group class="feedback-radio" v-model="request.supportedlearningprocess">
-             <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+
+        <tr>
+      <td class="invitation-column">
+        <p>{{ $t('theorypractice')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.theorypractice" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.theorypractice" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.theorypractice" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.theorypractice" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.theorypractice" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.theorypractice" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+     
+        <tr>
+      <td class="invitation-column">
+        <p>{{ $t('supportedlearningprocess')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.supportedlearningprocess" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.supportedlearningprocess" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.supportedlearningprocess" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.supportedlearningprocess" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.supportedlearningprocess" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.supportedlearningprocess" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+    </tbody>
+    </table>
     </div>
     </v-col>
 
-    <v-col cols="6">
+    <v-col cols="12">
    <div >
-      <!-- Fifth section -->
-        <h5> {{ $t('trainingImplementation')}}</h5>
+   <!-- Fifth section -->
+    <table class="border border-dark table table-bordered">
+    <thead>
+    <tr>
+      <th class="invitation-column" >{{ $t('trainingImplementation') }}</th>
+      <th class="text-center">1</th>
+      <th class="text-center">2</th>
+      <th class="text-center">3</th>
+      <th class="text-center">4</th>
+      <th class="text-center">5</th>
+      <th class="text-center">6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="invitation-column">
+        <p>{{ $t('learningspeed')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.learningspeed" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.learningspeed" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.learningspeed" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.learningspeed" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.learningspeed" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.learningspeed" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
   
-        <v-radio-group class="feedback-radio" v-model="request.learningspeed">
-                <p>{{ $t('learningspeed')}}</p>
-            <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
 
-            <v-radio-group class="feedback-radio" v-model="request.involvedtraining">
-                      <p>{{ $t('involvedtraining')}}</p>
-             <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+  <tr>
+      <td class="invitation-column">
+        <p>{{ $t('involvedtraining')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.involvedtraining" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.involvedtraining" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.involvedtraining" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.involvedtraining" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.involvedtraining" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.involvedtraining" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+  
+ <tr>
+      <td class="invitation-column">
+        <p>{{ $t('newthings')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.newthings" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.newthings" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.newthings" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.newthings" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.newthings" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.newthings" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
 
-             <v-radio-group class="feedback-radio" v-model="request.newthings">
-                      <p>{{ $t('newthings')}}</p>
-             <div class="d-flex">
-               <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
+    </tbody>
+    </table>
     </div>
     <div >
       <!-- Sixth section -->
-        <h5> {{ $t('trainerSection')}}</h5>
-        <v-radio-group class="feedback-radio" v-model="request.trainerwellprepared">
-                <p>{{ $t('trainerwellprepared')}}</p>
-            <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
-            <v-radio-group class="feedback-radio" v-model="request.trainerprofessional">
-                      <p>{{ $t('trainerprofessional')}}</p>
-             <div class="d-flex">
-               <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-                <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
 
-             <v-radio-group class="feedback-radio" v-model="request.trainerexplained">
-                      <p>{{ $t('trainerexplained')}}</p>
-             <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-                <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+      <table class="border border-dark table table-bordered">
+    <thead>
+    <tr>
+      <th class="invitation-column" >{{ $t('trainerSection') }}</th>
+      <th class="text-center">1</th>
+      <th class="text-center">2</th>
+      <th class="text-center">3</th>
+      <th class="text-center">4</th>
+      <th class="text-center">5</th>
+      <th class="text-center">6</th>
+    </tr>
+  </thead>
+       <tbody>
+<tr>
+      <td class="invitation-column">
+        <p>{{ $t('trainerwellprepared')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.trainerwellprepared" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.trainerwellprepared" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerwellprepared" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerwellprepared" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerwellprepared" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerwellprepared" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
 
-           <v-radio-group class="feedback-radio" v-model="request.trainerorganized">
-                      <p>{{ $t('trainerorganized')}}</p>
-             <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio>
-            </div>
-            <div class="d-flex">
-               <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+
+<tr>
+      <td class="invitation-column">
+        <p>{{ $t('trainerprofessional')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.trainerprofessional" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.trainerprofessional" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerprofessional" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerprofessional" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerprofessional" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerprofessional" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+
+
+
+<tr>
+      <td class="invitation-column">
+        <p>{{ $t('trainerexplained')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.trainerexplained" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.trainerexplained" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerexplained" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerexplained" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerexplained" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerexplained" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+
+
+    <tr>
+      <td class="invitation-column">
+        <p>{{ $t('trainerorganized')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.trainerorganized" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.trainerorganized" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerorganized" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerorganized" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerorganized" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.trainerorganized" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+        </tbody>
+        </table>
     </div>
     <div >  
       <!-- Seventh section -->
-        <h5>{{ $t('conclusion')}}</h5>
-        <v-radio-group class="feedback-radio" v-model="request.benefitseveryday">
-                <p>{{ $t('benefitseveryday')}}</p>
-            <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio> 
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
 
-            <v-radio-group class="feedback-radio" v-model="request.recommendKnorr">
-                      <p>{{ $t('recommendKnorr')}}</p>
-             <div class="d-flex">
-              <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio> 
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
-          </v-radio-group>
+  <table class="border border-dark table table-bordered">
+    <thead>
+    <tr>
+      <th class="invitation-column" >{{ $t('conclusion') }}</th>
+      <th class="text-center">1</th>
+      <th class="text-center">2</th>
+      <th class="text-center">3</th>
+      <th class="text-center">4</th>
+      <th class="text-center">5</th>
+      <th class="text-center">6</th>
+    </tr>
+  </thead>
+<tbody>
 
-             <v-radio-group class="feedback-radio" v-model="request.recommendtraining">
-                      <p>{{ $t('recommendtraining')}}</p>
-             <div class="d-flex">
-             <v-radio :label="$t('excellent')" value="Excellent" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('good')" value="Good" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('satisfactory')" value="Satisfactory" class="mr-5 pr-5"></v-radio> 
-            </div>
-            <div class="d-flex">
-              <v-radio :label="$t('sufficient')" value="Sufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('insufficient')" value="Insufficient" class="mr-5 pr-5"></v-radio>
-              <v-radio :label="$t('deficient')" value="Deficient" class="mr-5 pr-5 "></v-radio>
-            </div>
+<tr>
+      <td class="invitation-column">
+        <p>{{ $t('benefitseveryday')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.benefitseveryday" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
           </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.benefitseveryday" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.benefitseveryday" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.benefitseveryday" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.benefitseveryday" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.benefitseveryday" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+
+<tr>
+      <td class="invitation-column">
+        <p>{{ $t('recommendKnorr')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.recommendKnorr" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.recommendKnorr" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendKnorr" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendKnorr" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendKnorr" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendKnorr" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+
+
+<tr>
+      <td class="invitation-column">
+        <p>{{ $t('recommendtraining')}}</p>
+      </td>
+         <td class="text-center">
+          <v-radio-group class="text-center" v-model="request.recommendtraining" >
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
+          </v-radio-group>
+          </td>
+          <td class="text-center">
+             <v-radio-group class="text-center" v-model="request.recommendtraining" >
+            <v-radio class="feedback-radio" value="Good"></v-radio>
+            </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendtraining" >
+              <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendtraining" >
+              <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
+              </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendtraining" >
+              <v-radio class="feedback-radio"  value="Insufficient"></v-radio>
+             </v-radio-group>
+          </td>
+          <td class="text-center">
+              <v-radio-group class="text-center" v-model="request.recommendtraining" >
+             <v-radio class="feedback-radio"  value="Deficient"></v-radio>
+            </v-radio-group>
+          </td>
+    </tr>
+</tbody>
+  </table>
     </div>
     </v-col>
 
@@ -465,16 +986,5 @@ export default {
 
 }
 </script>
-<style >
-.feedback-radio .v-label
-{
-  font-size:12px;
-}
-@media (max-width: 1000px) {
-  #feedbackform .col-6 {
-    max-width: 100%;
-    flex: 0 0 100%;
-  }
-}
-</style>
+
 
