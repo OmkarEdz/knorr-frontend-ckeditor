@@ -945,6 +945,8 @@ export default {
        this.$axios
         .get("/api/booking/feedback/" + parseInt(this.request.bookingId, 10))
         .then(function (response) {
+          if(response.data.feedback!==null)
+          {
           _this.request.receivedInvitation=response.data.feedback.receivedInvitation;
           _this.request.satisfiedPreparation=response.data.feedback.satisfiedPreparation;
           _this.request.suitableTrainingRoom=response.data.feedback.suitableTrainingRoom;
@@ -964,6 +966,7 @@ export default {
           _this.request.benefitseveryday=response.data.feedback.benefitseveryday;
           _this.request.recommendKnorr=response.data.feedback.recommendKnorr;
           _this.request.recommendtraining=response.data.feedback.recommendtraining;
+          }
           })
           .catch(this.onError);
     },
