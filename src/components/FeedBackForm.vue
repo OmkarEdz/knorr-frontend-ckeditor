@@ -875,7 +875,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn  outlined depressed tile class="savebutton mr-2 mb-2" @click="submitfeedback()">{{ $t("send_request") }}</v-btn>
+          <v-btn  outlined depressed tile class="save mr-2 mb-2" @click="submitfeedback()">{{ $t("save") }}</v-btn>
           <v-btn  outlined depressed tile class="cancelbutton mr-2 mb-2" @click="$routerBack()">{{ $t("back") }}</v-btn>
         </div>
         <Contact />
@@ -972,7 +972,84 @@ export default {
     },
     submitfeedback()
     {
-        let _this=this;
+      let _this=this;
+      if(_this.request.receivedInvitation == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("receivedInvitation")}));
+          return;
+       }
+       if(_this.request.satisfiedPreparation == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("satisfiedPreparation")}));
+          return;
+       }
+       if(_this.request.suitableTrainingRoom == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("suitableTrainingRoom")}));
+          return;
+       }
+       if(_this.request.expectedTrainingRoom == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("expectedTrainingRoom")}));
+          return;
+       }
+       if(_this.request.breakTimes == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("breakTimes")}));
+          return;
+       }
+       if(_this.request.cleanTrainingRoom == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("cleanTrainingRoom")}));
+          return;
+       }
+       if(_this.request.easyTrainingMaterial == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("easyTrainingMaterial")}));
+          return;
+       }
+       if(_this.request.theorypractice == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("theorypractice")}));
+          return;
+       }
+       if(_this.request.supportedlearningprocess == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("supportedlearningprocess")}));
+          return;
+       }
+       if(_this.request.learningspeed == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("learningspeed")}));
+          return;
+       }
+       if(_this.request.involvedtraining == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("involvedtraining")}));
+          return;
+       }
+       if(_this.request.newthings == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("newthings")}));
+          return;
+       }
+       if(_this.request.trainerwellprepared == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerwellprepared")}));
+          return;
+       }
+       if(_this.request.trainerprofessional == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerprofessional")}));
+          return;
+       }
+       if(_this.request.trainerexplained == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerexplained")}));
+          return;
+       }
+       if(_this.request.trainerorganized == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerorganized")}));
+          return;
+       }
+       if(_this.request.benefitseveryday == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("benefitseveryday")}));
+          return;
+       }
+       if(_this.request.recommendKnorr == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("recommendKnorr")}));
+          return;
+       }
+       if(_this.request.recommendtraining == null){
+          this.$noty.error(this.$t("empty_value", {name: this.$t("recommendtraining")}));
+          return;
+       }
+
         this.request.bookingId=parseInt(this.request.bookingId, 10);
         this.$axios
         .post("/api/booking/feedback", this.request)
