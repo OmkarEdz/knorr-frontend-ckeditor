@@ -2516,6 +2516,36 @@ div.bg-blue{
   
     
   /* EDZ start here */
+
+  #feedbackform .table-bordered {
+    border: 2px solid #444;
+  }
+#feedbackform .table-bordered tbody,
+  #feedbackform thead,
+  #feedbackform tr,
+  #feedbackform th,
+  #feedbackform td {
+    border: 2px solid #444;
+  }
+#feedbackform .table-bordered thead {
+    background-color: #B4B1AC;
+  }
+#feedbackform .table-bordered td {
+    border: 2px solid #444;
+  }
+#feedbackform .table thead th {
+    border: 2px solid #444;
+  }
+#feedbackform .invitation-column {
+    max-width: 130px;
+  }
+#feedbackform .v-radio {
+    display: contents;
+  }
+#feedbackform .v-input--radio-group__input {
+    display: block;
+  }
+
   .opentrainings
   {
     background-color: var(--pink-background);
