@@ -123,32 +123,32 @@
       </td>
           <td class="text-center">
              <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
-            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Excellent"></v-radio>
+            <v-radio class="feedback-radio"  value="Excellent"></v-radio>
              </v-radio-group  >
           </td>
           <td class="text-center">
             <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
-            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Good"></v-radio>
+            <v-radio class="feedback-radio"  value="Good"></v-radio>
             </v-radio-group  >
           </td>
           <td class="text-center">
             <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
-            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Satisfactory"></v-radio>
+            <v-radio class="feedback-radio"  value="Satisfactory"></v-radio>
             </v-radio-group>
           </td>
           <td class="text-center">
            <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
-            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation" value="Sufficient"></v-radio>
+            <v-radio class="feedback-radio"  value="Sufficient"></v-radio>
             </v-radio-group>
           </td>
           <td class="text-center">
             <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
-            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation"  value="Insufficient"></v-radio>
+            <v-radio class="feedback-radio"   value="Insufficient"></v-radio>
             </v-radio-group  >
           </td>
           <td class="text-center">
              <v-radio-group class="text-center" v-model="request.satisfiedPreparation" >
-            <v-radio class="feedback-radio" v-model="request.satisfiedPreparation"  value="Deficient"></v-radio>
+            <v-radio class="feedback-radio"   value="Deficient"></v-radio>
             </v-radio-group  >
           </td>
     </tr>
