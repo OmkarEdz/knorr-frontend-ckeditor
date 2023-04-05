@@ -2567,7 +2567,7 @@ div.bg-blue{
   #weekviewcontainer th {background: #BFB499;text-transform: capitalize;font-size: 14px !important;}
   .redColor {color: #7F0308;}
   #weekviewcontainer td {background: #EAE4DA;vertical-align: top;}
-  #weekviewcontainer td.calendar-day {padding: 0px;position: relative;vertical-align: baseline;}
+  #weekviewcontainer td.calendar-day {overflow: hidden;padding: 0px;position: relative;vertical-align: baseline;height:95px;}
   #grouphead{display:flex;background: #07477F;border:1px solid #fff;border-bottom:0px;padding: 8px;align-items: center;justify-content: space-between;}
   #weekviewcontainer button {width: 60px;padding: 1px 6px;cursor:pointer;background: #135A98;border: 1px solid #5596CF;margin-right: 5px;height: 28px;color:#fff;font-weight: 400;font-size: 13px;line-height: 14px;border-radius: 0px;}
   #weekviewcontainer button:focus {outline: 0;box-shadow: unset;}
@@ -2582,7 +2582,7 @@ div.bg-blue{
   .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000000de;}
   .trainerType {font-size: 12px;line-height: 11px;background: #fff;width: max-content;padding: 3px 5px;border-radius: 2px;color: #000000de;margin-top:5px !important;text-transform:capitalize;}
   .partTimeType {background: #FFFCE3;}
-  .traningData {vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;}
+  .traningData {vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;text-transform: capitalize;}
   .traningData .clickable-link {text-decoration:underline;}
   .traningData p {font-weight: 500;font-size: 10px;margin:0;line-height: 14px;color:#fff;}
   .pink_traning {background: #FC6E71;}
@@ -2631,13 +2631,18 @@ div.bg-blue{
   tbody.Austria .location {display:none;}
   tbody.Germany .location.GERMANY,
   tbody.Poland .location.POLAND,
-  tbody.Austria .location.AUSTRIA {display: table-row;}
+  tbody.Austria .location.AUSTRIA,
+  tbody.Germany .location#GERMANY,
+  tbody.Poland .location#POLAND,
+  tbody.Austria .location#AUSTRIA {display: table-row;}
 
   tbody#FullTime .trainerType,
   tbody#PartTime .trainerType {display:none;}
   tbody#FullTime .trainerType.fullTime,
   tbody#PartTime .trainerType.partTime {display: table-row;}
-
+  #weekviewcontainer td.calendar-day div[set] {height: 100%;width: 100%;}
+  #weekviewcontainer td.calendar-day .checkItem {height:100%;}
+  #weekviewcontainer td.calendar-day .checkItem > div {height:95px;position: absolute;width: 100%;top: 0px;}
   /* calendar css end here */
 
 
