@@ -2556,6 +2556,9 @@ div.bg-blue{
   .traningData .clickable-link {text-decoration:underline;}
   .traningData p {font-weight: 500;font-size: 10px;margin:0;line-height: 14px;color:#fff;}
   .pink_traning {background: #FC6E71;}
+  .yellow_traning {background: #fde976;color: #000;}
+  .nocolor_traning {color:#000;}
+  .grey_traning {background:#706d6b;}
   .lightBlue_traning {background: #6DECE7;}
   .purple_traning {background: #6D73DC;}
   .white_traning {background: #fff;color: #000000de;}
