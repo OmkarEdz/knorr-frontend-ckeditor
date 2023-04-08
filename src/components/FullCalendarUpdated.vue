@@ -74,7 +74,8 @@
               item-value='id'
               dense
               outlined
-              :label="$t('View all trainers')">
+              :label="$t('View all trainers')"
+              @change="changeTrainerType()">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -113,18 +114,345 @@
               <th></th>
           </tr>
         </thead>
-        <tbody v-bind:class="locationFilter" v-for="(month,index) in allObjects" v-bind:data-id="index">
-          <tr class="calendar-content-row" v-for="trainerAppointment in allObjectsMonth.trainerAppointments" >
+        <tbody v-bind:class="locationFilter" v-bind:id="trainersFilterEdited">
+          <tr class="calendar-content-row location trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainer.trainerType" v-bind:id="trainerAppointment.trainer.location">
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ getTrainerById(trainerAppointment.trainer).fullname }}</p>
-                <p class="trainerType">Full-time</p>
+                <p class="trainerType" >{{ getTrainerById(trainerAppointment.trainer).trainerType === 'fullTime' ? 'Full Time':'Part Time' }}</p>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, day.day, month.month, 'TRAINER', day.appointment)"  v-bind:data-id="index + 1">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="mondayDate == appointmentDate">
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER')">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="mondayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="mondayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                         </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="mondayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+            </td>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, TuesdayDate, TuesdayMonthCount, 'TRAINER', TuesdayDate.appointment)">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, TuesdayDate, TuesdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="tuesdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, TuesdayDate, TuesdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="tuesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
@@ -144,19 +472,19 @@
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                        <div class="traningData pink_traning">
+                        <div class="traningData yellow_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                        <div class="traningData lightblue_traning">
+                        <div class="traningData nocolor_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                        <div class="traningData purple_traning">
+                        <div class="traningData nocolor_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
@@ -168,13 +496,258 @@
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                        <div class="traningData white_traning">
+                        <div class="traningData grey_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'SERVICE'">
+                        <div class="traningData purple_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, TuesdayDate, TuesdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="tuesdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+            </td>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, WednesdayDate, WednesdayMonthCount, 'TRAINER', WednesdayDate.appointment)">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, WednesdayDate, WednesdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="wednesdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, WednesdayDate, WednesdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="wednesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                        <div class="traningData purple_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                        <div class="traningData yellow_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                        <div class="traningData grey_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                        <div class="traningData nocolor_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
@@ -186,7 +759,7 @@
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                        <div class="traningData white_traning">
+                        <div class="traningData pink_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
@@ -197,607 +770,1407 @@
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
                       </div>
+                    </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
+              </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, WednesdayDate, WednesdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="wednesdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="tuesdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'VACATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, ThursdayDate, ThursdayMonthCount, 'TRAINER', ThursdayDate.appointment)">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, ThursdayDate, ThursdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="thursdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
                     </div>
-                    <div v-show="appointmentOnDay.type == 'ABSENCE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, ThursdayDate, ThursdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="thursdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'VACATION'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                        <div class="traningData purple_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                        <div class="traningData yellow_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                        <div class="traningData grey_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'SERVICE'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'SERVICE'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
+              </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, ThursdayDate, ThursdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="thursdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="wednesdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'VACATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, FridayDate, FridayMonthCount, 'TRAINER', FridayDate.appointment)">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, FridayDate, FridayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="fridayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
                     </div>
-                    <div v-show="appointmentOnDay.type == 'ABSENCE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, FridayDate, FridayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="fridayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'VACATION'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                        <div class="traningData purple_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                        <div class="traningData yellow_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                        <div class="traningData grey_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'SERVICE'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'SERVICE'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
+              </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, FridayDate, FridayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="fridayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="thursdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'VACATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SatdayDate, SaturdayMonthCount, 'TRAINER', SatdayDate.appointment)">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1"  @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SatdayDate, SaturdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="saturdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
                     </div>
-                    <div v-show="appointmentOnDay.type == 'ABSENCE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
+              </div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SatdayDate, SaturdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="saturdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'VACATION'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                        <div class="traningData purple_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                        <div class="traningData yellow_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                        <div class="traningData grey_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'SERVICE'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'SERVICE'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                      <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
+              </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SatdayDate, SaturdayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="saturdayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>      
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, day.day, month.month, 'TRAINER', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="fridayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'VACATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'ABSENCE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'SERVICE'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SundayDate, SundayMonthCount, 'TRAINER', SundayDate.appointment)">
+              <div v-for="(trainerAppointment, index) in allObjectsMonthPrev.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SundayDate, SundayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="sundayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
               </div>
-            </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, day.day, month.month, 'TRAINER', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="saturdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'VACATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+              <div>
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SundayDate, SundayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="sundayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'VACATION'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'ABSENCE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                        <div class="traningData purple_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                        <div class="traningData yellow_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                        <div class="traningData grey_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                        <div class="traningData nocolor_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'SERVICE'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'SERVICE'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                        <div class="traningData pink_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+                      <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                        <div class="traningData white_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
               </div>
-            </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, day.day, month.month, 'TRAINER', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="sundayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'VACATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'ABSENCE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
-                      <div class="traningData lightblue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'SERVICE'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'HOLIDAY'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
-                    </div>
-                    <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
-                      </div>
+              <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SundayDate, SundayMonthCount, 'TRAINER', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="sundayDate == appointmentDate">
+                        <div v-show="appointmentOnDay.type == 'VACATION'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'ABSENCE'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_AS_TRAINER'">
+                          <div class="traningData purple_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_INITIATIVE'">
+                          <div class="traningData yellow_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAINING_DEVELOPMENT'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'PREPARATION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'TRAVEL_TIME'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'FURTHER_EDUCATION'">
+                          <div class="traningData grey_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'POSTPROCESSION_TIME'">
+                          <div class="traningData nocolor_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'SERVICE'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'HOLIDAY'">
+                          <div class="traningData pink_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
+                        <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
+                          <div class="traningData white_traning">
+                            <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                            <div v-html="appointmentOnDay.description"></div>
+                          </div>
+                        </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>      
                 </div>
-                <span v-else>&nbsp;</span>      
               </div>
             </td>
           </tr>
-          <tr class="calendar-content-row location" v-for="roomAppointment in allObjectsMonth.roomAppointments" v-bind:class="roomAppointment.room.location.country">
+          <tr class="calendar-content-row location" v-for="(roomAppointment, itemIndex) in allObjectsMonth.roomAppointments" v-bind:class="roomAppointment.room.location.country">
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ roomAppointment.room.designation }}</p>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="mondayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="mondayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="mondayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="mondayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + ('0' + index + 1)">
-                  <div class="checkItem" v-if="tuesdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData white_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, TuesdayDate, TuesdayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, TuesdayDate, TuesdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="tuesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, TuesdayDate, TuesdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="tuesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, TuesdayDate, TuesdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="tuesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="wednesdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData lightBlue_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, WednesdayDate, WednesdayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, WednesdayDate, WednesdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="wednesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, WednesdayDate, WednesdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="wednesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, WednesdayDate, WednesdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="wednesdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="thursdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, ThursdayDate, ThursdayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, ThursdayDate, ThursdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="thursdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, ThursdayDate, ThursdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="thursdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, ThursdayDate, ThursdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="thursdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="fridayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, FridayDate, FridayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, FridayDate, FridayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="fridayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, FridayDate, FridayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="fridayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, FridayDate, FridayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="fridayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="saturdayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData purple_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, SatdayDate, SaturdayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SatdayDate, SaturdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="saturdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SatdayDate, SaturdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="saturdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SatdayDate, SaturdayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="saturdayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
-            <td class="bg-beige calendar-day">
-              <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, day.day, month.month, 'ROOM', day.appointment)">
-                <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
-                  <div class="checkItem" v-if="sundayDate == appointmentDate">
-                    <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
-                      <div class="traningData pink_traning">
-                        <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
-                        <div v-html="appointmentOnDay.description"></div>
+            <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, SundayDate, SundayMonthCount, 'ROOM')">
+              <div v-for="(roomAppointment, index) in allObjectsMonthPrev.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SundayDate, SundayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="sundayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <span v-else>&nbsp;</span>
                 </div>
-                <span v-else>&nbsp;</span>
+              </div>
+              <div>
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SundayDate, SundayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="sundayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
+              </div>
+              <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
+                <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SundayDate, SundayMonthCount, 'ROOM', day.appointment)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                    <div class="checkItem" v-if="sundayDate == appointmentDate">
+                      <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
+                        <div class="traningData lightBlue_traning">
+                          <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(roomAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
+                          <div v-html="appointmentOnDay.description"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span v-else>&nbsp;</span>
+                </div>
               </div>
             </td>
           </tr>
@@ -943,12 +2316,11 @@ export default {
         locationsList: ["View all locations", "Germany", "Austria", "Poland"],
         trainersFilter: [],
         trainersList: ["View all Trainers", "Full Time", "Part Time"],
+        trainersFilterEdited: [],
 
         allObjects: [],
         
         appointmentTypes: [],
-
-        debug: false, // TODO Delete me
 
         appointment: {
           id: null,
@@ -985,7 +2357,22 @@ export default {
         nd: new Date(),
         fdweek : null,
         getweekdt : null,
-        setMondayDate: null,
+        MondayDate: null,
+        TuesdayDate: null,
+        WednesdayDate: null,
+        ThursdayDate: null,
+        FridayDate: null,
+        SatdayDate: null,
+        SundayDate: null,
+
+        MondayMonthCount: null,
+        TuesdayMonthCount: null,
+        WednesdayMonthCount: null,
+        ThursdayMonthCount: null,
+        FridayMonthCount: null,
+        SaturdayMonthCount: null,
+        SundayMonthCount: null,
+        getMonthCount: null,
       }
     },
     
@@ -1000,20 +2387,10 @@ export default {
         });
       }
       this.allObjectsMonth = this.allObjects[dt.getMonth()];
-      console.log(this.allObjects);
-      console.log(this.allObjectsMonth);
       this.allObjectsMonthPrev = this.allObjects[dt.getMonth() - 1];
       this.allObjectsMonthNext = this.allObjects[dt.getMonth() + 1];
-      console.log(this.allObjectsMonthPrev);
-      console.log(this.allObjectsMonthNext);
-      this.allObjectsMonth = [this.allObjects[dt.getMonth() - 1]];
-      for (let i = 0; i <= 12; i++) {
-        this.allObjects.push({
-            month: i,
-            trainerAppointments: [],
-            roomAppointments: [],
-        });
-      }
+      console.log(this.allObjects);
+      console.log(this.allObjectsMonth);
       
       this.currentDay = new Date().getDate();
       this.currentMonth = new Date().getMonth();
@@ -1022,15 +2399,6 @@ export default {
       this.fetchAppointments();
       this.fetchTrainers();
       this.fetchAppointmentTypes();
-
-      // var monthCounter = 0;
-      // var i = 0;
-      // while (i <= 12) {
-      //   this.months.push(monthCounter);
-      //   i++;
-      //   monthCounter++;
-      //   if(monthCounter > 12) monthCounter = 0;
-      // }
 
       this.weekNumber = Math.ceil(days / 7);
       this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
@@ -1060,16 +2428,35 @@ export default {
       }
       this.fdweek.setDate(this.fdweek.getDate()-6);
       this.getweekdt.setDate(this.getweekdt.getDate());
+      
+      this.MondayDate = this.mondayDate.slice(8,10);
+      this.TuesdayDate = this.tuesdayDate.slice(8,10);
+      this.WednesdayDate = this.wednesdayDate.slice(8,10);
+      this.ThursdayDate = this.thursdayDate.slice(8,10);
+      this.FridayDate = this.fridayDate.slice(8,10);
+      this.SatdayDate = this.saturdayDate.slice(8,10);
+      this.SundayDate = this.sundayDate.slice(8,10);
+
+      this.MondayMonthCount = this.mondayDate.slice(5,7) - 1;
+      this.TuesdayMonthCount = this.tuesdayDate.slice(5,7) - 1;
+      this.WednesdayMonthCount = this.wednesdayDate.slice(5,7) - 1;
+      this.ThursdayMonthCount = this.thursdayDate.slice(5,7) - 1;
+      this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
+      this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
+      this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
+
+      this.monthCount = this.fdweek.getMonth();
+      this.newYr = this.fdweek.getFullYear();
     },
     
     methods: {
 
-      //new functions start
+      //today's date funtion
       todayClick() {
         this.yearFilter = null;
         this.monthFilter = null;
         this.nd = new Date();
-        var currentDay = nd.getMonth();
+        var currentDay = this.nd.getMonth();
         this.selectedYear = this.nd.getFullYear();
         Date.prototype.GetFirstDayOfWeek = function() {
           return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
@@ -1149,7 +2536,28 @@ export default {
         this.getweekdt.setDate(this.getweekdt.getDate()-6);
         this.fetchAppointmentsByTrainers();
         this.fetchAppointmentsByRooms();
+        this.allObjectsMonth = this.allObjects[dt.getMonth()];
+        this.allObjectsMonthPrev = this.allObjects[dt.getMonth() - 1];
+        this.allObjectsMonthNext = this.allObjects[dt.getMonth() + 1];
+        
+        this.MondayDate = this.mondayDate.slice(8,10);
+        this.TuesdayDate = this.tuesdayDate.slice(8,10);
+        this.WednesdayDate = this.wednesdayDate.slice(8,10);
+        this.ThursdayDate = this.thursdayDate.slice(8,10);
+        this.FridayDate = this.fridayDate.slice(8,10);
+        this.SatdayDate = this.saturdayDate.slice(8,10);
+        this.SundayDate = this.sundayDate.slice(8,10);
+
+        this.MondayMonthCount = this.mondayDate.slice(5,7) - 1;
+        this.TuesdayMonthCount = this.tuesdayDate.slice(5,7) - 1;
+        this.WednesdayMonthCount = this.wednesdayDate.slice(5,7) - 1;
+        this.ThursdayMonthCount = this.thursdayDate.slice(5,7) - 1;
+        this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
+        this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
+        this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
       },
+
+      //previous week funtion
       prevWeek() {
         if(this.weekNumber > 1 ){
           var weekNumberNew = this.weekNumber - 1;
@@ -1243,8 +2651,30 @@ export default {
           this.fdweek.setDate(this.fdweek.getDate()-6);
           this.getweekdt.setDate(this.getweekdt.getDate()-6);
         }else{}
+        this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
+        this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
+        this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
+        if(this.fdweek.getMonth() == 0){
+          this.allObjectsMonthPrev = 0;
+        }
+        this.MondayDate = this.mondayDate.slice(8,10);
+        this.TuesdayDate = this.tuesdayDate.slice(8,10);
+        this.WednesdayDate = this.wednesdayDate.slice(8,10);
+        this.ThursdayDate = this.thursdayDate.slice(8,10);
+        this.FridayDate = this.fridayDate.slice(8,10);
+        this.SatdayDate = this.saturdayDate.slice(8,10);
+        this.SundayDate = this.sundayDate.slice(8,10);     
+        
+        this.MondayMonthCount = this.mondayDate.slice(5,7) - 1;
+        this.TuesdayMonthCount = this.tuesdayDate.slice(5,7) - 1;
+        this.WednesdayMonthCount = this.wednesdayDate.slice(5,7) - 1;
+        this.ThursdayMonthCount = this.thursdayDate.slice(5,7) - 1;
+        this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
+        this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
+        this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
       },
 
+      //next week funtion
       nextWeek() {
         if(this.weekNumber >= 1 ){
           var weekNumberNew = this.weekNumber + 1;
@@ -1335,38 +2765,55 @@ export default {
           this.fdweek.setDate(this.fdweek.getDate()-6);
           this.getweekdt.setDate(this.getweekdt.getDate()-6);
         }else{}
+        this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
+        this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
+        this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
+        if(this.fdweek.getMonth() == 0){
+          this.allObjectsMonthPrev = 0;
+        }
+        
+        this.MondayDate = this.mondayDate.slice(8,10);
+        this.TuesdayDate = this.tuesdayDate.slice(8,10);
+        this.WednesdayDate = this.wednesdayDate.slice(8,10);
+        this.ThursdayDate = this.thursdayDate.slice(8,10);
+        this.FridayDate = this.fridayDate.slice(8,10);
+        this.SatdayDate = this.saturdayDate.slice(8,10);
+        this.SundayDate = this.sundayDate.slice(8,10);        
+
+        this.MondayMonthCount = this.mondayDate.slice(5,7) - 1;
+        this.TuesdayMonthCount = this.tuesdayDate.slice(5,7) - 1;
+        this.WednesdayMonthCount = this.wednesdayDate.slice(5,7) - 1;
+        this.ThursdayMonthCount = this.thursdayDate.slice(5,7) - 1;
+        this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
+        this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
+        this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
       },
 
+      //change year filter funtion
       changeYear(){
         this.yearCount = this.yearsList.indexOf(this.yearFilter) - 1;
         if(this.yearCount == -1 ){
+          this.monthCount = this.fdweek.getMonth();
+          this.newYr = this.fdweek.getFullYear();
           this.todayClick();
-        }else{
-        var newYr = this.yearFilter;
-        this.selectedYear = newYr;
-        this.fdweek.getDate();
-        // fetchAppointments();
-        this.nd.setYear(newYr,0,0);
-        Date.prototype.GetFirstDayOfWeek = function() {
-          return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
         }
-        Date.prototype.getWeek = function() {
-          var onejan = new Date(this.getFullYear(), 0, 1);
-          return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-        }
-        let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
-        var year = this.nd.getFullYear();
-        var ndate = this.nd.getDate();
-        var nday = this.nd.getDay();
-        var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
-        nav = weekOfMonth;
-        this.fdweek = this.nd.GetFirstDayOfWeek();
-        this.getweekdt = this.nd.GetFirstDayOfWeek();
-        var startDate = new Date(this.nd.getFullYear(), 0, 1);
-        var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-        this.weekNumber = Math.ceil(days / 7);
+        else{
+          this.newYr = this.yearFilter;
+          this.selectedYear = this.newYr;
+          this.nd = new Date(this.newYr,this.monthCount,1);
+          let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
+          var year = this.nd.getFullYear();
+          var ndate = this.nd.getDate();
+          var nday = this.nd.getDay();
+          var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
+          nav = weekOfMonth;
+          this.fdweek = this.nd.GetFirstDayOfWeek();
+          this.getweekdt = this.nd.GetFirstDayOfWeek();
+          var startDate = new Date(this.nd.getFullYear(), 1, 1);
+          var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
+          this.weekNumber = Math.ceil(days / 7);
 
-        this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
+          this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
           this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
           this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -1374,15 +2821,14 @@ export default {
           this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
           this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-        this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
-        this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate()));
+          this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-          wnav =0;
           const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
           const lweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()+6));
           var fmondt = fweekdt.split(' ')[0];
@@ -1406,52 +2852,125 @@ export default {
 
           this.fetchAppointmentsByTrainers();
           this.fetchAppointmentsByRooms();
+          this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
+          if(this.fdweek.getMonth() == 0){
+            this.allObjectsMonthPrev = 0;
+            alert();
+          } else{
+            this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
+            alert('1');
+          }
+          this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
         }
+        if(this.yearFilter == new Date().getFullYear()){
+          this.todayClick();
+        }
+        
+        this.MondayDate = this.mondayDate.slice(8,10);
+        this.TuesdayDate = this.tuesdayDate.slice(8,10);
+        this.WednesdayDate = this.wednesdayDate.slice(8,10);
+        this.ThursdayDate = this.thursdayDate.slice(8,10);
+        this.FridayDate = this.fridayDate.slice(8,10);
+        this.SatdayDate = this.saturdayDate.slice(8,10);
+        this.SundayDate = this.sundayDate.slice(8,10);        
+
+        this.MondayMonthCount = this.mondayDate.slice(5,7) - 1;
+        this.TuesdayMonthCount = this.tuesdayDate.slice(5,7) - 1;
+        this.WednesdayMonthCount = this.wednesdayDate.slice(5,7) - 1;
+        this.ThursdayMonthCount = this.thursdayDate.slice(5,7) - 1;
+        this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
+        this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
+        this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
       },  
 
+      //change month filter funtion
       changeMonth() {
         this.monthCount = this.monthsList.indexOf(this.monthFilter) - 1;
-        // alert(this.monthCount);
         if(this.monthCount == -1 ){
+          this.monthCount = this.fdweek.getMonth();
+          this.newYr = this.fdweek.getFullYear();
           this.todayClick();
         }else if(this.monthCount == 4 ){
-          this.nd.setMonth(4,2);
-          Date.prototype.GetFirstDayOfWeek = function() {
-          return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
-        }
-        Date.prototype.getWeek = function() {
-          var onejan = new Date(this.getFullYear(), 0, 1);
-          return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-        }
-        let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
-        var year = this.nd.getFullYear();
-        var ndate = this.nd.getDate();
-        var nday = this.nd.getDay();
-        var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
-        nav = weekOfMonth;
-        this.fdweek = this.nd.GetFirstDayOfWeek();
-        this.getweekdt = this.nd.GetFirstDayOfWeek();
-        var startDate = new Date(this.nd.getFullYear(), 0, 1);
-        var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-        this.weekNumber = Math.ceil(days / 7);
+          this.nd = new Date(this.newYr,4,5);
+          let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
+          var year = this.nd.getFullYear();
+          var ndate = this.nd.getDate();
+          var nday = this.nd.getDay();
+          var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
+          nav = weekOfMonth;
+          this.fdweek = this.nd.GetFirstDayOfWeek();
+          this.getweekdt = this.nd.GetFirstDayOfWeek();
+          var startDate = new Date(this.nd.getFullYear(), 0, 1);
+          var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
+          this.weekNumber = Math.ceil(days / 7);
 
-        this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
-        this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.friday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
+          this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.friday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-        this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
-        this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
+          this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-        const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
+          const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
+          const lweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()+6));
+          var fmondt = fweekdt.split(' ')[0];
+          var lmondt = lweekdt.split(' ')[0];
+          var fdaydt = fweekdt.split(' ')[1];
+          fdaydt  = fdaydt.split(',')[0];
+          var ldaydt = lweekdt.split(' ')[1];
+          var fyeardt = fweekdt.split(',')[1];
+          var lyeardt = lweekdt.split(',')[1];
+          this.fdweek.setDate(this.fdweek.getDate()-6);
+          this.getweekdt.setDate(this.getweekdt.getDate()-6);
+          if(fyeardt == lyeardt && fmondt == lmondt){
+            this.weekDisplay = (fmondt+" "+fdaydt+" - "+ldaydt+fyeardt);
+          }
+          if(fyeardt == lyeardt && fmondt != lmondt){
+            this.weekDisplay = (fmondt+" "+fdaydt+" - "+lmondt+" "+ldaydt+fyeardt);
+          }
+          if(fyeardt != lyeardt && fmondt != lmondt){
+            this.weekDisplay = (fweekdt+" - "+lweekdt);
+          }
+        }else if(this.monthCount == 9 ){
+          this.nd = new Date(this.newYr,9,0);
+          let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
+          var year = this.nd.getFullYear();
+          var ndate = this.nd.getDate();
+          var nday = this.nd.getDay();
+          var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
+          nav = weekOfMonth;
+          this.fdweek = this.nd.GetFirstDayOfWeek();
+          this.getweekdt = this.nd.GetFirstDayOfWeek();
+          var startDate = new Date(this.nd.getFullYear(), 0, 1);
+          var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
+          this.weekNumber = Math.ceil(days / 7);
+
+          this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
+          this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.friday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+
+          this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
+          this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+
+          const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
           const lweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()+6));
           var fmondt = fweekdt.split(' ')[0];
           var lmondt = lweekdt.split(' ')[0];
@@ -1472,43 +2991,36 @@ export default {
             this.weekDisplay = (fweekdt+" - "+lweekdt);
           }
         }else{
-        this.nd.setMonth(this.monthCount,0);
-        Date.prototype.GetFirstDayOfWeek = function() {
-          return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
-        }
-        Date.prototype.getWeek = function() {
-          var onejan = new Date(this.getFullYear(), 0, 1);
-          return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-        }
-        let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
-        var year = this.nd.getFullYear();
-        var ndate = this.nd.getDate();
-        var nday = this.nd.getDay();
-        var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
-        nav = weekOfMonth;
-        this.fdweek = this.nd.GetFirstDayOfWeek();
-        this.getweekdt = this.nd.GetFirstDayOfWeek();
-        var startDate = new Date(this.nd.getFullYear(), 0, 1);
-        var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-        this.weekNumber = Math.ceil(days / 7);
+          this.nd = new Date(this.newYr,this.monthCount,1);
+          let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
+          var year = this.nd.getFullYear();
+          var ndate = this.nd.getDate();
+          var nday = this.nd.getDay();
+          var weekOfMonth = Math.ceil((ndate - 1 - nday) / 7);
+          nav = weekOfMonth;
+          this.fdweek = this.nd.GetFirstDayOfWeek();
+          this.getweekdt = this.nd.GetFirstDayOfWeek();
+          var startDate = new Date(this.nd.getFullYear(), 0, 1);
+          var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
+          this.weekNumber = Math.ceil(days / 7);
 
-        this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
-        this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.friday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
+          this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.friday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-        this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
-        this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
-        this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6 ));
+          this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.fridayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.saturdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
+          this.sundayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-        const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
+          const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
           const lweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()+6));
           var fmondt = fweekdt.split(' ')[0];
           var lmondt = lweekdt.split(' ')[0];
@@ -1528,7 +3040,37 @@ export default {
           if(fyeardt != lyeardt && fmondt != lmondt){
             this.weekDisplay = (fweekdt+" - "+lweekdt);
           }
+
+          this.fetchAppointmentsByTrainers();
+          this.fetchAppointmentsByRooms();
+          this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
+          this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
+          this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
+          if(this.fdweek.getMonth() == 0){
+            this.allObjectsMonthPrev = 0;
+          }
+        
+          this.MondayDate = this.mondayDate.slice(8,10);
+          this.TuesdayDate = this.tuesdayDate.slice(8,10);
+          this.WednesdayDate = this.wednesdayDate.slice(8,10);
+          this.ThursdayDate = this.thursdayDate.slice(8,10);
+          this.FridayDate = this.fridayDate.slice(8,10);
+          this.SatdayDate = this.saturdayDate.slice(8,10);
+          this.SundayDate = this.sundayDate.slice(8,10);
+
+          this.MondayMonthCount = this.mondayDate.slice(5,7) - 1;
+          this.TuesdayMonthCount = this.tuesdayDate.slice(5,7) - 1;
+          this.WednesdayMonthCount = this.wednesdayDate.slice(5,7) - 1;
+          this.ThursdayMonthCount = this.thursdayDate.slice(5,7) - 1;
+          this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
+          this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
+          this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
         }
+      },
+
+      //change trainerType filter funtion
+      changeTrainerType(){
+        this.trainersFilterEdited = this.trainersFilter.replaceAll(' ','');
       },
       //new functions end
 
@@ -1697,12 +3239,9 @@ export default {
         }
       },
 
-       calendarDayClicked(reference, day, month, mode = "TRAINER", appointmentOnDay){
-        alert();
+      calendarDayClicked(reference, day, month, mode = "TRAINER", appointmentOnDay){
         if(!this.$rights.includes("CREATE_APPOINTMENT")) return;
-        alert('1');
         if(this.isNextMonth(month, day)) return;
-        alert('2');
         this.clearAppointment();
         
         // Open Dialog and Set Type
@@ -1752,8 +3291,7 @@ export default {
 
       saveAppointment(){
         var _this = this;
-        alert('in')
-
+        
         var appointment = Object.assign({}, this.appointment);
 
         if(typeof appointment.start == "string" && appointment.start.length < 11){

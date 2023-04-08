@@ -41,6 +41,54 @@
           <v-tab-item>
 
           <div class="row disablerow justify-content-between">
+
+   <div class="col-md-12 row disablerow align-items-start">
+                    <div class="col-md-12 pt-0">
+                        <span class="headlinecolor text-h6"> {{$t("Training Course")}}</span>
+                    </div>
+                    <div class="col-md-12 row disablerow">
+                       <div class="col-md-6">
+                         <v-tooltip slot="append" bottom>
+                             <template v-slot:activator="{ on, attrs }">
+                        <v-autocomplete  
+                          v-model="request.trainingId"
+                          hide-details="auto"
+                          class="datainput justify-content-end searchbar align-self-center pb-1"
+                          :items="trainings"
+                          item-text='text'
+                          item-value='value'
+                          style="padding-right:2px"
+                          dense
+                          outlined
+                          v-bind="attrs"
+                          v-on="on"
+                          :label="$t('training') + '*'">
+                        </v-autocomplete>
+                          </template>     
+                          <span>{{ $t("other_training_tooltip") }}</span>                   
+                        </v-tooltip>    
+                    </div>
+                    <div class="col-6">
+                        <v-tooltip slot="append" bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('other_training')"
+                        v-model="request.otherTraining"
+                        v-bind="attrs"
+                        v-on="on"
+                        >
+                        </v-text-field>
+                        </template>                    
+                        <span>{{ $t("other_training_tooltip") }}</span>                   
+                        </v-tooltip>    
+                        
+                    </div>
+                    </div>
+                </div>
                 <div class="col-md-12 row disablerow align-items-start">
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("customer_information")}}</span>
@@ -266,39 +314,6 @@
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("training_details")}}</span>
                     </div>
-                    <div class="col-md-12">
-                        <v-autocomplete  
-                          v-model="request.trainingId"
-                          hide-details="auto"
-                          class="datainput justify-content-end searchbar align-self-center pb-1"
-                          :items="trainings"
-                          item-text='text'
-                          item-value='value'
-                          style="padding-right:2px"
-                          dense
-                          outlined
-                          :label="$t('training') + '*'">
-                        </v-autocomplete>
-                    </div>
-                    <div class="col-12">
-                        <v-tooltip slot="append" bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-text-field  
-                        hide-details="auto"
-                        class="datainput justify-content-end align-self-center pb-1"
-                        dense
-                        outlined
-                        :label="$t('other_training')"
-                        v-model="request.otherTraining"
-                        v-bind="attrs"
-                        v-on="on"
-                        >
-                        </v-text-field>
-                        </template>                    
-                        <span>{{ $t("other_training_tooltip") }}</span>                   
-                        </v-tooltip>    
-                        
-                    </div>
                     <div class="col-12">
                         <v-text-field  
                         hide-details="auto"
@@ -368,7 +383,7 @@
                      </div>
            
                 </div>
-                <div class="col-md-6 disablerow" v-if="editMode">
+                <div class="col-md-6 disablerow" >
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("logistics_by_customer")}}</span>
                     </div>
@@ -438,7 +453,7 @@
                         ></v-text-field>
                     </div>
                 </div>
-                <div class="col-md-6 disablerow" v-if="editMode">
+                <div class="col-md-6 disablerow" >
                     <div class="col-md-12 pt-0">
                         <span class="headlinecolor text-h6"> {{$t("additional_information")}}</span>
                     </div>
@@ -760,6 +775,12 @@ export default {
 
         if(this.editMode && this.trainingRequestId) request.id = this.trainingRequestId;
       
+        // Training oder Anderes Training muss vorhanden seinen
+        if(request.otherTraining == null && request.trainingId == null){
+          this.$noty.error(this.$t("empty_values", {name: this.$t("other_training"), name2: this.$t("training")}));
+          return;
+        }
+
         if(request.firstname == null){
           this.$noty.error(this.$t("empty_value", {name: this.$t("firstname")}));
           return;
@@ -865,11 +886,7 @@ export default {
           return;
         }
 
-        // Training oder Anderes Training muss vorhanden seinen
-        if(request.otherTraining == null && request.trainingId == null){
-          this.$noty.error(this.$t("empty_values", {name: this.$t("other_training"), name2: this.$t("training")}));
-          return;
-        }
+       
         if(!this.editMode){
           if(!this.consentprivacy){
             this.$noty.error(this.$t("please_accept_privacy_policy"));
