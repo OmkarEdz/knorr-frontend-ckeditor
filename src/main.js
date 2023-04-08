@@ -168,8 +168,8 @@ const router = new VueRouter({
         { path: "/forgot-password", component: ForgotPassword },
         { path: "/reset-password", component: ResetPassword, props: route => ({ token: route.query.token, newUser: route.query.newUser }) },
         { path: "/calendar", component: FullCalendarUpdated },
-        { path: "/otp-verification", component: OtpVerification },
-        { path: "/download-documents", component: DownloadDocuments },
+        { path: "/otp-verification:pathMatch(.*)*", component: OtpVerification },
+        { path: "/download-documents:pathMatch(.*)*", component: DownloadDocuments },
 
         { path: "/contactpersons", component: ContactPersons },
         { path: "/request", component: TrainingRequest, props: route => ({ trainingId: route.query.trainingId, trainingRequestId: route.query.trainingRequestId }) },
@@ -384,7 +384,7 @@ new Vue({
             var location = window.location.href;
             if(location.startsWith("http://") || location.startsWith("https://")) location = location.substring(location.indexOf("//") + 2);
             console.log(location);
-            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings"];
+            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings","otp-verification","/download-documents"];
             const unallowedRoutes = ["/request?trainingRequestId","/feedback-form"];
             var routeAllowed = false;
 
