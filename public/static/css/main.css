@@ -2550,7 +2550,7 @@ div.bg-blue{
   #weekviewcontainer td p {margin: 0px;}
   .trainerName {font-weight: 400;font-size: 12px;line-height: 16px;color: #000000de;}
   .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000000de;}
-  .trainerType {font-size: 12px;line-height: 11px;background: #fff;width: max-content;padding: 3px 5px;border-radius: 2px;color: #000000de;margin-top:5px !important;text-transform:capitalize;}
+  .trainerTypeName {font-size: 12px;line-height: 11px;background: #fff;width: max-content;padding: 3px 5px;border-radius: 2px;color: #000000de;margin-top:5px !important;text-transform:capitalize;}
   .partTimeType {background: #FFFCE3;}
   .traningData {vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;text-transform: capitalize;}
   .traningData .clickable-link {text-decoration:underline;}
@@ -2599,16 +2599,7 @@ div.bg-blue{
   .trainer-row {display: none;}
   .calendar-day > div > div {display:none;}
   .calendar-day > div > div.training_as_trainer, .calendar-day > div > div.room_blocked, .calendar-day > div > div[set]{display:block;position:relative;}
-  tbody.Germany .location,
-  tbody.Poland .location,
-  tbody.Austria .location {display:none;}
-  tbody.Germany .location.GERMANY,
-  tbody.Poland .location.POLAND,
-  tbody.Austria .location.AUSTRIA,
-  tbody.Germany .location#GERMANY,
-  tbody.Poland .location#POLAND,
-  tbody.Austria .location#AUSTRIA {display: table-row;}
-
+ 
   tbody#FullTime .trainerType,
   tbody#PartTime .trainerType {display:none;}
   tbody#FullTime .trainerType.fullTime,
