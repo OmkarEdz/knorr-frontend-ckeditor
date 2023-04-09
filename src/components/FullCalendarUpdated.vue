@@ -31,7 +31,8 @@
               item-value='id'
               dense
               outlined
-              :label="$t('Select year')" @change="changeYear()">
+              :label="$t('Select year')" @change="changeYear()"
+              ref="inputYear">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -60,7 +61,21 @@
               item-value='id'
               dense
               outlined
-              :label="$t('View all location')">
+              :label="$t('View all trainer location')">
+                <template v-slot:append></template>
+            </v-autocomplete>
+          </div>
+          <div class="custom-select-dropdown custom-location-dropdown">
+            <v-autocomplete  
+              v-model="roomlocationFilter"
+              hide-details="auto"
+              class="justify-content-end searchbar align-self-center"
+              :items="roomslocationsList"
+              item-text='name'
+              item-value='id'
+              dense
+              outlined
+              :label="$t('View all room location')">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -115,11 +130,12 @@
           </tr>
         </thead>
         <tbody v-bind:class="locationFilter" v-bind:id="trainersFilterEdited">
-          <tr class="calendar-content-row location trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainer.trainerType" v-bind:id="trainerAppointment.trainer.location">
+        <!-- v-if="locationFilter == trainerAppointment.trainerLocation" -->
+          <tr class="calendar-content-row location trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainerType" >
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ getTrainerById(trainerAppointment.trainer).fullname }}</p>
-                <p class="trainerType" >{{ getTrainerById(trainerAppointment.trainer).trainerType === 'fullTime' ? 'Full Time':'Part Time' }}</p>
+                <p class="trainerTypeName" >{{ getTrainerById(trainerAppointment.trainerType) === 'fullTime' ? 'Full Time':'Part Time' }}</p>
               </div>
             </td>
             <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER')">
@@ -1838,7 +1854,7 @@
               </div>
             </td>
           </tr>
-          <tr class="calendar-content-row location" v-for="(roomAppointment, itemIndex) in allObjectsMonth.roomAppointments" v-bind:class="roomAppointment.room.location.country">
+          <tr class="calendar-content-row location" v-for="(roomAppointment, itemIndex) in allObjectsMonth.roomAppointments" v-if="roomlocationFilter == roomAppointment.roomLocation">
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ roomAppointment.room.designation }}</p>
@@ -2228,9 +2244,9 @@
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="deleteAppointment()" v-show="!appointment.clickable && appointment.id != null" outlined depressed tile class="savebutton mr-2 mb-2 bg-white color-blue">{{ $t("delete") }}</v-btn>
+          <v-btn @click="deleteAppointment()" v-show="!appointment.clickable && appointment.id != null" outlined depressed tile class="deletebutton savebutton mr-2 mb-2 bg-white color-blue"><v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
           <v-btn @click="openAddDialog = false" outlined depressed tile class="savebutton mr-2 mb-2 bg-white color-blue">{{ $t("cancel") }}</v-btn>
-          <v-btn @click="saveAppointment()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn @click="saveAppointment()" outlined depressed tile class="save savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
         </v-card-actions>
       </v-dialog>
     </div>    
@@ -2241,7 +2257,7 @@
 <script>
       var nd = new Date();
       Date.prototype.GetFirstDayOfWeek = function() {
-        return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
+        return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -6:1) )));
       }
       Date.prototype.getWeek = function() {
         var onejan = new Date(this.getFullYear(), 0, 1);
@@ -2313,7 +2329,9 @@ export default {
         monthFilter: [],
         monthsList: ["Select Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         locationFilter: [],
-        locationsList: ["View all locations", "Germany", "Austria", "Poland"],
+        locationsList: ["View all Room locations"],
+        roomlocationFilter: [],
+        roomslocationsList: ["View all Room locations"],
         trainersFilter: [],
         trainersList: ["View all Trainers", "Full Time", "Part Time"],
         trainersFilterEdited: [],
@@ -2386,6 +2404,7 @@ export default {
             roomAppointments: [],
         });
       }
+      
       this.allObjectsMonth = this.allObjects[dt.getMonth()];
       this.allObjectsMonthPrev = this.allObjects[dt.getMonth() - 1];
       this.allObjectsMonthNext = this.allObjects[dt.getMonth() + 1];
@@ -2455,11 +2474,13 @@ export default {
       todayClick() {
         this.yearFilter = null;
         this.monthFilter = null;
+        // this.locationFilter = null;
+        // this.roomlocationFilter = null;
         this.nd = new Date();
         var currentDay = this.nd.getMonth();
         this.selectedYear = this.nd.getFullYear();
         Date.prototype.GetFirstDayOfWeek = function() {
-          return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -7:1) )));
+          return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -6:1) )));
         }
         Date.prototype.getWeek = function() {
           var onejan = new Date(this.getFullYear(), 0, 1);
@@ -2855,15 +2876,13 @@ export default {
           this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
           if(this.fdweek.getMonth() == 0){
             this.allObjectsMonthPrev = 0;
-            alert();
           } else{
             this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
-            alert('1');
           }
           this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
         }
         if(this.yearFilter == new Date().getFullYear()){
-          this.todayClick();
+          this.$refs.inputYear.reset();
         }
         
         this.MondayDate = this.mondayDate.slice(8,10);
@@ -3105,6 +3124,9 @@ export default {
             for (let i = 0; i < response.data.length; i++) {
               const monat = response.data[i];
               _this.allObjects[i].trainerAppointments = monat.trainerAppointments;
+              for (let j = 0; j < monat.trainerAppointments.length && i == 0; j++) {
+                _this.locationsList.push(monat.trainerAppointments[j].trainerLocation);
+              }
             }
           })
           .catch(this.onError);
@@ -3118,6 +3140,10 @@ export default {
             for (let i = 0; i < response.data.length; i++) {
               const monat = response.data[i];
               _this.allObjects[i].roomAppointments = monat.roomAppointments;
+              for (let j = 0; j < monat.roomAppointments.length && i == 0; j++) {
+                _this.roomslocationsList.push(monat.roomAppointments[j].roomLocation);
+                console.log(_this.roomslocationsList);
+              }
             }
           })
           .catch(this.onError);
@@ -3230,7 +3256,6 @@ export default {
         this.selectedYear++;
         this.fetchAppointments();
       },
-
 
       appointmentClicked(appointmentOnDay){
         if(!appointmentOnDay.clickable) return;
