@@ -2589,9 +2589,10 @@ div.bg-blue{
   .yellow_traning {background: #fde976;color: #000;}
   .nocolor_traning {color:#000;}
   .grey_traning {background:#706d6b;}
-  .lightBlue_traning {background: #6DECE7;}
+  .lightBlue_traning {background: #6DECE7;color:#000;}
   .purple_traning {background: #6D73DC;}
-  .white_traning {background: #fff;color: #000000de;}
+  .green_traning {background:#0ee920;color:#000;}
+  .white_traning {background: #fff;color: #000000;}
   .white_traning p, .lightBlue_traning p {color:#000;}
   /* #weekviewcontainer table tbody {display:none;} 
   #weekviewcontainer table tbody[data-index="0"] {display:table-row-group;}*/
@@ -2643,7 +2644,9 @@ div.bg-blue{
 
 
   /* for otp screens */
-  .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center, .optScreensWrap .v-toolbar__content .col-md ~ .justify-content-between {display:none;}
+  .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center > div > div:last-child {display:none;}
+  .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center {padding-top:0px;margin-top: -40px;}
+  .optScreensWrap .v-toolbar__content .col-md ~ .justify-content-between {display:none;}
   .optScreensWrap .v-application .kb-header-logo.mb-4 {margin-bottom: 40px!important;}
   .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {margin-top: 120px !important;border-bottom: 27px solid #004581;}
   .optScreensWrap .v-application--wrap .v-bottom-navigation {display:none !important;}
@@ -2680,7 +2683,11 @@ div.bg-blue{
     .optScreensWrap .v-application .pt-md-10 {padding-top: 30px!important;padding-bottom: 15px !important;}
     .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {padding-bottom: 57.5%;margin-top: 60px !important;}
     .optScreensWrap .v-application .align-self-center {justify-content: center !important;}
+    .optScreensWrap .v-application .kb-header-logo.mb-4 {margin-bottom: 20px!important;}
+    .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center {margin-top: 10px;}
+    .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center > div {justify-content: flex-end !important;}
     .optScreensWrap .v-toolbar__content .v-btn.v-btn--icon.v-size--default {display: none !important;}
+    .optScreensWrap .v-application .v-toolbar__content > .row.pl-8 {padding:0px !important;}
   }
 
   @media (max-width:1024px){
