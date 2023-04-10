@@ -74,7 +74,7 @@
               item-value='id'
               dense
               outlined
-              :label="$t('View all Room location')">
+              :label="$t('viewAllRoomLocation')">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
