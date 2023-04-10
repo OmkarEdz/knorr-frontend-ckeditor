@@ -2609,14 +2609,14 @@ div.bg-blue{
   .custom-select-dropdown-list li a.clicked {pointer-events: none;background: #07477f;}
   .custom-select-dropdown.active .custom-select-dropdown-list {display: block;}
 
-  #grouphead .custom-select-dropdown .v-input__slot {cursor: pointer;min-height:27px;padding:3px 25px 3px 15px;color:#fff;max-width: 160px;background: #135A98;border: 1px solid #5596CF;}
+  #grouphead .custom-select-dropdown .v-input__slot {cursor: pointer;min-height:27px;padding:3px 30px 3px 15px;color:#fff;max-width: 160px;background: #135A98;border: 1px solid #5596CF;}
   #grouphead .custom-select-dropdown .v-input__slot:hover {background:#07477f;}
   #grouphead .custom-select-dropdown .v-input__slot fieldset {display:none;}
   #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label {position:unset !important;font-weight: 400;font-size: 13px;line-height: 22px;color: #FFFFFF;}
   #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label--active {display:none;}
   #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label ~ input {cursor: pointer;padding: 0px;color: #fff;font-weight: 400;font-size: 13px;line-height: 20px;}
   #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner {margin:0px;position:absolute;padding: 0px;right: -20px;top: -2px;bottom: 0;}
-  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {color: #fff !important;font-size: 30px;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {color: #fff !important;font-size: 30px;position:relative;right:-7px;}
 
   .maincontaincontent[data-location="view-all"] .trainer-row {display:table-row !important;}
 
@@ -2637,6 +2637,8 @@ div.bg-blue{
   #weekviewcontainer td.calendar-day div[set] {height: 100%;width: 100%;}
   #weekviewcontainer td.calendar-day .checkItem {height:100%;}
   #weekviewcontainer td.calendar-day .checkItem > div {height:95px;position: absolute;width: 100%;top: 0px;}
+
+  .loadingCircle.zIndex {z-index:999;}
   /* calendar css end here */
 
 
