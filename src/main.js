@@ -52,6 +52,7 @@ import OurVenues from './components/OurVenues.vue'
 import AboutUs from './components/AboutUs.vue'
 import VenueDetails from './components/VenueDetails.vue'
 import UploadApplication from './components/UploadApplication.vue'
+import FeedBackForm from './components/FeedBackForm.vue'
 
 // Widgets
 import Contact from "./components/widget/Contact.vue"
@@ -93,6 +94,7 @@ Vue.use(Venues)
 Vue.use(TrainingEvents)
 Vue.use(InactiveEvents)
 Vue.use(CreateTrainingEvent)
+Vue.use(FeedBackForm)
 Vue.use(Trainings)
 
 // Widgets
@@ -166,8 +168,8 @@ const router = new VueRouter({
         { path: "/forgot-password", component: ForgotPassword },
         { path: "/reset-password", component: ResetPassword, props: route => ({ token: route.query.token, newUser: route.query.newUser }) },
         { path: "/calendar", component: FullCalendarUpdated },
-        { path: "/otp-verification", component: OtpVerification },
-        { path: "/download-documents", component: DownloadDocuments },
+        { path: "/otp-verification:pathMatch(.*)*", component: OtpVerification },
+        { path: "/download-documents:pathMatch(.*)*", component: DownloadDocuments },
 
         { path: "/contactpersons", component: ContactPersons },
         { path: "/request", component: TrainingRequest, props: route => ({ trainingId: route.query.trainingId, trainingRequestId: route.query.trainingRequestId }) },
@@ -181,6 +183,7 @@ const router = new VueRouter({
         { path: "/offers/:pathMatch(.*)*", component: ToolDetails },
         { path: "/contact", component: ContactForm },
         { path: "/upload-application", component: UploadApplication },
+        { path: "/feedback-form", component: FeedBackForm },
     ],
     mode: "history"
 });
@@ -381,8 +384,8 @@ new Vue({
             var location = window.location.href;
             if(location.startsWith("http://") || location.startsWith("https://")) location = location.substring(location.indexOf("//") + 2);
             console.log(location);
-            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings"];
-            const unallowedRoutes = ["/request?trainingRequestId"];
+            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings","otp-verification","/download-documents"];
+            const unallowedRoutes = ["/request?trainingRequestId","/feedback-form"];
             var routeAllowed = false;
 
             // Check allowedRoutes
