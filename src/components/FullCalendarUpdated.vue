@@ -2489,6 +2489,7 @@ export default {
         var currentDay = this.nd.getMonth();
         this.selectedYear = this.nd.getFullYear();
         this.newYr = this.nd.getFullYear();
+        this.monthCount = this.nd.getMonth();
         Date.prototype.GetFirstDayOfWeek = function() {
           return (new Date(this.setDate(this.getDate() - this.getDay()+ (this.getDay() == 0 ? -6:1) )));
         }
