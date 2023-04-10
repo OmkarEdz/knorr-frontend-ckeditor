@@ -885,6 +885,7 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "viewAllTrainerLocation":"View All Trainer Location",
         "partTimeFullTimeText":"Select Part time or Full Time Trainer",
         "partTime":"PART TIME",
         "fullTime":"FULL TIME",

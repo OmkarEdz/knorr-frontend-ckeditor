@@ -31,8 +31,7 @@
               item-value='id'
               dense
               outlined
-              :label="$t('Select year')" @change="changeYear()"
-              ref="inputYear">
+              :label="$t('Select year')" @change="changeYear()">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -61,7 +60,7 @@
               item-value='id'
               dense
               outlined
-              :label="$t('View all trainer location')">
+              :label="$t('viewAllTrainerLocation')">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -75,7 +74,7 @@
               item-value='id'
               dense
               outlined
-              :label="$t('View all room location')">
+              :label="$t('View all Room location')">
                 <template v-slot:append></template>
             </v-autocomplete>
           </div>
@@ -130,8 +129,7 @@
           </tr>
         </thead>
         <tbody v-bind:class="locationFilter" v-bind:id="trainersFilterEdited">
-        <!-- v-if="locationFilter == trainerAppointment.trainerLocation" -->
-          <tr class="calendar-content-row location trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainerType" >
+          <tr class="calendar-content-row location trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainerType" v-if="locationFilter === 'View all Trainer locations' || ( locationFilter === trainerAppointment.trainerLocation && locationFilter !== 'View all Trainer locations' )">
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ getTrainerById(trainerAppointment.trainer).fullname }}</p>
@@ -1854,7 +1852,8 @@
               </div>
             </td>
           </tr>
-          <tr class="calendar-content-row location" v-for="(roomAppointment, itemIndex) in allObjectsMonth.roomAppointments" v-if="roomlocationFilter == roomAppointment.roomLocation">
+           <!-- v-if="roomlocationFilter == roomAppointment.roomLocation" -->
+          <tr class="calendar-content-row location" v-for="(roomAppointment, itemIndex) in allObjectsMonth.roomAppointments" v-if="roomlocationFilter === 'View all Room locations' || ( roomlocationFilter === roomAppointment.roomLocation && roomlocationFilter !== 'View all Room locations' )">
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ roomAppointment.room.designation }}</p>
@@ -2329,7 +2328,7 @@ export default {
         monthFilter: [],
         monthsList: ["Select Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         locationFilter: [],
-        locationsList: ["View all Room locations"],
+        locationsList: ["View all Trainer locations"],
         roomlocationFilter: [],
         roomslocationsList: ["View all Room locations"],
         trainersFilter: [],
@@ -2391,10 +2390,14 @@ export default {
         SaturdayMonthCount: null,
         SundayMonthCount: null,
         getMonthCount: null,
+        spinner: null,
       }
     },
     
     mounted(){
+      showLoadingCircle(true);
+      this.locationFilter = "View all Trainer locations";
+      this.roomlocationFilter = "View all Room locations";
       this.fdweek = this.nd.GetFirstDayOfWeek();
       this.getweekdt = this.nd.GetFirstDayOfWeek();
       for (let i = 0; i <= 12; i++) {
@@ -2466,10 +2469,13 @@ export default {
 
       this.monthCount = this.fdweek.getMonth();
       this.newYr = this.fdweek.getFullYear();
+      progressIndicator.hidden = false;
+      setTimeout(function(scope) {
+         progressIndicator.hidden = true;
+      }, 3000);
     },
     
     methods: {
-
       //today's date funtion
       todayClick() {
         this.yearFilter = null;
@@ -2842,7 +2848,7 @@ export default {
           this.saturday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
           this.sunday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
 
-          this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate()));
+          this.mondayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() - 6));
           this.tuesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
           this.wednesdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
           this.thursdayDate = headwdateFull.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2880,9 +2886,6 @@ export default {
             this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
           }
           this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
-        }
-        if(this.yearFilter == new Date().getFullYear()){
-          this.$refs.inputYear.reset();
         }
         
         this.MondayDate = this.mondayDate.slice(8,10);
@@ -3316,7 +3319,6 @@ export default {
 
       saveAppointment(){
         var _this = this;
-        
         var appointment = Object.assign({}, this.appointment);
 
         if(typeof appointment.start == "string" && appointment.start.length < 11){
@@ -3328,6 +3330,8 @@ export default {
 
         console.log(this.appointment);
         if(appointment.id == null){
+          progressIndicator.hidden = false;  
+          document.getElementById('loadingCircle').classList.add('zIndex');
           this.$axios
             .post("/api/calendar/create", appointment)
             .then(function (response) {
@@ -3336,9 +3340,13 @@ export default {
               // _this.fetchAppointments();
               _this.fetchAppointmentsByTrainers();
               _this.fetchAppointmentsByRooms();
+              progressIndicator.hidden = true;
+              document.getElementById('loadingCircle').classList.remove('zIndex');
             })
             .catch(this.onError);
         }else{
+          progressIndicator.hidden = false;  
+          document.getElementById('loadingCircle').classList.add('zIndex');
           this.$axios
             .put("/api/calendar/" + appointment.id, appointment)
             .then(function (response) {
@@ -3347,6 +3355,8 @@ export default {
               // _this.fetchAppointments();
               _this.fetchAppointmentsByTrainers();
               _this.fetchAppointmentsByRooms();
+              progressIndicator.hidden = true;
+              document.getElementById('loadingCircle').classList.remove('zIndex');
             })
             .catch(this.onError);
         }
@@ -3354,6 +3364,8 @@ export default {
 
       deleteAppointment(){
         var _this = this;
+        progressIndicator.hidden = false;
+        document.getElementById('loadingCircle').classList.add('zIndex');
 
         var appointment = Object.assign({}, this.appointment);
 
@@ -3365,6 +3377,8 @@ export default {
             _this.openAddDialog = false;
             _this.$noty.success(_this.$t("appointment_deleted"));
             _this.fetchAppointments();
+            progressIndicator.hidden = true;
+            document.getElementById('loadingCircle').classList.remove('zIndex');
           })
           .catch(this.onError);
       },
