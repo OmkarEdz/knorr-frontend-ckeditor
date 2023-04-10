@@ -46,6 +46,7 @@ methods: {
     },
     verifyOtp() {
      var _this = this;
+      if(_this.otp && /^[0-9]{6}$/.test(_this.otp)){
       let bookingId=parseInt(_this.bookingId);
       let trainingId= parseInt(_this.trainingId);
       let otp= parseInt(_this.otp);
@@ -55,6 +56,12 @@ methods: {
          _this.$router.push('/download-documents?trainingId=' + _this.trainingId +"&bookingId="+_this.bookingId+"&otp="+_this.otp);
         })
         .catch(this.onError);
+     } else {
+        // OTP value is either empty or invalid
+        this.$noty.error(this.$t("invalid_otp"));
+        return;
+      }
+    
     },
 } 
 }
