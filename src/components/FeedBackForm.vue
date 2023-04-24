@@ -875,7 +875,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn  outlined depressed tile class="save mr-2 mb-2" @click="submitfeedback()">{{ $t("save") }}</v-btn>
+          <v-btn  outlined depressed tile class="save mr-2 mb-2" v-if="!$rights.includes('CREATE_TRAINING_EVENT')" @click="submitfeedback()">{{ $t("save") }}</v-btn>
           <v-btn  outlined depressed tile class="cancelbutton mr-2 mb-2" @click="$routerBack()">{{ $t("back") }}</v-btn>
         </div>
         <Contact />
@@ -883,7 +883,7 @@
 
   </div>
   </div>
-  </div>
+</div>
 </template>
 <script>
 export default {
@@ -923,11 +923,18 @@ export default {
       this.request.bookingId=this.$route.query.bookingId;
       this.request.trainingEventId=this.$route.query.trainingEventId;
       this.fetchEditingTrainingEvent();
+      if(this.request.bookingId && this.request.trainingEventId)
+      {
       this.fetchFeedBackForm();
+      }
+      else if(this.$route.query.feedbackId!=null)
+      {
+      this.viewFeedBackForm();
+      }
      },
 
    methods: {
-      fetchEditingTrainingEvent() {
+    fetchEditingTrainingEvent() {
        var _this = this;
        this.$axios
         .get("/api/training/event/" + this.request.trainingEventId)
@@ -973,83 +980,6 @@ export default {
     submitfeedback()
     {
       let _this=this;
-      if(_this.request.receivedInvitation == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("receivedInvitation")}));
-          return;
-       }
-       if(_this.request.satisfiedPreparation == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("satisfiedPreparation")}));
-          return;
-       }
-       if(_this.request.suitableTrainingRoom == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("suitableTrainingRoom")}));
-          return;
-       }
-       if(_this.request.expectedTrainingRoom == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("expectedTrainingRoom")}));
-          return;
-       }
-       if(_this.request.breakTimes == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("breakTimes")}));
-          return;
-       }
-       if(_this.request.cleanTrainingRoom == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("cleanTrainingRoom")}));
-          return;
-       }
-       if(_this.request.easyTrainingMaterial == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("easyTrainingMaterial")}));
-          return;
-       }
-       if(_this.request.theorypractice == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("theorypractice")}));
-          return;
-       }
-       if(_this.request.supportedlearningprocess == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("supportedlearningprocess")}));
-          return;
-       }
-       if(_this.request.learningspeed == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("learningspeed")}));
-          return;
-       }
-       if(_this.request.involvedtraining == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("involvedtraining")}));
-          return;
-       }
-       if(_this.request.newthings == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("newthings")}));
-          return;
-       }
-       if(_this.request.trainerwellprepared == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerwellprepared")}));
-          return;
-       }
-       if(_this.request.trainerprofessional == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerprofessional")}));
-          return;
-       }
-       if(_this.request.trainerexplained == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerexplained")}));
-          return;
-       }
-       if(_this.request.trainerorganized == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("trainerorganized")}));
-          return;
-       }
-       if(_this.request.benefitseveryday == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("benefitseveryday")}));
-          return;
-       }
-       if(_this.request.recommendKnorr == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("recommendKnorr")}));
-          return;
-       }
-       if(_this.request.recommendtraining == null){
-          this.$noty.error(this.$t("empty_value", {name: this.$t("recommendtraining")}));
-          return;
-       }
-
         this.request.bookingId=parseInt(this.request.bookingId, 10);
         this.$axios
         .post("/api/booking/feedback", this.request)
@@ -1061,6 +991,36 @@ export default {
         .catch(this.onError)
         .finally(() => {
         });
+    },
+    viewFeedBackForm()
+    {
+       var _this = this;
+       this.$axios
+        .get("/api/booking/feedback/" + parseInt(this.$route.query.trainingEventId, 10)+"/"+parseInt(this.$route.query.feedbackId, 10))
+        .then(function (response) {
+           if(response.data!==null)
+          {
+          _this.request.receivedInvitation=response.data.receivedInvitation;
+          _this.request.satisfiedPreparation=response.data.satisfiedPreparation;
+          _this.request.suitableTrainingRoom=response.data.suitableTrainingRoom;
+          _this.request.expectedTrainingRoom=response.data.expectedTrainingRoom;
+          _this.request.breakTimes=response.data.breakTimes;
+          _this.request.cleanTrainingRoom=response.data.cleanTrainingRoom;
+          _this.request.easyTrainingMaterial=response.data.easyTrainingMaterial;
+          _this.request.theorypractice=response.data.theorypractice;
+          _this.request.supportedlearningprocess=response.data.supportedlearningprocess;
+          _this.request.learningspeed=response.data.learningspeed;
+          _this.request.involvedtraining=response.data.involvedtraining;
+          _this.request.newthings=response.data.newthings;
+          _this.request.trainerwellprepared=response.data.trainerwellprepared;
+          _this.request.trainerprofessional=response.data.trainerprofessional;
+          _this.request.trainerexplained=response.data.trainerexplained;
+          _this.request.trainerorganized=response.data.trainerorganized;
+          _this.request.benefitseveryday=response.data.benefitseveryday;
+          _this.request.recommendKnorr=response.data.recommendKnorr;
+          _this.request.recommendtraining=response.data.recommendtraining;
+          }
+          })
     }
    }
 

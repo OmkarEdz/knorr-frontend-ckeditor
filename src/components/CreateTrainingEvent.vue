@@ -58,6 +58,13 @@ b-row<template>
       >
         {{ $t("add_participants") }}
       </v-tab>
+        <v-tab
+        class="LanguageselectTab"
+        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT')"
+      >
+        {{ $t("feedbackForms") }}
+      </v-tab>
     </v-tabs>
     <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-0">
         <!-- Put Content here -->
@@ -432,7 +439,7 @@ b-row<template>
                     <td class="pb-1">
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn @click="showCertificate(booking.id)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-file-pdf</v-icon></v-btn>
+                          <v-btn @click="showCertificate(booking.id)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/show_certiicate.svg" height="25px"></v-btn>
                         </template>
                         <span>{{ $t("show_certificate") }}</span>
                       </v-tooltip>
@@ -444,29 +451,30 @@ b-row<template>
                                 <span v-show="booking.invitationSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
                                 <span v-show="!booking.invitationSendingLoading">{{ booking.invitationsSent }}</span>
                               </div>
-                              <v-icon color="#444">fas fa-envelope</v-icon>
+                              <img class="mr-2" src="../assets/img/send_invitation.svg" height="25px">
                             </v-badge>
                           </v-btn>
                         </template>
                         <span>{{ $t("send_invitation_mail") }}</span>
                       </v-tooltip>
+                     
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.translator" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-trash</v-icon></v-btn>
-                        </template>
-                        <span>{{ $t("delete_booking") }}</span>
-                      </v-tooltip>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444" outlined >mdi-file-document-outline</v-icon></v-btn>
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="sendFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/send_feedback.svg" height="25px"></v-btn>
                         </template>
                         <span>{{ $t("feedback_form") }}</span>
                       </v-tooltip>
                        <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-edit</v-icon></v-btn>
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/edit_participant.svg" height="25px"></v-btn>
                         </template>
                         <span>{{ $t("edit_booking") }}</span>
+                      </v-tooltip>
+                       <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.translator" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/delete_booking.svg" height="25px"></v-btn>
+                        </template>
+                        <span>{{ $t("delete_booking") }}</span>
                       </v-tooltip>
                       
                     </td>
@@ -642,6 +650,19 @@ b-row<template>
             </div>
           </v-tab-item> -->
 
+           <!-- Tab for FeedBack Forms -->
+          <v-tab-item>
+             <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 4">
+             <div v-if="feedBacks.length > 0">
+                <div v-for="(feedback,i) in feedBacks" :key="feedback.id">
+                      <a style="border-color: #333;" class="col-0 border-right-0" @click="$router.push('/feedback-form?feedbackId=' + feedback.id+'&trainingEventId=' + trainingEvent.id)">FeedBack {{i+1}}</a> 
+                </div>
+              </div>
+             <div v-else>
+                 {{$t("noFeedBack")}}
+             </div>
+             </div>
+          </v-tab-item>
         </v-tabs-items>
     </div>
     <div>
@@ -1095,6 +1116,8 @@ b-row<template>
           <v-btn @click="addParticipant()" outlined depressed tile class="savebutton mb-2">{{ $t("add_participant") }}</v-btn>
         </div>
 
+       
+
         <!-- Search for Participants (Third Tab) -->
         <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 2">
           <h3 class="text-uppercase">{{ $t("search") }}</h3>
@@ -1158,6 +1181,43 @@ b-row<template>
         </v-card-actions>
       </v-dialog>
     </div>
+
+
+
+
+
+      <!-- Dialogs -->
+      <v-dialog v-model="openSendMailAgainFeedBackDialog">
+      <h3 >{{ $t("send_invitation_mail_again_question") }}</h3>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn @click="openSendMailAgainFeedBackDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+        <v-btn @click="sendMailToParticipantForFeedBack(sendMailAgainFeedBackBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_invitation_mail") }}</v-btn>
+      </v-card-actions>
+      </v-dialog>
+
+    <div class="text-center">
+      <v-dialog v-model="openSendMailCustomDialogFeedBack" width="500">
+        <h4>{{ $t("send_invitation_mail") }}</h4>
+        <br>
+        <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    :label="$t('email')"
+                    v-model="customEmail"
+                    ></v-text-field>
+        <v-card-actions class="px-0">
+          <v-spacer></v-spacer>
+          <v-btn @click="openSendMailCustomDialogFeedBack = false" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <v-btn @click="sendBlankMail()" outlined depressed tile class="savebutton mb-2">{{ $t("send") }}</v-btn> 
+        </v-card-actions>
+      </v-dialog>
+    </div>
+
+
+
     
 </div>
 </div>
@@ -1245,6 +1305,7 @@ export default {
       bookings: [],
       customers: [],
       users: [],
+      feedBacks:[],
       selectedLocationId: null,
 
 
@@ -1254,6 +1315,11 @@ export default {
       openSendMailCustomDialog:false,
       openSendMailAgainDialog: false,
       sendMailAgainBooking: null,
+       openSendMailCustomDialogFeedBack:false,
+      openSendMailAgainFeedBackDialog: false,
+      sendMailAgainFeedBackBooking: null,
+      openSendMailAgainFeedBackDialog: false,
+      sendMailAgainFeedBackBooking: null,
 
       openDeleteDialog:false,
 
@@ -1347,6 +1413,7 @@ export default {
     this.fetchLocations();
     this.fetchTrainings();
     this.fetchCustomers();
+    this.fetchFeedBacks();
 
     if (this.trainingEventId != null) {
       this.editMode = true;
@@ -1400,9 +1467,21 @@ export default {
   },
 
   methods: {
-    openFeedBack(booking)
+    fetchFeedBacks(){
+        var _this = this;
+        this.$axios
+          .get("/api/training/event/" + this.trainingEventId+"/feedbacks")
+          .then(function (response) {
+            for(let i=0;i<response.data.length;i++){
+               _this.feedBacks.push(response.data[i]);
+            }
+          })
+          .catch(this.onError);
+    },
+    sendFeedBack(booking)
     {
-        this.$router.push({path: '/feedback-form',query: { trainingEventId:this.trainingEventId , bookingId: booking.id }});
+      this.sendMailForFeedBack(booking);
+        //this.$router.push({path: '/feedback-form',query: { trainingEventId:this.trainingEventId , bookingId: booking.id }});
     },
     beforeOpenModal(booking) {
       this.currentBookingID=booking.id;
@@ -2262,6 +2341,38 @@ export default {
       }
       this.sendMailAgainBooking = booking;
       this.openSendMailAgainDialog = true;
+    },
+
+    sendMailForFeedBack(booking){
+      if(booking.feedbackSent == 0){
+        this.sendMailToParticipantForFeedBack(booking);
+        return;
+      }
+      this.sendMailAgainFeedBackBooking = booking;
+      this.openSendMailAgainFeedBackDialog = true;
+    },
+
+     sendMailToParticipantForFeedBack(booking) {
+      if(booking == null) return;
+
+      var _this = this;
+      this.openSendMailAgainFeedBackDialog = false;
+      this.sendMailAgainFeedBackBooking = null;
+
+      booking.feedBackSendingLoading = true;
+      this.$axios
+        .get("/api/booking/" + booking.id + "/feedback/mail")
+        .then(function (response) {
+          _this.$noty.success(
+            _this.$t("invitation_sent", { name: booking.participant.fullname })
+          );
+          booking.feedBackSendingLoading = false;
+          booking.feedbackSent++;
+        })
+        .catch(this.onError)
+        .finally(() => {
+          booking.feedBackSendingLoading = false;
+        });
     },
 
     sendMailToParticipant(booking) {

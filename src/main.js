@@ -169,6 +169,7 @@ const router = new VueRouter({
         { path: "/reset-password", component: ResetPassword, props: route => ({ token: route.query.token, newUser: route.query.newUser }) },
         { path: "/calendar", component: FullCalendarUpdated },
         { path: "/otp-verification:pathMatch(.*)*", component: OtpVerification },
+        { path: "/feedback-form:pathMatch(.*)*", component: FeedBackForm },
         { path: "/download-documents:pathMatch(.*)*", component: DownloadDocuments },
 
         { path: "/contactpersons", component: ContactPersons },
@@ -182,8 +183,7 @@ const router = new VueRouter({
         { path: "/tools/:pathMatch(.*)*", component: ToolDetails },
         { path: "/offers/:pathMatch(.*)*", component: ToolDetails },
         { path: "/contact", component: ContactForm },
-        { path: "/upload-application", component: UploadApplication },
-        { path: "/feedback-form", component: FeedBackForm },
+        { path: "/upload-application", component: UploadApplication }
     ],
     mode: "history"
 });
@@ -384,8 +384,8 @@ new Vue({
             var location = window.location.href;
             if(location.startsWith("http://") || location.startsWith("https://")) location = location.substring(location.indexOf("//") + 2);
             console.log(location);
-            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings","otp-verification","/download-documents"];
-            const unallowedRoutes = ["/request?trainingRequestId","/feedback-form"];
+            const allowedRoutes = ["/login", "/forgot-password", "/reset-password", "/categories", "/category/", "/tools", "/offers", "contactpersons", "/ourvenues", "/aboutus", "/venue?venueId", "/request", "/contact", "/imprint", "/training/", "/cookies","/trainings","otp-verification","/download-documents","/feedback-form"];
+            const unallowedRoutes = ["/request?trainingRequestId"];
             var routeAllowed = false;
 
             // Check allowedRoutes
