@@ -2394,7 +2394,6 @@ export default {
     },
     
     mounted(){
-      showLoadingCircle(true);
       this.locationFilter = "View all Trainer locations";
       this.roomlocationFilter = "View all Room locations";
       this.fdweek = this.nd.GetFirstDayOfWeek();
@@ -2468,19 +2467,11 @@ export default {
 
       this.monthCount = this.fdweek.getMonth();
       this.newYr = this.fdweek.getFullYear();
-      progressIndicator.hidden = false;
-      setTimeout(function(scope) {
-         progressIndicator.hidden = true;
-      }, 3000);
     },
     
     methods: {
       //today's date funtion
       todayClick() {
-        progressIndicator.hidden = false;
-        setTimeout(function(scope) {
-          progressIndicator.hidden = true;
-        }, 2000);
         this.yearFilter = null;
         this.monthFilter = null;
         // this.locationFilter = null;
@@ -3126,6 +3117,7 @@ export default {
 
       fetchAppointmentsByTrainers(){
         var _this = this;
+        progressIndicator.hidden = false;
         this.$axios
           .get("/api/calendar/trainer/" + this.selectedYear)
           .then(function (response) {
@@ -3137,11 +3129,15 @@ export default {
               }
             }
           })
+          .finally (function(){
+            progressIndicator.hidden = true;
+          })
           .catch(this.onError);
       },
 
       fetchAppointmentsByRooms(){
         var _this = this;
+        progressIndicator.hidden = false;
         this.$axios
           .get("/api/calendar/room/" + this.selectedYear)
           .then(function (response) {
@@ -3153,6 +3149,9 @@ export default {
                 console.log(_this.roomslocationsList);
               }
             }
+          })
+          .finally (function(){
+            progressIndicator.hidden = true;
           })
           .catch(this.onError);
       },
