@@ -460,7 +460,15 @@ b-row<template>
                      
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="sendFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/send_feedback.svg" height="25px"></v-btn>
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="sendFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on">
+                            <v-badge :value="true" color="primary" overlap>
+                              <div slot="badge">
+                                <span v-show="booking.feedBackSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
+                                <span v-show="!booking.feedBackSendingLoading">{{ booking.feedbackSent }}</span>
+                              </div>
+                             <img class="mr-2" src="../assets/img/send_feedback.svg" height="25px">
+                            </v-badge>
+                            </v-btn>
                         </template>
                         <span>{{ $t("feedback_form") }}</span>
                       </v-tooltip>
@@ -1188,17 +1196,17 @@ b-row<template>
 
       <!-- Dialogs -->
       <v-dialog v-model="openSendMailAgainFeedBackDialog">
-      <h3 >{{ $t("send_invitation_mail_again_question") }}</h3>
+      <h3 >{{ $t("send_feedback_mail_again_question") }}</h3>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="openSendMailAgainFeedBackDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-        <v-btn @click="sendMailToParticipantForFeedBack(sendMailAgainFeedBackBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_invitation_mail") }}</v-btn>
+        <v-btn @click="sendMailToParticipantForFeedBack(sendMailAgainFeedBackBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_feedback_mail") }}</v-btn>
       </v-card-actions>
       </v-dialog>
 
     <div class="text-center">
       <v-dialog v-model="openSendMailCustomDialogFeedBack" width="500">
-        <h4>{{ $t("send_invitation_mail") }}</h4>
+        <h4>{{ $t("send_feedback_mail") }}</h4>
         <br>
         <v-text-field  
                     hide-details="auto"

@@ -1,5 +1,7 @@
 {
     "de": {
+        "send_feedback_mail": "Feedback senden",
+        "send_feedback_mail_again_question": "Sind Sie sicher, dass Sie das Feedback erneut senden möchten?",
         "feedbackForms":"Feedback-Formulare",
         "noFeedBack":"Kein Feedback für diese Schulungsveranstaltung eingereicht.",
         "invalid_otp":"Die OTP-Länge sollte 6 mit den Zahlen 0-9 sein",
@@ -936,6 +938,8 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "send_feedback_mail": "Send FeedBack",
+        "send_feedback_mail_again_question": "Are you sure, that you want to send the feedback again?",
         "feedbackForms":"FeedBack Forms",
         "noFeedBack":"No Feedbacks submiited for this training event.",
         "viewAllTrainerLocation":"View All Trainer Location",
@@ -1875,6 +1879,8 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "send_feedback_mail": "Wyślij Opinie",
+        "send_feedback_mail_again_question": "Czy na pewno chcesz ponownie wysłać opinię?",
         "feedbackForms":"Formularze opinii",
         "noFeedBack":"Brak opinii na temat tego szkolenia.",
         "invalid_otp":"Długość OTP powinna wynosić 6 z cyframi 0-9",
@@ -2810,6 +2816,8 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "send_feedback_mail": "Envoyer des commentaires",
+    "send_feedback_mail_again_question": "Êtes-vous sûr(e) de vouloir envoyer à nouveau les commentaires ?",
     "feedbackForms":"Formulaires de feedback",
     "noFeedBack":"Aucun retour d'informations soumis pour cet événement de formation.",
     "invalid_otp":"La longueur de l'OTP doit être de 6 avec les chiffres 0-9",
@@ -3748,6 +3756,8 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "send_feedback_mail": "Visszajelzés küldése",
+    "send_feedback_mail_again_question": "Biztosan újra elküldi a visszajelzést?",
     "feedbackForms":"Visszajelzés űrlapok",
     "noFeedBack":"Nincs visszajelzés benyújtva ehhez a képzési eseményhez.",
     "invalid_otp": "Az OTP hossza 6-nak kell lennie, számokkal 0-9",
