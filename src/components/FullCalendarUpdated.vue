@@ -3129,10 +3129,10 @@ export default {
               }
             }
           })
+          .catch(this.onError)
           .finally (function(){
             progressIndicator.hidden = true;
-          })
-          .catch(this.onError);
+          });
       },
 
       fetchAppointmentsByRooms(){
@@ -3150,10 +3150,10 @@ export default {
               }
             }
           })
+          .catch(this.onError)
           .finally (function(){
             progressIndicator.hidden = true;
-          })
-          .catch(this.onError);
+          });
       },
 
       fetchAppointmentTypes() {
