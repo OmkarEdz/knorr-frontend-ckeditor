@@ -1,4 +1,4 @@
-b-row<template>
+<template>
 <div>
   <div>
     <div class="sixteentosix omt-6 omt-md-25"> 
@@ -1477,6 +1477,8 @@ export default {
   methods: {
     fetchFeedBacks(){
         var _this = this;
+        progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .get("/api/training/event/" + this.trainingEventId+"/feedbacks")
           .then(function (response) {
@@ -1484,7 +1486,7 @@ export default {
                _this.feedBacks.push(response.data[i]);
             }
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
     },
     sendFeedBack(booking)
     {
@@ -1535,6 +1537,8 @@ export default {
             certificateTrainingDescriptionFrench:null,
             certificateTrainingDescriptionHungarian:null
           };
+           progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/"+ booking.id)
         .then(function (response) {
@@ -1613,7 +1617,7 @@ export default {
           }
            _this.fetchBookings();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
 
         this.showModal=true;     
       },
@@ -1724,6 +1728,8 @@ export default {
 
     fetchEditingTrainingEvent() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/training/event/" + this.trainingEventId)
         .then(function (response) {
@@ -1754,11 +1760,13 @@ export default {
           _this.fetchBookings();
           _this.fetchUsers();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTrainingRequest() {
         var _this = this;
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .get("/api/training/request/" + this.trainingRequestId)
           .then(function (response) {
@@ -1768,11 +1776,13 @@ export default {
             _this.trainingEvent.maxParticipants = response.data.participantsAmount;
             _this.trainingEvent.language = response.data.language;
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       },
 
     fetchTrainings() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/training", {
           params: {
@@ -1803,11 +1813,13 @@ export default {
           }
           _this.trainings = trainings;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTrainers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/trainer")
         .then(function (response) {
@@ -1820,22 +1832,26 @@ export default {
             }
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchSingleTrainerAndPush(trainerId){
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/" + trainerId)
         .then(function (response) {
           const element = response.data;
           _this.trainers.push(element);
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchCustomers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/tenant/customers")
         .then(function (response) {
@@ -1844,11 +1860,13 @@ export default {
             _this.trainingEvent.customerId = _this.customers[0].id;
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTranslators() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/translator")
         .then(function (response) {
@@ -1861,7 +1879,7 @@ export default {
             }
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchBookings() {
@@ -1869,6 +1887,8 @@ export default {
         return;
       }
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/event/" + this.trainingEvent.id, {
           params: {
@@ -1884,21 +1904,25 @@ export default {
           _this.totalPages = response.data.totalPages;
           _this.$forceUpdate();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchLocations() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/location")
         .then(function (response) {
           _this.locations = response.data.content;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchUsers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/external", {
           params: {
@@ -1912,20 +1936,21 @@ export default {
         .then(function (response) {
           _this.users = response.data.content;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchRooms(clearCurrentRoom = false) {
       var _this = this;
       if(clearCurrentRoom) this.trainingEvent.roomId = null;
       if(this.selectedLocationId == null) return;
-
+        progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/room/location/id/" + this.selectedLocationId)
         .then(function (response) {
           _this.rooms = response.data.content;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     saveTrainingEvent() {
@@ -2069,6 +2094,8 @@ export default {
 
       if (this.editMode) {
         // Edit Training
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .put("/api/training/event/" + this.trainingEventId, trainingEvent)
           .then(function (response) {
@@ -2077,11 +2104,13 @@ export default {
             );
             _this.$router.push("/training-events");
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       } else {
         // Create new Training
 
         const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .post(url, trainingEvent)
           .then(function (response) {
@@ -2092,7 +2121,7 @@ export default {
             _this.editMode = true;
             _this.fetchEditingTrainingEvent();
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       }
     },
 
@@ -2236,6 +2265,8 @@ export default {
 
       if (this.editMode) {
         // Edit Training
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .put("/api/training/event/" + this.trainingEventId, trainingEvent)
           .then(function (response) {
@@ -2263,12 +2294,13 @@ export default {
             
            
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       } else {
         // Create new Training
 
         const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
-
+ progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .post(url, trainingEvent)
           .then(function (response) {
@@ -2297,7 +2329,7 @@ export default {
             _this.editMode = true;
             _this.fetchEditingTrainingEvent();
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       }
     },
    
@@ -2308,7 +2340,8 @@ export default {
       }
 
       var _this = this;
-
+ progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .delete("/api/training/event/" + this.trainingEventId)
         .then(function (response) {
@@ -2317,7 +2350,7 @@ export default {
           );
           _this.$router.push("/training-events");
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     onFinally() {
@@ -2368,6 +2401,8 @@ export default {
       this.sendMailAgainFeedBackBooking = null;
 
       booking.feedBackSendingLoading = true;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/" + booking.id + "/feedback/mail")
         .then(function (response) {
@@ -2379,6 +2414,7 @@ export default {
         })
         .catch(this.onError)
         .finally(() => {
+          showLoadingCircle(false);
           booking.feedBackSendingLoading = false;
         });
     },
@@ -2391,6 +2427,8 @@ export default {
       this.sendMailAgainBooking = null;
 
       booking.invitationSendingLoading = true;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/" + booking.id + "/mail")
         .then(function (response) {
@@ -2402,6 +2440,7 @@ export default {
         })
         .catch(this.onError)
         .finally(() => {
+          showLoadingCircle(false);
           booking.invitationSendingLoading = false;
         });
     },
@@ -2413,6 +2452,8 @@ export default {
         email: this.customEmail
       }
       const email = this.customEmail;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .post("/api/booking/mail/blank", dto)
         .then(function (response) {
@@ -2423,11 +2464,14 @@ export default {
         })
         .catch(this.onError)
         .finally(() => {
+          showLoadingCircle(false);
         });
     },
 
     deleteBooking(booking) {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .delete("/api/booking/" + booking.id)
         .then(function (response) {
@@ -2436,7 +2480,7 @@ export default {
           );
           _this.fetchBookings();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
 
@@ -2453,6 +2497,8 @@ export default {
       var _this = this;
       this.adduser.trainingEventId = this.trainingEvent.id;
       const username = this.adduser.firstname + " " + this.adduser.lastname;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .post("/api/booking/", this.adduser)
         .then(function (response) {
@@ -2474,7 +2520,7 @@ export default {
 
           document.getElementById("add_participant_firstname").focus();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
     editParticipant()
     {
@@ -2558,6 +2604,8 @@ export default {
             certificateTrainingDescriptionFrench:this.edituser.certificateTrainingDescriptionFrench,
             certificateTrainingDescriptionHungarian:this.edituser.certificateTrainingDescriptionHungarian
       }
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .put("/api/booking/"+ this.currentBookingID, request)
         .then(function (response) {
@@ -2608,7 +2656,7 @@ export default {
           };
         
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
         
          this.showModal=false;
        
@@ -2624,6 +2672,8 @@ export default {
      */
     addParticipantWithUser(user){
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .post("/api/booking/user", {
           userId: user.id,
@@ -2637,7 +2687,7 @@ export default {
           _this.fetchBookings();
           _this.fetchUsers();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     /**
