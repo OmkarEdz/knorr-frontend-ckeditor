@@ -1,4 +1,4 @@
-b-row<template>
+<template>
 <div>
   <div>
     <div class="sixteentosix omt-6 omt-md-25"> 
@@ -57,6 +57,13 @@ b-row<template>
         :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
       >
         {{ $t("add_participants") }}
+      </v-tab>
+        <v-tab
+        class="LanguageselectTab"
+        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT')"
+      >
+        {{ $t("feedbackForms") }}
       </v-tab>
     </v-tabs>
     <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-0">
@@ -432,7 +439,7 @@ b-row<template>
                     <td class="pb-1">
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn @click="showCertificate(booking.id)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-file-pdf</v-icon></v-btn>
+                          <v-btn @click="showCertificate(booking.id)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/show_certiicate.svg" height="25px"></v-btn>
                         </template>
                         <span>{{ $t("show_certificate") }}</span>
                       </v-tooltip>
@@ -444,29 +451,38 @@ b-row<template>
                                 <span v-show="booking.invitationSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
                                 <span v-show="!booking.invitationSendingLoading">{{ booking.invitationsSent }}</span>
                               </div>
-                              <v-icon color="#444">fas fa-envelope</v-icon>
+                              <img class="mr-2" src="../assets/img/send_invitation.svg" height="25px">
                             </v-badge>
                           </v-btn>
                         </template>
                         <span>{{ $t("send_invitation_mail") }}</span>
                       </v-tooltip>
+                     
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.translator" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-trash</v-icon></v-btn>
-                        </template>
-                        <span>{{ $t("delete_booking") }}</span>
-                      </v-tooltip>
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="openFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444" outlined >mdi-file-document-outline</v-icon></v-btn>
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="sendFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on">
+                            <v-badge :value="true" color="primary" overlap>
+                              <div slot="badge">
+                                <span v-show="booking.feedBackSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
+                                <span v-show="!booking.feedBackSendingLoading">{{ booking.feedbackSent }}</span>
+                              </div>
+                             <img class="mr-2" src="../assets/img/send_feedback.svg" height="25px">
+                            </v-badge>
+                            </v-btn>
                         </template>
                         <span>{{ $t("feedback_form") }}</span>
                       </v-tooltip>
                        <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><v-icon color="#444">fas fa-edit</v-icon></v-btn>
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator" @click="beforeOpenModal(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/edit_participant.svg" height="25px"></v-btn>
                         </template>
                         <span>{{ $t("edit_booking") }}</span>
+                      </v-tooltip>
+                       <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.translator" @click="deleteBooking(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/delete_booking.svg" height="25px"></v-btn>
+                        </template>
+                        <span>{{ $t("delete_booking") }}</span>
                       </v-tooltip>
                       
                     </td>
@@ -642,6 +658,19 @@ b-row<template>
             </div>
           </v-tab-item> -->
 
+           <!-- Tab for FeedBack Forms -->
+          <v-tab-item>
+             <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 4">
+             <div v-if="feedBacks.length > 0">
+                <div v-for="(feedback,i) in feedBacks" :key="feedback.id">
+                      <a style="border-color: #333;" class="col-0 border-right-0" @click="$router.push('/feedback-form?feedbackId=' + feedback.id+'&trainingEventId=' + trainingEvent.id)">FeedBack {{i+1}}</a> 
+                </div>
+              </div>
+             <div v-else>
+                 {{$t("noFeedBack")}}
+             </div>
+             </div>
+          </v-tab-item>
         </v-tabs-items>
     </div>
     <div>
@@ -1095,6 +1124,8 @@ b-row<template>
           <v-btn @click="addParticipant()" outlined depressed tile class="savebutton mb-2">{{ $t("add_participant") }}</v-btn>
         </div>
 
+       
+
         <!-- Search for Participants (Third Tab) -->
         <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 2">
           <h3 class="text-uppercase">{{ $t("search") }}</h3>
@@ -1158,6 +1189,43 @@ b-row<template>
         </v-card-actions>
       </v-dialog>
     </div>
+
+
+
+
+
+      <!-- Dialogs -->
+      <v-dialog v-model="openSendMailAgainFeedBackDialog">
+      <h3 >{{ $t("send_feedback_mail_again_question") }}</h3>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn @click="openSendMailAgainFeedBackDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+        <v-btn @click="sendMailToParticipantForFeedBack(sendMailAgainFeedBackBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_feedback_mail") }}</v-btn>
+      </v-card-actions>
+      </v-dialog>
+
+    <div class="text-center">
+      <v-dialog v-model="openSendMailCustomDialogFeedBack" width="500">
+        <h4>{{ $t("send_feedback_mail") }}</h4>
+        <br>
+        <v-text-field  
+                    hide-details="auto"
+                    class="datainput justify-content-end align-self-center pb-1"
+                    dense
+                    outlined
+                    :label="$t('email')"
+                    v-model="customEmail"
+                    ></v-text-field>
+        <v-card-actions class="px-0">
+          <v-spacer></v-spacer>
+          <v-btn @click="openSendMailCustomDialogFeedBack = false" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
+          <v-btn @click="sendBlankMail()" outlined depressed tile class="savebutton mb-2">{{ $t("send") }}</v-btn> 
+        </v-card-actions>
+      </v-dialog>
+    </div>
+
+
+
     
 </div>
 </div>
@@ -1245,6 +1313,7 @@ export default {
       bookings: [],
       customers: [],
       users: [],
+      feedBacks:[],
       selectedLocationId: null,
 
 
@@ -1254,6 +1323,11 @@ export default {
       openSendMailCustomDialog:false,
       openSendMailAgainDialog: false,
       sendMailAgainBooking: null,
+       openSendMailCustomDialogFeedBack:false,
+      openSendMailAgainFeedBackDialog: false,
+      sendMailAgainFeedBackBooking: null,
+      openSendMailAgainFeedBackDialog: false,
+      sendMailAgainFeedBackBooking: null,
 
       openDeleteDialog:false,
 
@@ -1347,6 +1421,7 @@ export default {
     this.fetchLocations();
     this.fetchTrainings();
     this.fetchCustomers();
+    this.fetchFeedBacks();
 
     if (this.trainingEventId != null) {
       this.editMode = true;
@@ -1400,9 +1475,23 @@ export default {
   },
 
   methods: {
-    openFeedBack(booking)
+    fetchFeedBacks(){
+        var _this = this;
+        progressIndicator.hidden = false;
+        showLoadingCircle(true);
+        this.$axios
+          .get("/api/training/event/" + this.trainingEventId+"/feedbacks")
+          .then(function (response) {
+            for(let i=0;i<response.data.length;i++){
+               _this.feedBacks.push(response.data[i]);
+            }
+          })
+          .catch(this.onError).finally(this.onFinally);
+    },
+    sendFeedBack(booking)
     {
-        this.$router.push({path: '/feedback-form',query: { trainingEventId:this.trainingEventId , bookingId: booking.id }});
+      this.sendMailForFeedBack(booking);
+        //this.$router.push({path: '/feedback-form',query: { trainingEventId:this.trainingEventId , bookingId: booking.id }});
     },
     beforeOpenModal(booking) {
       this.currentBookingID=booking.id;
@@ -1448,6 +1537,8 @@ export default {
             certificateTrainingDescriptionFrench:null,
             certificateTrainingDescriptionHungarian:null
           };
+           progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/"+ booking.id)
         .then(function (response) {
@@ -1526,7 +1617,7 @@ export default {
           }
            _this.fetchBookings();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
 
         this.showModal=true;     
       },
@@ -1637,6 +1728,8 @@ export default {
 
     fetchEditingTrainingEvent() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/training/event/" + this.trainingEventId)
         .then(function (response) {
@@ -1667,11 +1760,13 @@ export default {
           _this.fetchBookings();
           _this.fetchUsers();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTrainingRequest() {
         var _this = this;
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .get("/api/training/request/" + this.trainingRequestId)
           .then(function (response) {
@@ -1681,11 +1776,13 @@ export default {
             _this.trainingEvent.maxParticipants = response.data.participantsAmount;
             _this.trainingEvent.language = response.data.language;
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       },
 
     fetchTrainings() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/training", {
           params: {
@@ -1716,11 +1813,13 @@ export default {
           }
           _this.trainings = trainings;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTrainers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/trainer")
         .then(function (response) {
@@ -1733,22 +1832,26 @@ export default {
             }
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchSingleTrainerAndPush(trainerId){
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/" + trainerId)
         .then(function (response) {
           const element = response.data;
           _this.trainers.push(element);
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchCustomers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/tenant/customers")
         .then(function (response) {
@@ -1757,11 +1860,13 @@ export default {
             _this.trainingEvent.customerId = _this.customers[0].id;
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTranslators() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/translator")
         .then(function (response) {
@@ -1774,7 +1879,7 @@ export default {
             }
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchBookings() {
@@ -1782,6 +1887,8 @@ export default {
         return;
       }
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/event/" + this.trainingEvent.id, {
           params: {
@@ -1797,21 +1904,25 @@ export default {
           _this.totalPages = response.data.totalPages;
           _this.$forceUpdate();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchLocations() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/location")
         .then(function (response) {
           _this.locations = response.data.content;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchUsers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/external", {
           params: {
@@ -1825,20 +1936,21 @@ export default {
         .then(function (response) {
           _this.users = response.data.content;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchRooms(clearCurrentRoom = false) {
       var _this = this;
       if(clearCurrentRoom) this.trainingEvent.roomId = null;
       if(this.selectedLocationId == null) return;
-
+        progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/room/location/id/" + this.selectedLocationId)
         .then(function (response) {
           _this.rooms = response.data.content;
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     saveTrainingEvent() {
@@ -1982,6 +2094,8 @@ export default {
 
       if (this.editMode) {
         // Edit Training
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .put("/api/training/event/" + this.trainingEventId, trainingEvent)
           .then(function (response) {
@@ -1990,11 +2104,13 @@ export default {
             );
             _this.$router.push("/training-events");
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       } else {
         // Create new Training
 
         const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .post(url, trainingEvent)
           .then(function (response) {
@@ -2005,7 +2121,7 @@ export default {
             _this.editMode = true;
             _this.fetchEditingTrainingEvent();
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       }
     },
 
@@ -2149,6 +2265,8 @@ export default {
 
       if (this.editMode) {
         // Edit Training
+         progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .put("/api/training/event/" + this.trainingEventId, trainingEvent)
           .then(function (response) {
@@ -2176,12 +2294,13 @@ export default {
             
            
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       } else {
         // Create new Training
 
         const url = this.trainingRequestId == null ? "/api/training/event" : "/api/training/event/training-request/" + this.trainingRequestId;
-
+ progressIndicator.hidden = false;
+        showLoadingCircle(true);
         this.$axios
           .post(url, trainingEvent)
           .then(function (response) {
@@ -2210,7 +2329,7 @@ export default {
             _this.editMode = true;
             _this.fetchEditingTrainingEvent();
           })
-          .catch(this.onError);
+          .catch(this.onError).finally(this.onFinally);
       }
     },
    
@@ -2221,7 +2340,8 @@ export default {
       }
 
       var _this = this;
-
+ progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .delete("/api/training/event/" + this.trainingEventId)
         .then(function (response) {
@@ -2230,7 +2350,7 @@ export default {
           );
           _this.$router.push("/training-events");
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     onFinally() {
@@ -2264,6 +2384,41 @@ export default {
       this.openSendMailAgainDialog = true;
     },
 
+    sendMailForFeedBack(booking){
+      if(booking.feedbackSent == 0){
+        this.sendMailToParticipantForFeedBack(booking);
+        return;
+      }
+      this.sendMailAgainFeedBackBooking = booking;
+      this.openSendMailAgainFeedBackDialog = true;
+    },
+
+     sendMailToParticipantForFeedBack(booking) {
+      if(booking == null) return;
+
+      var _this = this;
+      this.openSendMailAgainFeedBackDialog = false;
+      this.sendMailAgainFeedBackBooking = null;
+
+      booking.feedBackSendingLoading = true;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
+      this.$axios
+        .get("/api/booking/" + booking.id + "/feedback/mail")
+        .then(function (response) {
+          _this.$noty.success(
+            _this.$t("invitation_sent", { name: booking.participant.fullname })
+          );
+          booking.feedBackSendingLoading = false;
+          booking.feedbackSent++;
+        })
+        .catch(this.onError)
+        .finally(() => {
+          showLoadingCircle(false);
+          booking.feedBackSendingLoading = false;
+        });
+    },
+
     sendMailToParticipant(booking) {
       if(booking == null) return;
 
@@ -2272,6 +2427,8 @@ export default {
       this.sendMailAgainBooking = null;
 
       booking.invitationSendingLoading = true;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/booking/" + booking.id + "/mail")
         .then(function (response) {
@@ -2283,6 +2440,7 @@ export default {
         })
         .catch(this.onError)
         .finally(() => {
+          showLoadingCircle(false);
           booking.invitationSendingLoading = false;
         });
     },
@@ -2294,6 +2452,8 @@ export default {
         email: this.customEmail
       }
       const email = this.customEmail;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .post("/api/booking/mail/blank", dto)
         .then(function (response) {
@@ -2304,11 +2464,14 @@ export default {
         })
         .catch(this.onError)
         .finally(() => {
+          showLoadingCircle(false);
         });
     },
 
     deleteBooking(booking) {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .delete("/api/booking/" + booking.id)
         .then(function (response) {
@@ -2317,7 +2480,7 @@ export default {
           );
           _this.fetchBookings();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
 
@@ -2334,6 +2497,8 @@ export default {
       var _this = this;
       this.adduser.trainingEventId = this.trainingEvent.id;
       const username = this.adduser.firstname + " " + this.adduser.lastname;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .post("/api/booking/", this.adduser)
         .then(function (response) {
@@ -2355,7 +2520,7 @@ export default {
 
           document.getElementById("add_participant_firstname").focus();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
     editParticipant()
     {
@@ -2439,6 +2604,8 @@ export default {
             certificateTrainingDescriptionFrench:this.edituser.certificateTrainingDescriptionFrench,
             certificateTrainingDescriptionHungarian:this.edituser.certificateTrainingDescriptionHungarian
       }
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .put("/api/booking/"+ this.currentBookingID, request)
         .then(function (response) {
@@ -2489,7 +2656,7 @@ export default {
           };
         
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
         
          this.showModal=false;
        
@@ -2505,6 +2672,8 @@ export default {
      */
     addParticipantWithUser(user){
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .post("/api/booking/user", {
           userId: user.id,
@@ -2518,7 +2687,7 @@ export default {
           _this.fetchBookings();
           _this.fetchUsers();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     /**

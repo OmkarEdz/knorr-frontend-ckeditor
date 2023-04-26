@@ -178,6 +178,9 @@ export default {
   },
 
   methods: {
+    onFinally() {
+      showLoadingCircle(false);
+    },
     previousPage() {
       this.page = this.page - 1;
       this.fetchTrainingEvents();
@@ -199,6 +202,8 @@ export default {
     },
     fetchTrainingEvents() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get(this.routes.trainingEvents, {
           params: {
@@ -228,11 +233,13 @@ export default {
           // }
           _this.$forceUpdate();
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchTrainers() {
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/trainer")
         .then(function (response) {
@@ -245,18 +252,20 @@ export default {
             }
           }
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
 
     fetchSingleTrainerAndPush(trainerId){
       var _this = this;
+       progressIndicator.hidden = false;
+        showLoadingCircle(true);
       this.$axios
         .get("/api/user/" + trainerId)
         .then(function (response) {
           const element = response.data;
           _this.trainers.push(element);
         })
-        .catch(this.onError);
+        .catch(this.onError).finally(this.onFinally);
     },
     
     updatePage() {
