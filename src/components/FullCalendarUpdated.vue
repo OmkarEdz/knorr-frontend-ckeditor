@@ -3344,10 +3344,12 @@ export default {
               // _this.fetchAppointments();
               _this.fetchAppointmentsByTrainers();
               _this.fetchAppointmentsByRooms();
-              progressIndicator.hidden = true;
               document.getElementById('loadingCircle').classList.remove('zIndex');
             })
-            .catch(this.onError);
+            .catch(this.onError)
+            .finally (function(){
+              progressIndicator.hidden = true;
+            });
         }else{
           progressIndicator.hidden = false;  
           document.getElementById('loadingCircle').classList.add('zIndex');
@@ -3359,10 +3361,12 @@ export default {
               // _this.fetchAppointments();
               _this.fetchAppointmentsByTrainers();
               _this.fetchAppointmentsByRooms();
-              progressIndicator.hidden = true;
               document.getElementById('loadingCircle').classList.remove('zIndex');
             })
-            .catch(this.onError);
+            .catch(this.onError)
+            .finally (function(){
+              progressIndicator.hidden = true;
+            });
         }
       },
 
@@ -3381,10 +3385,12 @@ export default {
             _this.openAddDialog = false;
             _this.$noty.success(_this.$t("appointment_deleted"));
             _this.fetchAppointments();
-            progressIndicator.hidden = true;
             document.getElementById('loadingCircle').classList.remove('zIndex');
           })
-          .catch(this.onError);
+          .catch(this.onError)
+          .finally (function(){
+            progressIndicator.hidden = true;
+          });
       },
 
       getTrainerById(trainerId){
