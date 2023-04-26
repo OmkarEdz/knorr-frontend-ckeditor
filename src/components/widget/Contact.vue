@@ -9,7 +9,7 @@
         <span class="font-blue">{{ $t("contact_available") }} 07:00 – 17:00 {{ $t("oclock") }}.</span>
         <p class="text-dark">Georg-Knorr Straße 4<br>
         D-12681 Berlin<br><br>
-        <a class="wordbreak font-grey" href="mailto:trainingsakademie.railservices.germany@knorr-bremse.com">trainingsakademie.railservices.germany@knorr-bremse.com</a><br>
+        <a class="wordbreak font-grey" href="mailto:TrainingAcademy@knorr-bremse.com">TrainingAcademy@knorr-bremse.com</a><br>
         <a class="font-grey" href="https://rail.knorr-bremse.com/de/de/" target="_blank">rail.knorr-bremse.com</a><br>
         <a class="font-grey" href="/contact">{{ $t("to_contact_form") }}</a></p>
         <span v-if="showBuildNumber && build_number != null" class="font-grey">{{ build_number }}</span>
