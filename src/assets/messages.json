@@ -1018,6 +1018,7 @@
         "popular":"Popular Training",
         "cancelled":"(CANCELLED)",
         "cancelledtrainingevents":"Cancelled Events",
+        "drafted":"(DRAFTED)",
         "draftedTrainingEvents":"Drafted Events",
         "viewCancelledEvents":"View Cancelled Events",
         "viewDraftedEvents":"View Drafted Events",
