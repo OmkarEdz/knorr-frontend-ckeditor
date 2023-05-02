@@ -2900,18 +2900,3 @@ export default {
   },
 };
 </script>
-<style >
-.list-component {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.list-component .v-list-flex {
-  display: flex;
-  flex-wrap: wrap;
-}
-.list-component v-list-item {
-  flex: 0 0 auto;
-  margin-right: 16px; /* adjust as needed */
-}
-</style>
