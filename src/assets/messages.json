@@ -1,6 +1,6 @@
 {
     "de": {
-        "noOpenTrainings": "Derzeit sind keine offenen Schulungen verfügbar",
+        "noOpenTrainings": "Derzeit sind keine offenen Schulungen verfügbar.Bitte senden Sie uns eine Schulungsanfrage, wenn Sie eine spezialisierte Schulung benötigen.",
         "seatShare":"Sitzplatzanteil",
         "customerName":"Kundenname",
         "availableSeats":"Verfügbare Sitze:",
@@ -946,7 +946,7 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
-        "noOpenTrainings":"There are no opening trainings available currently",
+        "noOpenTrainings":"There are no opening trainings available currently.Please send us a training request if you are in need of a specialized training.",
         "seatShare":"Seat Share",
         "customerName":"Customer Name",
         "availableSeats":"Available Seats:",
@@ -1896,7 +1896,7 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
-        "noOpenTrainings": "Aktualnie nie ma dostępnych otwartych szkoleń",
+        "noOpenTrainings": "Aktualnie nie ma dostępnych otwartych szkoleń.Prosimy o przesłanie zgłoszenia szkoleniowego, jeśli potrzebują Państwo specjalistycznej szkolenia.",
         "seatShare":"Udział w miejscach siedzących",
         "customerName":"Nazwa klienta",
         "availableSeats":"Dostępne miejsca:",
@@ -2841,7 +2841,7 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
-    "noOpenTrainings": "Il n'y a actuellement aucune formation disponible",
+    "noOpenTrainings": "Il n'y a actuellement aucune formation disponible.Veuillez nous envoyer une demande de formation si vous avez besoin d'une formation spécialisée.",
     "seatShare":"Part de sièges",
     "customerName":"Nom du client",
     "availableSeats":"Sièges disponibles :",
@@ -3789,7 +3789,7 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
-    "noOpenTrainings": "Jelenleg nincsenek elérhető nyitott képzések",
+    "noOpenTrainings": "Jelenleg nincsenek elérhető nyitott képzések.Kérjük, küldje el nekünk a képzési kérelmet, ha szakosodott képzésre van szüksége.",
     "seatShare":"Ülésrész",
     "customerName":"Ügyfél neve",
     "availableSeats":"Elérhető ülések:",
