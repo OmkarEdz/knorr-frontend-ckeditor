@@ -2517,6 +2517,20 @@ div.bg-blue{
     
   /* EDZ start here */
 
+  .list-component {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .list-component .v-list-flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .list-component v-list-item {
+    flex: 0 0 auto;
+    margin-right: 16px; /* adjust as needed */
+  }
+
   #feedbackform .table-bordered {
     border: 2px solid #444;
   }
