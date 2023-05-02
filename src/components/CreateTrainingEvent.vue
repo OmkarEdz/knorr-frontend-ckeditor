@@ -1202,12 +1202,20 @@
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn @click="addParticipant()" outlined depressed tile class="savebutton mb-2">{{ $t("add_participant") }}</v-btn>
         </div>
+ <!-- Actions for fourth Tab -->
+ <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 4">
+          <h4 class="text-uppercase">{{ $t("actions") }}</h4>
+          <div class="right-side divider"></div>
+          <div class="mt-6"></div>
+           <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
+        </div>
 
+  <!-- Actions for fifth Tab -->
   <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 5">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-           <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+           <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
         <v-btn @click="seatShareSave()" outlined depressed tile class="save mb-2">{{ $t("save") }}</v-btn>
         </div>
        
