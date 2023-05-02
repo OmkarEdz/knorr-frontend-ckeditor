@@ -62,9 +62,9 @@ mounted(){
    fetchTrainings() {
         var _this = this;
         this.$axios
-          .get("/api/training")
+          .get("/api/training/opentrainings")
           .then(function (response) {
-            const trainings = response.data.content;
+            const trainings = response.data;
             for (let i = 0; i < trainings.length; i++) {
               const training = trainings[i];
               _this.trainings.push({
