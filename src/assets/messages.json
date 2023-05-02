@@ -1,5 +1,12 @@
 {
     "de": {
+        "seatShare":"Sitzplatzanteil",
+        "customerName":"Kundenname",
+        "availableSeats":"Verfügbare Sitze:",
+        "shareSeatsWith":"Sitze teilen mit",
+        "enterSeats":"Anzahl der Sitze eingeben",
+        "add":"Hinzufügen",
+        "sharedSeatsWithBelowCompanies":"Sitze geteilt mit folgenden Unternehmen:",
         "send_feedback_mail": "Feedback senden",
         "send_feedback_mail_again_question": "Sind Sie sicher, dass Sie das Feedback erneut senden möchten?",
         "feedbackForms":"Feedback-Formulare",
@@ -938,10 +945,17 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "seatShare":"Seat Share",
+        "customerName":"Customer Name",
+        "availableSeats":"Available Seats:",
+        "shareSeatsWith":"Share Seats with",
+        "enterSeats":"Enter No. of Seats",
+        "add":"Add",
+        "sharedSeatsWithBelowCompanies":"Shared seats with below companies:",
         "send_feedback_mail": "Send FeedBack",
         "send_feedback_mail_again_question": "Are you sure, that you want to send the feedback again?",
         "feedbackForms":"FeedBack Forms",
-        "noFeedBack":"No Feedbacks submiited for this training event.",
+        "noFeedBack":"No Feedbacks submitted for this training event.",
         "viewAllTrainerLocation":"View All Trainer Location",
         "viewAllRoomLocation":"View All Room Location",
         "invalid_otp":"The otp length should be 6 with numbers 0-9",
@@ -1879,6 +1893,13 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "seatShare":"Udział w miejscach siedzących",
+        "customerName":"Nazwa klienta",
+        "availableSeats":"Dostępne miejsca:",
+        "shareSeatsWith":"Dziel się miejscami z",
+        "enterSeats":"Wpisz liczbę miejsc",
+        "add":"Dodaj",
+        "sharedSeatsWithBelowCompanies":"Udostępnione miejsca innym firmom:",
         "send_feedback_mail": "Wyślij Opinie",
         "send_feedback_mail_again_question": "Czy na pewno chcesz ponownie wysłać opinię?",
         "feedbackForms":"Formularze opinii",
@@ -2816,6 +2837,13 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "seatShare":"Part de sièges",
+    "customerName":"Nom du client",
+    "availableSeats":"Sièges disponibles :",
+    "shareSeatsWith":"Partager des sièges avec",
+    "enterSeats":"Entrer le nombre de sièges",
+    "add":"Ajouter",
+    "sharedSeatsWithBelowCompanies":"Sièges partagés avec les entreprises ci-dessous :",
     "send_feedback_mail": "Envoyer des commentaires",
     "send_feedback_mail_again_question": "Êtes-vous sûr(e) de vouloir envoyer à nouveau les commentaires ?",
     "feedbackForms":"Formulaires de feedback",
@@ -3756,6 +3784,13 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "seatShare":"Ülésrész",
+    "customerName":"Ügyfél neve",
+    "availableSeats":"Elérhető ülések:",
+    "shareSeatsWith":"Ülések megosztása",
+    "enterSeats":"Ülések száma megadása",
+    "add":"Hozzáadás",
+    "sharedSeatsWithBelowCompanies":"Megosztott ülések az alábbi cégekkel:",
     "send_feedback_mail": "Visszajelzés küldése",
     "send_feedback_mail_again_question": "Biztosan újra elküldi a visszajelzést?",
     "feedbackForms":"Visszajelzés űrlapok",

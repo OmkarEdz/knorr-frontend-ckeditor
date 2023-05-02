@@ -60,10 +60,17 @@
       </v-tab>
         <v-tab
         class="LanguageselectTab"
-        :disabled="!$rights.includes('CREATE_TRAINING_EVENT')"
-        :hidden="!$rights.includes('CREATE_TRAINING_EVENT')"
+        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
       >
         {{ $t("feedbackForms") }}
+      </v-tab>
+       <v-tab
+        class="LanguageselectTab"
+        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
+      >
+        {{ $t("seatShare") }}
       </v-tab>
     </v-tabs>
     <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-0">
@@ -387,7 +394,18 @@
                       <span class="headlinecolor text-h6"> {{$t("further_information")}}</span>
                   </div>
                   <div class="col-md-12" v-if="trainingEvent.customerId != null"><b>{{ $t("customer") }}:</b> {{ getArrayElementById("customers", trainingEvent.customerId).name }}</div>
-                  
+                   <div class="col-md-12" ><b>{{ $t("sharedSeatsWithBelowCompanies") }}:</b>  
+                   <div class="list-component">
+                   <v-list class="v-list-flex">
+                   <v-list-item v-for="(item, index) in seatShare" :key="index">
+                     <v-list-item-content>
+                       {{ displaySeatShare(item) }}
+                     </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+               </div>
+               </div>
+                 <div class="col-md-12"> <b> {{ $t("availableSeats") }}</b>{{trainingEvent.freeSpaces - seatOccupied}}</div>
                   <div class="col-md-12" v-show="trainingEvent.onlineLink != null"><b>{{ $t("onlineLink") }}:</b>&nbsp;<a :href="clickableOnlineLink" target="_blank">{{ trainingEvent.onlineLink }}</a></div>
                   <div class="col-md-12" v-if="trainingEvent.documents != null && trainingEvent.documents.length > 0">
                     <b>{{ $t("documents_for_download") }}:</b><br><br>
@@ -671,6 +689,67 @@
              </div>
              </div>
           </v-tab-item>
+             <!-- Tab for Seat Share -->
+          <v-tab-item>
+            
+             <div class="headlinecolor text-h6 col-md-6 "><b>{{$t("customerName")}}</b> <span class="text-dark pl-2 " v-if="trainingEvent.tenant && trainingEvent.tenant.name">{{trainingEvent.tenant.name}}</span></div>
+
+            <div class="headlinecolor col-md-6 ">{{$t("availableSeats")}}{{trainingEvent.freeSpaces - seatOccupied}}</div>
+             <div class="right-side-block d-flex" v-show="trainingEventTab == 5">
+                <div v-show="$rights.includes('TENANT_INDEPENDENCE')" class="col-sm-6 col-md-6">
+
+
+                        <v-autocomplete  
+                        v-model="seatTenant"
+                        hide-details="auto"
+                        class="datainput justify-content-end searchbar align-self-center pb-1 "
+                        :items="seatShareCustomers"
+                        item-text='name'
+                        item-value='id'
+                        style="padding-right:2px"
+                        dense
+                        outlined
+                        :label="$t('shareSeatsWith') + '*'"/>
+                </div>
+                        
+                <div class="col-sm-4 col-md-4">
+                        <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('enterSeats') + '*'"
+                        type="number"
+                        v-model="seatNumber"
+                        :value="0"
+                        ></v-text-field>
+                </div>
+               
+                <div class="col-sm-4 col-md-4" > <v-btn :disabled="seatNumber===null || seatTenant===null" @click="addSeatShare()" outlined depressed tile class="cancelbutton"> {{ $t("add") }}  <v-icon>mdi-plus</v-icon></v-btn></div>
+                    
+                   
+           
+             </div>
+
+              <div class="col-sm-12 col-md-12" v-if="seatShare.length > 0">
+               <template>
+                <p class="mb-2"> {{$t("sharedSeatsWithBelowCompanies")}}</p>
+               <div class="list-component">
+                <v-list class="v-list-flex">
+                   <v-list-item v-for="(item, index) in seatShare" :key="index">
+                     <v-list-item-content>
+                       {{ displaySeatShare(item) }}
+                     </v-list-item-content>
+                     <v-list-item-action>
+                       <v-icon @click="remove(index)">mdi-close</v-icon>
+                     </v-list-item-action>
+                    </v-list-item>
+                </v-list>
+               </div>
+               </template>
+              </div>
+          </v-tab-item>
+       
         </v-tabs-items>
     </div>
     <div>
@@ -1124,6 +1203,13 @@
           <v-btn @click="addParticipant()" outlined depressed tile class="savebutton mb-2">{{ $t("add_participant") }}</v-btn>
         </div>
 
+  <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 5">
+          <h4 class="text-uppercase">{{ $t("actions") }}</h4>
+          <div class="right-side divider"></div>
+          <div class="mt-6"></div>
+           <v-btn @click="afterCloseModal()" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+        <v-btn @click="seatShareSave()" outlined depressed tile class="save mb-2">{{ $t("save") }}</v-btn>
+        </div>
        
 
         <!-- Search for Participants (Third Tab) -->
@@ -1250,6 +1336,10 @@ export default {
 
   data() {
     return {
+        seatOccupied:0,
+        seatTenant:null,
+        seatNumber:null,
+        seatShare:[],
        eventStatus:"normal",
         customToolbar: [
           ["bold", "italic", "underline"],
@@ -1312,6 +1402,7 @@ export default {
       trainings: [],
       bookings: [],
       customers: [],
+      seatShareCustomers:[],
       users: [],
       feedBacks:[],
       selectedLocationId: null,
@@ -1357,6 +1448,7 @@ export default {
         endDate: null,
         endTime: null,
         comment: null,
+        seatShare:[]
       },
 
       adduser: {
@@ -1448,6 +1540,7 @@ export default {
   },
 
   computed: {
+  
     clickableOnlineLink: {
       get(){
         if(this.trainingEvent == null || this.trainingEvent.onlineLink == null) return null;
@@ -1475,8 +1568,79 @@ export default {
   },
 
   methods: {
+   displaySeatShare(share) {
+     return `${share.company} : ${share.seatAlloted} Seats `;
+  },
+
+   seatShareSave(){
+    let _this=this;
+     if (_this.seatShare === null || _this.seatShare.length===0) {
+        this.$noty.error(this.$t("No Seats Shared to Save", { name: this.$t("language") }));
+        return;
+      }
+
+      _this.trainingEvent.seatShare=_this.seatShare;
+
+      if (this.editMode) {
+        // Edit Training
+        progressIndicator.hidden = false;
+        showLoadingCircle(true);
+        this.$axios
+          .put("/api/training/event/" + _this.trainingEventId, _this.trainingEvent)
+          .then(function (response) {
+            _this.$noty.success(
+              _this.$t("seatShared", { name: response.data.designation })
+            );
+            _this.$router.push("/training-events");
+          })
+          .catch(this.onError).finally(this.onFinally);
+      } 
+  },
+
+  remove(index) {
+    let _this=this;
+    let removedTenantId=this.seatShare[index].tenant.id;
+    _this.customers.forEach((customer) => {
+                   if (customer.id === removedTenantId ) {
+                          _this.seatShareCustomers.push(customer);
+                }
+      });
+             
+    this.seatOccupied -=  parseInt(this.seatShare[index].seatAlloted);
+    this.seatShare.splice(index, 1);
+   },
+
+    addSeatShare(){
+    
+      let _this=this;
+      let customer;
+      customer=_this.customers.find(function(customer) {
+               if(customer.id === _this.seatTenant) {
+                 return customer;
+              }
+          });
+
+      let existingItemIndex = this.seatShare.findIndex(function(item) {
+        return item.tenant === _this.seatTenant && item.seat === _this.seatNumber;
+      });
+
+
+      if (existingItemIndex === -1) {
+      this.seatShare.push({
+        tenant:customer,
+        seatAlloted:parseInt(_this.seatNumber),
+        seatRemaining:parseInt(_this.seatNumber),
+        company:customer.name
+      });
+
+     _this.seatShareCustomers = _this.seatShareCustomers.filter(custome => custome.id !== customer.id);
+
+      this.seatOccupied+=parseInt(_this.seatNumber);
+      }
+    },
     fetchFeedBacks(){
         var _this = this;
+         if (_this.editMode) {
         progressIndicator.hidden = false;
         showLoadingCircle(true);
         this.$axios
@@ -1487,6 +1651,7 @@ export default {
             }
           })
           .catch(this.onError).finally(this.onFinally);
+         }
     },
     sendFeedBack(booking)
     {
@@ -1746,6 +1911,33 @@ export default {
           _this.selectedLocationId = _this.trainingEvent.room != null && _this.trainingEvent.room.location != null ? _this.trainingEvent.room.location.id : null;
           delete _this.trainingEvent.room;
           _this.trainingEvent.customerId = _this.trainingEvent.customerBooking != null ? _this.trainingEvent.customerBooking.id : null;
+          let tenantsShared = [];
+            if(_this.trainingEvent.seatShare!=null && _this.trainingEvent.seatShare.length > 0)
+          {
+           for(let i=0;i< _this.trainingEvent.seatShare.length;i++)
+           {
+          _this.seatShare.push({
+                tenant:_this.trainingEvent.seatShare[i].tenant,
+                seatAlloted:parseInt(_this.trainingEvent.seatShare[i].seatAlloted),
+                seatRemaining:parseInt(_this.trainingEvent.seatShare[i].seatRemaining),
+                company:_this.trainingEvent.seatShare[i].company
+            });
+            tenantsShared.push(_this.trainingEvent.seatShare[i].tenant.id);
+           }
+          }
+          if(_this.trainingEvent.customerId !==null)
+          {
+            _this.customers.forEach((customer) => {
+                   if (customer.id !== _this.trainingEvent.customerId && !tenantsShared.includes(customer.id)  ) {
+                          _this.seatShareCustomers.push(customer);
+                }
+              });
+          }
+          else
+          {
+            _this.seatShareCustomers=_this.customers
+          }
+        
           delete _this.trainingEvent.customerBooking;
 
           // Issue #95: Don't show Seconds in Start and End Time of Training Event Editing
@@ -2708,3 +2900,18 @@ export default {
   },
 };
 </script>
+<style >
+.list-component {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.list-component .v-list-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-component v-list-item {
+  flex: 0 0 auto;
+  margin-right: 16px; /* adjust as needed */
+}
+</style>
