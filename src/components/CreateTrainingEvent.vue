@@ -1513,7 +1513,7 @@ export default {
     this.fetchLocations();
     this.fetchTrainings();
     this.fetchCustomers();
-    this.fetchFeedBacks();
+   
 
     if (this.trainingEventId != null) {
       this.editMode = true;
@@ -1527,6 +1527,7 @@ export default {
     if(!this.$rights.includes("VIEW_BOOKINGS")){
       this.trainingEventTab = 1;
     }
+     this.fetchFeedBacks();
   },
 
   watch: {
