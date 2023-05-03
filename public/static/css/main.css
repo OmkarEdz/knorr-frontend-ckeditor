@@ -2517,6 +2517,20 @@ div.bg-blue{
     
   /* EDZ start here */
 
+  .list-component {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .list-component .v-list-flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .list-component v-list-item {
+    flex: 0 0 auto;
+    margin-right: 16px; /* adjust as needed */
+  }
+
   #feedbackform .table-bordered {
     border: 2px solid #444;
   }
@@ -2669,6 +2683,12 @@ div.bg-blue{
   .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton {height: 28px;font-weight: 600;font-size: 10px;line-height: 14px;}
   .otp-screen-wrap .download-doc-wrapper .pdf-list-wrap li .savebutton .v-icon {font-size: 12px;margin-left: 10px;}
 
+  .colorWhite.theme--light.v-btn.v-btn--disabled {background: #bfb497;color: #fff !important;}
+  .colorWhite.theme--light.v-btn.v-btn--disabled .v-icon {color: #fff !important;}
+  .v-list_custom {background-color:transparent !important;}
+  .v-list_custom .v-list-item {margin-bottom: 15px;background: #fff;}
+  .v-list_custom .v-list-item:last-child {margin-bottom: 0px;}
+  .LanguageselectTab.textCaptilise {text-transform: capitalize !important;}
 
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}

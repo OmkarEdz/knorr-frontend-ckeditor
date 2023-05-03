@@ -24,7 +24,7 @@
       <v-tabs-slider color="indigo"></v-tabs-slider>
 
       <v-tab v-for="userType in userTypes"
-        :key="userType" class="LanguageselectTab">
+        :key="userType" class="LanguageselectTab textCaptilise">
         {{ $t(userType) }}
       </v-tab>
     </v-tabs>
