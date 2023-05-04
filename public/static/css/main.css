@@ -2685,10 +2685,14 @@ div.bg-blue{
 
   .colorWhite.theme--light.v-btn.v-btn--disabled {background: #bfb497;color: #fff !important;}
   .colorWhite.theme--light.v-btn.v-btn--disabled .v-icon {color: #fff !important;}
-  .v-list_custom {background-color:transparent !important;}
-  .v-list_custom .v-list-item {margin-bottom: 15px;background: #fff;}
-  .v-list_custom .v-list-item:last-child {margin-bottom: 0px;}
+  .v-list_custom {background-color:transparent !important;width: 100%;padding-right: 2px;margin-bottom: -15px;}
+  .v-list_custom .v-list-item {margin:0px 15px 15px 0px;background: #fff;border: 1px solid #343a40;min-height: 38px;width: auto;flex: unset;}
+  .v-list_custom .v-list-item .v-list-item__content {padding: 5px 0px;}
+  .v-list_custom .v-list-item .v-list-item__action {background: #343a40;border-radius: 50%;width: 20px;height: 20px;display: flex;align-items: center;
+    justify-content: center;margin: 0px 0px 0px 16px;min-width: 20px;}
+  .v-list_custom .v-list-item .v-list-item__action button {font-size: 14px;color: #fff;font-weight: 800;}
   .LanguageselectTab.textCaptilise {text-transform: capitalize !important;}
+  .v-dialog__content ~ .v-menu__content--fixed[role=menu] {min-width: unset !important;}
 
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}

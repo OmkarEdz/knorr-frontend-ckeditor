@@ -99,6 +99,7 @@ export default {
   },
 
   mounted() {
+    showLoadingCircle(true);
     this.fetchCategories();
   },
 
