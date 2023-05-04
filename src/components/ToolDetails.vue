@@ -37,10 +37,13 @@
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
           <h4 class="text-uppercase mb-5">{{ $t("openTraining") }}</h4>
+          <div v-if="uniqueTrainings.length> 0">
           <div v-for="(training, index) in uniqueTrainings.slice(0, 5)" :key="index" class="mb-2">
           <a style="border-color: #333; text-decoration: underline;"  :href="'/request?trainingId=' + training.value">{{ training.text }}</a>
           </div>  
          <a class="mt-5" style="border-color: #333; text-decoration: underline;"  href="/trainings" > {{ $t("openTrainingSessions") }}</a>
+         </div>
+         <div v-else>{{ $t("noOpenTrainings") }}</div>
         </div>
         <Contact />
       </div>
@@ -235,9 +238,9 @@ export default {
      fetchTrainings() {
         var _this = this;
         this.$axios
-          .get("/api/training")
+          .get("/api/training/opentrainings")
           .then(function (response) {
-            const trainings = response.data.content;
+            const trainings = response.data;
             for (let i = 0; i < trainings.length; i++) {
               const training = trainings[i];
               _this.trainings.push({

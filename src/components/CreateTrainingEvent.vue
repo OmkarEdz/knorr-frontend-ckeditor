@@ -396,7 +396,7 @@
                   <div class="col-md-12" v-if="trainingEvent.customerId != null"><b>{{ $t("customer") }}:</b> {{ getArrayElementById("customers", trainingEvent.customerId).name }}</div>
                    <div class="col-md-12" ><b>{{ $t("sharedSeatsWithBelowCompanies") }}:</b>  
                    <div class="list-component">
-                   <v-list class="v-list-flex">
+                   <v-list class="v-list-flex v-list_custom">
                    <v-list-item v-for="(item, index) in seatShare" :key="index">
                      <v-list-item-content>
                        {{ displaySeatShare(item) }}
