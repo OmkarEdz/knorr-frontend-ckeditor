@@ -1583,11 +1583,6 @@ export default {
 
    seatShareSave(){
     let _this=this;
-     if (_this.seatShare === null || _this.seatShare.length===0) {
-        this.$noty.error(this.$t("No Seats Shared to Save", { name: this.$t("language") }));
-        return;
-      }
-
       _this.trainingEvent.seatShare=_this.seatShare;
 
       if (this.editMode) {
@@ -1622,6 +1617,11 @@ export default {
     addSeatShare(){
     
       let _this=this;
+      if( _this.trainingEvent.freeSpaces - _this.seatOccupied - _this.seatNumber < 0){
+        this.$noty.error(this.$t("Please allocate seats less than maximum number of seats or increase maximum number of participants for the event", { name: this.$t("language") }));
+        return;
+
+      }
       let customer;
       customer=_this.customers.find(function(customer) {
                if(customer.id === _this.seatTenant) {
@@ -1630,7 +1630,7 @@ export default {
           });
 
       let existingItemIndex = this.seatShare.findIndex(function(item) {
-        return item.tenant === _this.seatTenant && item.seat === _this.seatNumber;
+        return item.tenant.id === _this.seatTenant;
       });
 
 
