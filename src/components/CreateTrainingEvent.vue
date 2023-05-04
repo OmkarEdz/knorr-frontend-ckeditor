@@ -73,7 +73,7 @@
         {{ $t("seatShare") }}
       </v-tab>
     </v-tabs>
-    <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-0">
+    <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-5">
         <!-- Put Content here -->
         <v-tabs-items v-model="trainingEventTab">
 
@@ -396,7 +396,7 @@
                   <div class="col-md-12" v-if="trainingEvent.customerId != null"><b>{{ $t("customer") }}:</b> {{ getArrayElementById("customers", trainingEvent.customerId).name }}</div>
                    <div class="col-md-12" ><b>{{ $t("sharedSeatsWithBelowCompanies") }}:</b>  
                    <div class="list-component">
-                   <v-list class="v-list-flex">
+                   <v-list class="v-list-flex v-list_custom">
                    <v-list-item v-for="(item, index) in seatShare" :key="index">
                      <v-list-item-content>
                        {{ displaySeatShare(item) }}
@@ -449,12 +449,12 @@
                 </thead>
                 <tbody>
                   <tr v-for="booking in bookings" :key="booking.id">
-                    <td class="pb-1 text-uppercase align-bottom">{{ booking.participant.lastname }}, {{ booking.participant.firstname }}</td>
-                    <!-- <td class="pb-1 text-uppercase align-bottom">{{ booking.participant.personnelnumber }}</td> -->
-                    <td v-show="$user != null && $user.external" class="pb-1 text-uppercase align-bottom">{{ booking.participant.location }}</td>
-                    <td v-show="$user != null && !$user.external" class="pb-1 text-uppercase align-bottom">{{ booking.participant.company }}</td>
-                    <td class="pb-1 text-uppercase align-bottom">{{ $formatDate(booking.bookingDate) }}</td>
-                    <td class="pb-1">
+                    <td class="pb-0 text-uppercase align-center">{{ booking.participant.lastname }}, {{ booking.participant.firstname }}</td>
+                    <!-- <td class="pb-0 text-uppercase align-center">{{ booking.participant.personnelnumber }}</td> -->
+                    <td v-show="$user != null && $user.external" class="pb-0 text-uppercase align-center">{{ booking.participant.location }}</td>
+                    <td v-show="$user != null && !$user.external" class="pb-0 text-uppercase align-center">{{ booking.participant.company }}</td>
+                    <td class="pb-0 text-uppercase align-center">{{ $formatDate(booking.bookingDate) }}</td>
+                    <td class="pb-0">
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn @click="showCertificate(booking.id)" color="transparent" class="tablebutton" depressed tile v-bind="attrs" v-on="on"><img class="mr-2" src="../assets/img/show_certiicate.svg" height="25px"></v-btn>
@@ -725,7 +725,7 @@
                         ></v-text-field>
                 </div>
                
-                <div class="col-sm-4 col-md-4" > <v-btn :disabled="seatNumber===null || seatTenant===null" @click="addSeatShare()" outlined depressed tile class="cancelbutton"> {{ $t("add") }}  <v-icon>mdi-plus</v-icon></v-btn></div>
+                <div class="col-sm-4 col-md-4" > <v-btn :disabled="seatNumber===null || seatTenant===null" @click="addSeatShare()" outlined depressed tile class="savebutton colorWhite"> {{ $t("add") }}  <v-icon>mdi-plus</v-icon></v-btn></div>
                     
                    
            
@@ -735,7 +735,7 @@
                <template>
                 <p class="mb-2"> {{$t("sharedSeatsWithBelowCompanies")}}</p>
                <div class="list-component">
-                <v-list class="v-list-flex">
+                <v-list class="v-list-flex v-list_custom">
                    <v-list-item v-for="(item, index) in seatShare" :key="index">
                      <v-list-item-content>
                        {{ displaySeatShare(item) }}
@@ -1190,7 +1190,7 @@
           <div class="mt-6"></div>
           <!-- <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton mb-2">{{ $t("delete") }}</v-btn> -->
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
-          <v-btn v-show="$user != null && !$user.external" @click="createParticipantsList()" outlined depressed tile class="savebutton mb-2">{{ $t("create_participant_list") }}</v-btn>
+          <v-btn v-show="$user != null && !$user.external" @click="createParticipantsList()" outlined depressed tile class="savebutton mb-2 mr-2">{{ $t("create_participant_list") }}</v-btn>
           <v-btn outlined depressed tile @click="openSendMailCustomDialog = true" class="mr-2 deletebutton mb-2" >{{ $t("email") }}</v-btn>
         </div>
 
