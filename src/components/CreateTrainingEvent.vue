@@ -1595,7 +1595,7 @@ export default {
         progressIndicator.hidden = false;
         showLoadingCircle(true);
         this.$axios
-          .put("/api/training/event/" + _this.trainingEventId, _this.trainingEvent)
+          .put("/api/training/event/seatShare/" + _this.trainingEventId, _this.seatShare)
           .then(function (response) {
             _this.$noty.success(
               _this.$t("seatShared", { name: response.data.designation })
