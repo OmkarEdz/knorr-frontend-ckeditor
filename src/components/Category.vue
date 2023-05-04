@@ -113,7 +113,6 @@ export default {
 
     fetchCategories() {
       var _this = this;
-      showLoadingCircle(true);
       this.$axios
         .get("api/category/root")
         .then(function (response) {

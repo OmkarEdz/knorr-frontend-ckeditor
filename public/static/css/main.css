@@ -2693,6 +2693,7 @@ div.bg-blue{
   .v-list_custom .v-list-item .v-list-item__action button {font-size: 14px;color: #fff;font-weight: 800;}
   .LanguageselectTab.textCaptilise {text-transform: capitalize !important;}
   .v-dialog__content ~ .v-menu__content--fixed[role=menu] {min-width: unset !important;}
+  .downBtn i {margin-right: 5px;}
 
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}
