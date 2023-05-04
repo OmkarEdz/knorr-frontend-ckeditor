@@ -28,7 +28,7 @@
         {{ $t(userType) }}
       </v-tab>
     </v-tabs>
-    <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-0">
+    <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-5">
         <!-- Put Content here -->
         <v-tabs-items v-model="selectedTab">
           <v-tab-item v-for="userType in userTypes"
