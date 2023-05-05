@@ -60,15 +60,15 @@
       </v-tab>
         <v-tab
         class="LanguageselectTab"
-        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
-        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
+        :disabled="!editMode || !$rights.includes('CREATE_TRAINING_EVENT') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT') || $user == null || $user.translator"
       >
         {{ $t("feedbackForms") }}
       </v-tab>
        <v-tab
         class="LanguageselectTab"
-        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
-        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
+        :disabled="!editMode || !$rights.includes('CREATE_TRAINING_EVENT') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT') || $user == null || $user.translator "
       >
         {{ $t("seatShare") }}
       </v-tab>
@@ -690,13 +690,13 @@
              </div>
           </v-tab-item>
              <!-- Tab for Seat Share -->
-          <v-tab-item>
+          <v-tab-item v-show="$rights.includes('CREATE_TRAINING_EVENT')">
             
              <div class="headlinecolor text-h6 col-md-6 "><b>{{$t("customerName")}}</b> <span class="text-dark pl-2 " v-if="trainingEvent.tenant && trainingEvent.tenant.name">{{trainingEvent.tenant.name}}</span></div>
 
             <div class="headlinecolor col-md-6 ">{{$t("availableSeats")}}{{trainingEvent.freeSpaces - seatOccupied}}</div>
              <div class="right-side-block d-flex" v-show="trainingEventTab == 5">
-                <div v-show="$rights.includes('TENANT_INDEPENDENCE')" class="col-sm-6 col-md-6">
+                <div  class="col-sm-6 col-md-6">
 
 
                         <v-autocomplete  
@@ -1455,8 +1455,7 @@ export default {
         startTime: null,
         endDate: null,
         endTime: null,
-        comment: null,
-        seatShare:[]
+        comment: null
       },
 
       adduser: {
@@ -1618,7 +1617,7 @@ export default {
     
       let _this=this;
       if( _this.trainingEvent.freeSpaces - _this.seatOccupied - _this.seatNumber < 0){
-        this.$noty.error(this.$t("Please allocate seats less than maximum number of seats or increase maximum number of participants for the event", { name: this.$t("language") }));
+        this.$noty.error(this.$t("seatAllocationError", { name: this.$t("language") }));
         return;
 
       }
