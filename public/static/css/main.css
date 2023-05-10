@@ -2581,7 +2581,7 @@ div.bg-blue{
   #weekviewcontainer th {background: #BFB499;text-transform: capitalize;font-size: 14px !important;}
   .redColor {color: #7F0308;}
   #weekviewcontainer td {background: #EAE4DA;vertical-align: top;}
-  #weekviewcontainer td.calendar-day {overflow: hidden;padding: 0px;position: relative;vertical-align: baseline;height:115px;}
+  #weekviewcontainer td.calendar-day {overflow: hidden;padding: 0px;position: relative;vertical-align: baseline;height:130px;}
   #grouphead{display:flex;background: #07477F;border:1px solid #fff;border-bottom:0px;padding: 8px;align-items: center;justify-content: space-between;}
   #weekviewcontainer button {width: 60px;padding: 1px 6px;cursor:pointer;background: #135A98;border: 1px solid #5596CF;margin-right: 5px;height: 28px;color:#fff;font-weight: 400;font-size: 13px;line-height: 14px;border-radius: 0px;}
   #weekviewcontainer button:focus {outline: 0;box-shadow: unset;}
@@ -2651,7 +2651,7 @@ div.bg-blue{
   tbody#PartTime .trainerType.partTime {display: table-row;}
   #weekviewcontainer td.calendar-day div[set] {height: 100%;width: 100%;}
   #weekviewcontainer td.calendar-day .checkItem {height:100%;}
-  #weekviewcontainer td.calendar-day .checkItem > div {height:115px;position: absolute;width: 100%;top: 0px;}
+  #weekviewcontainer td.calendar-day .checkItem > div {height:130px;position: absolute;width: 100%;top: 0px;}
 
   .loadingCircle.zIndex {z-index:999;}
   /* calendar css end here */
