@@ -1,5 +1,7 @@
 {
     "de": {
+        "seatShared":"Sitz erfolgreich geteilt",
+        "seatAllocationError":"Bitte weisen Sie Sitze zu, die kleiner sind als die maximale Anzahl von Sitzen oder erhöhen Sie die maximale Teilnehmerzahl für das Ereignis.",
         "noOpenTrainings": "Derzeit sind keine offenen Schulungen verfügbar.Bitte senden Sie uns eine Schulungsanfrage, wenn Sie eine spezialisierte Schulung benötigen.",
         "seatShare":"Sitzplatzanteil",
         "customerName":"Kundenname",
@@ -946,6 +948,8 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "seatShared":"Seat Shared Successfully",
+        "seatAllocationError":"Please allocate seats less than maximum number of seats or increase maximum number of participants for the event.",
         "noOpenTrainings":"There are no opening trainings available currently.Please send us a training request if you are in need of a specialized training.",
         "seatShare":"Seat Share",
         "customerName":"Customer Name",
@@ -1896,6 +1900,8 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "seatShared":"Udostępniono siedzenie pomyślnie",
+        "seatAllocationError":"Przydziel miejsca o liczbie mniejszej niż maksymalna liczba miejsc lub zwiększ maksymalną liczbę uczestników dla wydarzenia.",
         "noOpenTrainings": "Aktualnie nie ma dostępnych otwartych szkoleń.Prosimy o przesłanie zgłoszenia szkoleniowego, jeśli potrzebują Państwo specjalistycznej szkolenia.",
         "seatShare":"Udział w miejscach siedzących",
         "customerName":"Nazwa klienta",
@@ -2841,6 +2847,8 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "seatShared":"Siège partagé avec succès",
+    "seatAllocationError":"Veuillez allouer des sièges inférieurs au nombre maximum de sièges ou augmenter le nombre maximum de participants pour l'événement.",
     "noOpenTrainings": "Il n'y a actuellement aucune formation disponible.Veuillez nous envoyer une demande de formation si vous avez besoin d'une formation spécialisée.",
     "seatShare":"Part de sièges",
     "customerName":"Nom du client",
@@ -3789,6 +3797,8 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "seatShared":"Sikeresen megosztott ülés",
+    "seatAllocationError":"Kérjük, jelölj ki ülőhelyeket, amelyek kevesebb, mint a maximális ülőhelyek száma, vagy növeld meg a maximális résztvevők számát az eseményen.",
     "noOpenTrainings": "Jelenleg nincsenek elérhető nyitott képzések.Kérjük, küldje el nekünk a képzési kérelmet, ha szakosodott képzésre van szüksége.",
     "seatShare":"Ülésrész",
     "customerName":"Ügyfél neve",

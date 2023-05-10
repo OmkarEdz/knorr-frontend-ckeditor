@@ -60,15 +60,15 @@
       </v-tab>
         <v-tab
         class="LanguageselectTab"
-        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
-        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
+        :disabled="!editMode || !$rights.includes('CREATE_TRAINING_EVENT') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT') || $user == null || $user.translator"
       >
         {{ $t("feedbackForms") }}
       </v-tab>
        <v-tab
         class="LanguageselectTab"
-        :disabled="!editMode || !$rights.includes('CREATE_BOOKING') || eventStatus==='drafted'"
-        :hidden="!$rights.includes('CREATE_BOOKING') || $user == null || $user.translator"
+        :disabled="!editMode || !$rights.includes('CREATE_TRAINING_EVENT') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT') || $user == null || $user.translator "
       >
         {{ $t("seatShare") }}
       </v-tab>
@@ -690,13 +690,13 @@
              </div>
           </v-tab-item>
              <!-- Tab for Seat Share -->
-          <v-tab-item>
+          <v-tab-item v-show="$rights.includes('CREATE_TRAINING_EVENT')">
             
              <div class="headlinecolor text-h6 col-md-6 "><b>{{$t("customerName")}}</b> <span class="text-dark pl-2 " v-if="trainingEvent.tenant && trainingEvent.tenant.name">{{trainingEvent.tenant.name}}</span></div>
 
             <div class="headlinecolor col-md-6 ">{{$t("availableSeats")}}{{trainingEvent.freeSpaces - seatOccupied}}</div>
              <div class="right-side-block d-flex" v-show="trainingEventTab == 5">
-                <div v-show="$rights.includes('TENANT_INDEPENDENCE')" class="col-sm-6 col-md-6">
+                <div  class="col-sm-6 col-md-6">
 
 
                         <v-autocomplete  
@@ -1455,8 +1455,7 @@ export default {
         startTime: null,
         endDate: null,
         endTime: null,
-        comment: null,
-        seatShare:[]
+        comment: null
       },
 
       adduser: {
@@ -1583,11 +1582,6 @@ export default {
 
    seatShareSave(){
     let _this=this;
-     if (_this.seatShare === null || _this.seatShare.length===0) {
-        this.$noty.error(this.$t("No Seats Shared to Save", { name: this.$t("language") }));
-        return;
-      }
-
       _this.trainingEvent.seatShare=_this.seatShare;
 
       if (this.editMode) {
@@ -1595,7 +1589,7 @@ export default {
         progressIndicator.hidden = false;
         showLoadingCircle(true);
         this.$axios
-          .put("/api/training/event/" + _this.trainingEventId, _this.trainingEvent)
+          .put("/api/training/event/seatShare/" + _this.trainingEventId, _this.seatShare)
           .then(function (response) {
             _this.$noty.success(
               _this.$t("seatShared", { name: response.data.designation })
@@ -1622,6 +1616,11 @@ export default {
     addSeatShare(){
     
       let _this=this;
+      if( _this.trainingEvent.freeSpaces - _this.seatOccupied - _this.seatNumber < 0){
+        this.$noty.error(this.$t("seatAllocationError", { name: this.$t("language") }));
+        return;
+
+      }
       let customer;
       customer=_this.customers.find(function(customer) {
                if(customer.id === _this.seatTenant) {
@@ -1630,7 +1629,7 @@ export default {
           });
 
       let existingItemIndex = this.seatShare.findIndex(function(item) {
-        return item.tenant === _this.seatTenant && item.seat === _this.seatNumber;
+        return item.tenant.id === _this.seatTenant;
       });
 
 
