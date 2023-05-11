@@ -178,14 +178,19 @@ export default {
           _this.events = response.data.content;
           for (let i = 0; i < _this.events.length; i++) {
             const event = _this.events[i];
-            if(typeof event.room.location == 'number'){
+            if(event.room !==null && typeof event.room.location == 'number'){
               _this.$axios
                 .get(_this.routes.location + event.room.location)
                 .then(function (response) {
                   event.room.location = response.data;
                 }).catch(_this.onError);
             }
-            
+            else if(event.room === null){ 
+                  event.room = {};
+                  event.room.location = {};
+                  event.room.designation = "";
+                  event.room.location.designation = _this.$t("virtual");
+            }           
           }
         })
         .catch(this.onError);
