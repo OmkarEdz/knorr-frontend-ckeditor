@@ -1075,7 +1075,7 @@
                      </div>
                    <div class="col-md-6">
                      <div class="border rounded border-dark p-3">
-                       <h5>{{$t("practical")}} {{ edituser.eventStatusOther === '0' ? $t('activeEvent'): edituser.eventStatusOther === '1' ? $t('cancelledEvent')  : edituser.eventStatusOther === '2' ? $t('draftedEvent') : '' }}</h5>
+                       <h5>{{$t("practical")}} {{ edituser.eventStatusOther === '0' ? $t('activeEvent'): edituser.eventStatusOther === '1' ? $t('cancelledEvent')  : edituser.eventStatusOther === '2' ? $t('draftedEvent') : '' }} </h5>
                          <!-- Second section content here -->
                          <b-row class="mb-0 mt-0" >
                                <b-col>
