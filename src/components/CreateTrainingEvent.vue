@@ -1637,7 +1637,6 @@ export default {
       this.seatShare.push({
         tenant:customer,
         seatAlloted:parseInt(_this.seatNumber),
-        seatRemaining:parseInt(_this.seatNumber),
         company:customer.name
       });
 
@@ -1927,7 +1926,6 @@ export default {
           _this.seatShare.push({
                 tenant:_this.trainingEvent.seatShare[i].tenant,
                 seatAlloted:parseInt(_this.trainingEvent.seatShare[i].seatAlloted),
-                seatRemaining:parseInt(_this.trainingEvent.seatShare[i].seatRemaining),
                 company:_this.trainingEvent.seatShare[i].company
             });
             tenantsShared.push(_this.trainingEvent.seatShare[i].tenant.id);
