@@ -867,13 +867,14 @@
              <div class="d-block w-100 ml-3">
                 <v-label>
                  <h5 class="text-dark">{{ $t("editCertificate") }}</h5>
+                 <span  class="text-dark" v-if="(edituser.display===false || edituser.display===null)" >{{ edituser.eventStatus === '0' ? $t('activeEvent'): edituser.eventStatus === '1' ? $t('cancelledEvent')  : edituser.eventStatus === '2' ? $t('draftedEvent') : '' }}</span>
                 </v-label>
            </div>
            <br/>
           </b-row>
+         
           <b-row v-if="(edituser.display===false || edituser.display===null)">
           <b-col>
-            {{ edituser.eventStatus === '0' ? $t('activeEvent'): edituser.eventStatus === '1' ? $t('cancelledEvent')  : edituser.eventStatus === '2' ? $t('draftedEvent') : '' }}
               <v-text-field  
                     hide-details="auto"
                     class="datainput justify-content-end align-self-center pb-1"
