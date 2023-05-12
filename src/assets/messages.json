@@ -1,5 +1,6 @@
 {
     "de": {
+        "sortNumber":"Sortierungsnummer",
         "activeEvent":" (Aktives Ereignis)",
         "cancelledEvent":" (Abgesagtes Ereignis)",
         "draftedEvent":" (Entworfenes Ereignis)",
@@ -951,6 +952,7 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "sortNumber":"Sort Number",
         "activeEvent":" (Active Event)",
         "cancelledEvent":" (Cancelled Event)",
         "draftedEvent":" (Drafted Event)",
@@ -1906,6 +1908,7 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "sortNumber":"Numer sortowania",
         "activeEvent":" (Aktywne wydarzenie)",
         "cancelledEvent":" (Anulowane wydarzenie)",
         "draftedEvent":" (Napisane wydarzenie)",
@@ -2856,6 +2859,7 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "sortNumber":"Numéro de tri",
     "activeEvent":" (Événement actif)",
     "cancelledEvent":" (Événement annulé)",
     "draftedEvent":" (Événement en cours de rédaction)",
@@ -3809,6 +3813,7 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "sortNumber":"Rendezési szám",
     "activeEvent":" (Aktív esemény)",
     "cancelledEvent":" (Törölt esemény)",
     "draftedEvent":" (Piszkozatban lévő esemény)",

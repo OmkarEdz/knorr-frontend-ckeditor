@@ -53,6 +53,17 @@
                         v-model="venue.designation"
                         ></v-text-field>
                     </div>
+                     <div class=" col-md-12 pt-0">
+                <v-text-field  
+                hide-details="auto"
+                class="datainput justify-content-end align-self-center pb-1"
+                dense
+                outlined
+                :label="$t('sortNumber')"
+                v-model="venue.sortNumber"
+                ></v-text-field>
+                
+              </div>
                     <div class="col-sm-10 col-md-10 ">
                         <v-text-field  
                         hide-details="auto"
@@ -359,6 +370,7 @@ export default {
         onlineDescriptionsMap: {},
         image: null,
         directionsPdfs: {},
+        sortNumber:null
       },
 
       rooms: [],
