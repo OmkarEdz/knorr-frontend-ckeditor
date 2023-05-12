@@ -1990,16 +1990,10 @@ export default {
        progressIndicator.hidden = false;
         showLoadingCircle(true);
       this.$axios
-        .get("/api/training", {
-          params: {
-            sort: "designations.description",
-            order: "ASC",
-            page: 0,
-            size: 200,
-          }
+        .get("/api/training/trainings", {
         })
         .then(function (response) {
-          let trainings = response.data.content;
+          let trainings = response.data;
           if(trainings.length > 0){
             for (let p = 0; p < trainings.length; p++) {
               let previousTraining = trainings[0];
