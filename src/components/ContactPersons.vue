@@ -8,11 +8,11 @@
     </div>
   </div>
   <div>
-    <div class="mx-0 row align-items-start">
+    <div class="mx-0 row align-items-start cp_wrapper">
       <!-- Left Area -->
       <div class="col-xl-8 px-0">        
         <div class="mx-0 pa-0 text-content">
-          <v-expansion-panels v-model="open">
+          <v-expansion-panels v-model="open" multiple accordion  :value="expanded">
             <v-expansion-panel v-for="(tenant,i) in tenants" :key="i">
               <v-expansion-panel-header class="py-1 pl-8 pl-md-12">
                 <h6 class="text-md-h6 mb-0">
@@ -75,7 +75,8 @@ export default {
       tenants: [],
       contactPersons: [],
       selectedTenantPanel: null,
-      open: 0,
+      open: [],
+
     };
   },
 
@@ -98,7 +99,7 @@ export default {
 
     fetchTenants() {
       var _this = this;
-      
+
       this.$axios
         .get("/api/tenant/public")
         .then(function (response) {
@@ -107,6 +108,7 @@ export default {
           for (let i = 0; i < _this.tenants.length; i++) {
             const element = _this.tenants[i];          
             _this.fetchContactPersons(i);
+            _this.open[i]=i;
           }
         })
         .catch(this.onError);
