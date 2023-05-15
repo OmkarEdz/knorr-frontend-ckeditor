@@ -2596,8 +2596,9 @@ div.bg-blue{
   .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000000de;}
   .trainerTypeName {font-size: 12px;line-height: 11px;background: #fff;width: max-content;padding: 3px 5px;border-radius: 2px;color: #000000de;margin-top:5px !important;text-transform:capitalize;}
   .partTimeType {background: #FFFCE3;}
-  .traningData {vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;}
-  .traningData .clickable-link {text-decoration:underline;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;}
+  .traningData {font-size:11px;line-height: 1.4;vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;}
+  .traningData > div {display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;}
+  .traningData .clickable-link {font-size:12px;line-height: 1.4;text-decoration:underline;display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;}
   .traningData p {font-weight: 500;font-size: 10px;margin:0;line-height: 14px;color:#fff;}
   .pink_traning {background: #FC6E71;}
   .yellow_traning {background: #fde976;color: #000;}

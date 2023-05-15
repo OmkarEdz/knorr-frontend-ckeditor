@@ -8,11 +8,11 @@
     </div>
   </div>
   <div>
-    <div class="mx-0 row align-items-start">
+    <div class="mx-0 row align-items-start cp_wrapper">
       <!-- Left Area -->
       <div class="col-xl-8 px-0">        
         <div class="mx-0 pa-0 text-content">
-          <v-expansion-panels v-model="open"> 
+          <v-expansion-panels v-model="open" multiple> 
             <v-expansion-panel v-show="sortedVenues[tenant.id].length != 0 " v-for="(tenant,i) in tenants" :key="i">
               <v-expansion-panel-header class="pl-8 py-1 pl-md-12 ">
                 <h6 class="text-md-h6 mb-0">
@@ -62,7 +62,7 @@ export default {
       sortedVenues:[],
       contactPersons: [],
       selectedTenantPanel: null,
-      open: 0,
+      open: [],
     };
   },
 
@@ -90,6 +90,7 @@ export default {
           _this.venues = response.data.content;
           for (let i = 0; i < _this.venues.length; i++) {
             const venue = _this.venues[i];
+            
             if(venue.tenant == null) continue;
             
             // Check if already Added to list of Tenants
@@ -103,6 +104,7 @@ export default {
             }
             
             if(!alreadyAdded) _this.tenants.push(venue.tenant);
+            _this.open[i]=i;
           }
           _this.sortVenues();
           

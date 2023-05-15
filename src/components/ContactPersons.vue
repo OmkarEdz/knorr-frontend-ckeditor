@@ -12,7 +12,7 @@
       <!-- Left Area -->
       <div class="col-xl-8 px-0">        
         <div class="mx-0 pa-0 text-content">
-          <v-expansion-panels v-model="open" multiple accordion  :value="expanded">
+          <v-expansion-panels v-model="open" multiple>
             <v-expansion-panel v-for="(tenant,i) in tenants" :key="i">
               <v-expansion-panel-header class="py-1 pl-8 pl-md-12">
                 <h6 class="text-md-h6 mb-0">
