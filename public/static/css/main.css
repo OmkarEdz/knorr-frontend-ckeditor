@@ -2695,6 +2695,11 @@ div.bg-blue{
   .v-dialog__content ~ .v-menu__content--fixed[role=menu] {min-width: unset !important;}
   .downBtn i {margin-right: 5px;}
 
+  /* contact person upgrade */
+  .cp_wrapper .v-expansion-panel-content {display: flex !important;}
+  .v-application--is-ltr .cp_wrapper .v-expansion-panel-header__icon {display: none;}
+  .v-application--is-ltr .cp_wrapper .v-expansion-panel-header {pointer-events: none;}
+
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}
   }
