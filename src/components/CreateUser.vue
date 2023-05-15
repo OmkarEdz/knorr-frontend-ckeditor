@@ -128,6 +128,15 @@
                         </v-radio-group>
                         </div>
                     </div> 
+                    <div v-show="userTypes[selectedTab] == 'trainer'"> <v-text-field  
+                        
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('sortNumber')"
+                        v-model="user.sortNumber"
+                        ></v-text-field></div>
+
                     <div v-show="userTypes[selectedTab] == 'translator'" class="col-sm-12 col-md-12 ">
                         <v-autocomplete  
                         hide-details="auto"
@@ -481,7 +490,8 @@ export default {
         participant:false,
         booker:false,
         blocked: false,
-        trainerType:"fullTime"
+        trainerType:"fullTime",
+        sortNumber:null
       },
 
       rooms: [],

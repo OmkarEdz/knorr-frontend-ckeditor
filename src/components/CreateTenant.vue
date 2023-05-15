@@ -28,6 +28,19 @@
                 @keypress.enter="saveTenant()"
                 v-model="tenant.name"
                 ></v-text-field>
+                
+              </div>
+              <div class="col-sm-12 col-md-12 pt-0">
+                <v-text-field  
+                hide-details="auto"
+                class="datainput justify-content-end align-self-center pb-1"
+                dense
+                outlined
+                :label="$t('sortNumber')"
+                @keypress.enter="saveTenant()"
+                v-model="tenant.sortNumber"
+                ></v-text-field>
+                
               </div>
               <div class="col-sm-12 col-md-12 pt-0">
                 <v-checkbox
@@ -153,6 +166,7 @@ export default {
             city: null,
             country: null,
             debitor: null,
+            sortNumber:null
         }
       }
     },

@@ -867,10 +867,12 @@
              <div class="d-block w-100 ml-3">
                 <v-label>
                  <h5 class="text-dark">{{ $t("editCertificate") }}</h5>
+                 <span  class="text-dark" v-if="(edituser.display===false || edituser.display===null)" >{{ edituser.eventStatus === '0' ? $t('activeEvent'): edituser.eventStatus === '1' ? $t('cancelledEvent')  : edituser.eventStatus === '2' ? $t('draftedEvent') : '' }}</span>
                 </v-label>
            </div>
            <br/>
           </b-row>
+         
           <b-row v-if="(edituser.display===false || edituser.display===null)">
           <b-col>
               <v-text-field  
@@ -988,7 +990,7 @@
           <div class="row" v-if="edituser.display===true">
               <div class="col-md-6">
                      <div class="border rounded border-dark p-3">
-                       <h5>{{$t("theory")}}</h5>
+                       <h5>{{$t("theory")}} {{ edituser.eventStatus === '0' ? $t('activeEvent'): edituser.eventStatus === '1' ? $t('cancelledEvent')  : edituser.eventStatus === '2' ? $t('draftedEvent') : '' }}</h5>
                        
                             <!-- First section content here -->
                               <b-row class="mb-0 mt-0" >
@@ -1074,7 +1076,7 @@
                      </div>
                    <div class="col-md-6">
                      <div class="border rounded border-dark p-3">
-                       <h5>{{$t("practical")}}</h5>
+                       <h5>{{$t("practical")}} {{ edituser.eventStatusOther === '0' ? $t('activeEvent'): edituser.eventStatusOther === '1' ? $t('cancelledEvent')  : edituser.eventStatusOther === '2' ? $t('draftedEvent') : '' }} </h5>
                          <!-- Second section content here -->
                          <b-row class="mb-0 mt-0" >
                                <b-col>
@@ -1637,7 +1639,6 @@ export default {
       this.seatShare.push({
         tenant:customer,
         seatAlloted:parseInt(_this.seatNumber),
-        seatRemaining:parseInt(_this.seatNumber),
         company:customer.name
       });
 
@@ -1685,6 +1686,8 @@ export default {
             certificateEventNumber:null,
             certificateTrainer:null,
             certificateTrainer2:null,
+            eventStatus:null,
+            eventStatusOther:null,
             certificateStartDateOther:null,
             certificateEndDateOther:null,
             display:null,
@@ -1738,6 +1741,8 @@ export default {
            _this.edituser.certificateStartDateOther=response.data.certificateStartDateOther;
            _this.edituser.certificateEndDateOther=response.data.certificateEndDateOther;
            _this.edituser.display=response.data.display;
+           _this.edituser.eventStatus=response.data.eventStatus;
+           _this.edituser.eventStatusOther=response.data.eventStatusOther;
            _this.edituser.certificateEventLocationOther=response.data.certificateEventLocationOther;
            _this.edituser.certificateTrainerOther=response.data.certificateTrainerOther;
            _this.edituser.certificateTrainer2Other=response.data.certificateTrainer2Other;
@@ -1817,6 +1822,8 @@ export default {
             certificateTrainer2:null,
             certificateStartDateOther:null,
             certificateEndDateOther:null,
+            eventStatus:null,
+            eventStatusOther:null,
             display:false,
             certificateEventLocationOther:null,
             certificateTrainerOther:null,
@@ -1927,7 +1934,6 @@ export default {
           _this.seatShare.push({
                 tenant:_this.trainingEvent.seatShare[i].tenant,
                 seatAlloted:parseInt(_this.trainingEvent.seatShare[i].seatAlloted),
-                seatRemaining:parseInt(_this.trainingEvent.seatShare[i].seatRemaining),
                 company:_this.trainingEvent.seatShare[i].company
             });
             tenantsShared.push(_this.trainingEvent.seatShare[i].tenant.id);
@@ -1984,16 +1990,10 @@ export default {
        progressIndicator.hidden = false;
         showLoadingCircle(true);
       this.$axios
-        .get("/api/training", {
-          params: {
-            sort: "designations.description",
-            order: "ASC",
-            page: 0,
-            size: 200,
-          }
+        .get("/api/training/trainings", {
         })
         .then(function (response) {
-          let trainings = response.data.content;
+          let trainings = response.data;
           if(trainings.length > 0){
             for (let p = 0; p < trainings.length; p++) {
               let previousTraining = trainings[0];
@@ -2783,6 +2783,8 @@ export default {
             certificateTrainer2:this.edituser.certificateTrainer2,
             certificateStartDateOther:this.edituser.certificateStartDateOther,
             certificateEndDateOther:this.edituser.certificateEndDateOther,
+            eventStatus:this.edituser.eventStatus,
+            eventStatusOther:this.edituser.eventStatusOther,
             display:this.edituser.display,
             certificateEventLocationOther:this.edituser.certificateEventLocationOther,
             certificateEventNumberOther:this.edituser.certificateEventNumberOther,
@@ -2830,6 +2832,8 @@ export default {
              certificateStartDateOther:null,
             certificateEndDateOther:null,
             display:null,
+            eventStatus:null,
+            eventStatusOther:null,
             certificateEventLocationOther:null,
             certificateEventNumberOther:null,
             certificateTrainerOther:null,
