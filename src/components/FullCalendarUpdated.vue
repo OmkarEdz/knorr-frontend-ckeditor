@@ -3131,7 +3131,9 @@ export default {
           })
           .catch(this.onError)
           .finally (function(){
-            progressIndicator.hidden = true;
+            setTimeout(function(){
+              progressIndicator.hidden = true;
+            }, 2000);
           });
       },
 
@@ -3152,7 +3154,9 @@ export default {
           })
           .catch(this.onError)
           .finally (function(){
-            progressIndicator.hidden = true;
+            setTimeout(function(){
+              progressIndicator.hidden = true;
+            }, 2000);
           });
       },
 
@@ -3182,6 +3186,7 @@ export default {
           .then(function (response) {
             for (let i = 0; i < response.data.content.length; i++) {
               const element = response.data.content[i];
+              console.log(element.fullname);
               if(Number.isInteger(element)){
                 _this.fetchSingleTrainerAndPush(element);
               }else{
