@@ -50,6 +50,7 @@ import ContactPersons from './components/ContactPersons.vue'
 import ToolDetails from './components/ToolDetails.vue'
 import OurVenues from './components/OurVenues.vue'
 import AboutUs from './components/AboutUs.vue'
+import AboutUsNew from './components/AboutUsNew.vue'
 import VenueDetails from './components/VenueDetails.vue'
 import UploadApplication from './components/UploadApplication.vue'
 import FeedBackForm from './components/FeedBackForm.vue'
@@ -178,7 +179,8 @@ const router = new VueRouter({
         { path: "/imprint", component: Imprint },
         { path: "/cookies", component: Cookies },
         { path: "/ourvenues", component: OurVenues },
-        { path: "/aboutus", component: AboutUs },
+        { path: "/aboutus-old", component: AboutUs },
+        { path: "/aboutus", component: AboutUsNew },
         { path: "/venue", component: VenueDetails, props: route => ({ venueId: route.query.venueId }) },
         { path: "/tools/:pathMatch(.*)*", component: ToolDetails },
         { path: "/offers/:pathMatch(.*)*", component: ToolDetails },
