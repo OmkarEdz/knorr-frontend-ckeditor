@@ -2701,6 +2701,25 @@ div.bg-blue{
   .v-application--is-ltr .cp_wrapper .v-expansion-panel-header__icon {display: none;}
   .v-application--is-ltr .cp_wrapper .v-expansion-panel-header {pointer-events: none;}
 
+  /* About New page css start here */
+  .aboutus-image-big.aboutus-image-new {height: unset;}
+  .aboutus-image-big.aboutus-image-new img {width:100%;height: 100%;}
+  .aboutus_new_content {margin-bottom: 40px;}
+  .aboutus_new_content h3 {font-weight: 600;font-size: 25px;line-height: 34px;color: #004380;margin-bottom: 16px;}
+  .aboutus_new_content p {font-weight: 400;font-size: 18px;line-height: 25px;color: #222222;}
+  .aboutus_new_content p:last-child {margin: 0px;}
+  .vdialognew {padding: 15px;}
+  .video_section {padding: 0px 50px 0px 15px;}
+  .video_head {font-weight: 600;font-size: 25px;line-height: 34px;color: #004380;margin-bottom: 15px;}
+  .video_item {position: relative;}
+  .video_image {width: 100%;transition: 0.5s all;}
+  .play_image {width: 111px;position: absolute;left: 0;top: 0;margin: auto;bottom: 0;right: 0;}
+  .video_item:hover .video_image {filter: brightness(0.8);}
+  .video_popup {max-width: 1000px;margin-bottom: -5px;}
+
+  /* Marketing team feedback css */
+  .toolDetailsPg .mx-0.pa-0.text-content p {font-size: 20px;}
+
   @media (max-width:1602px) and (min-width:1200px){
     .mob-mb-2 {margin-top: 8px;}
   }
@@ -2708,6 +2727,7 @@ div.bg-blue{
   @media (max-width:1360px){
     #weekviewcontainer {overflow: auto;}
     .weekviewcontainerWrap {display: block; width: 1300px;}
+    .video_head {font-size: 18px;line-height: 24px;}
   }
 
   @media (max-width:1200px){
@@ -2719,6 +2739,7 @@ div.bg-blue{
     .optScreensWrap .v-toolbar__content .col-md > .align-self-center > .row.col-7.align-self-center > div {justify-content: flex-end !important;}
     .optScreensWrap .v-toolbar__content .v-btn.v-btn--icon.v-size--default {display: none !important;}
     .optScreensWrap .v-application .v-toolbar__content > .row.pl-8 {padding:0px !important;}
+    .video_section {padding: 0px 35px 0px 15px;}
   }
 
   @media (max-width:1024px){
@@ -2728,6 +2749,12 @@ div.bg-blue{
   @media (max-width:768px){
     .optScreensWrap .v-main__wrap .sixteentosix.otp-screen-wrap {padding-bottom: 80%;margin-top: 60px !important;}
     .otp-screen-wrap .otp-white-wrapper, .otp-screen-wrap .otp-white-wrapper.download-doc-wrapper {padding: 30px;}
+    .aboutus_new_content {margin-bottom: 25px;}
+    .aboutus_new_content h3, .aboutus h3 {font-size: 20px;line-height: 28px;margin-bottom: 10px;}
+    .aboutus_new_content p {font-size: 16px;line-height: 23px;}
+    .aboutus h4 {font-size: 20px;}
+    .play_image {width: 80px;}
+    .video_popup {margin: 0px;}
   }
 
   @media (max-width:545px){
@@ -2741,3 +2768,8 @@ div.bg-blue{
     .mob-mb-2 {margin-top: 8px;}
   }
 
+  @media (max-width:425px){
+    .video_section {
+        padding: 0px 35px 30px 15px;
+    }
+  }

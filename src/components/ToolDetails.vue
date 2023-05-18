@@ -10,7 +10,7 @@
     </div>
   </div>
   <div>
-    <div class="row align-items-start">
+    <div class="row align-items-start toolDetailsPg">
       <!-- Left Area -->
       <div class="col-xl-8 pl-md-16 pl-12 px-8 pr-sm-16" >        
         <div class="mx-0 pa-0 text-content">
