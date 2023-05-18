@@ -63,7 +63,14 @@
         :disabled="!editMode || !$rights.includes('CREATE_TRAINING_EVENT') || eventStatus==='drafted'"
         :hidden="!$rights.includes('CREATE_TRAINING_EVENT') || $user == null || $user.translator"
       >
-        {{ $t("feedbackForms") }}
+        {{ $t("onlineFeedbackForms") }}
+      </v-tab>
+        <v-tab
+        class="LanguageselectTab"
+        :disabled="!editMode || !$rights.includes('CREATE_TRAINING_EVENT') || eventStatus==='drafted'"
+        :hidden="!$rights.includes('CREATE_TRAINING_EVENT') || $user == null || $user.translator"
+      >
+        {{ $t("manualFeedbackForms") }}
       </v-tab>
        <v-tab
         class="LanguageselectTab"
@@ -478,7 +485,7 @@
                      
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="sendFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on">
+                          <v-btn  v-show="$rights.includes('CREATE_BOOKING') && $user != null && !$user.external && !$user.translator && !$user.trainer" @click="sendOnlineFeedBack(booking)" color="transparent"  class="tablebutton" depressed tile v-bind="attrs" v-on="on">
                             <v-badge :value="true" color="primary" overlap>
                               <div slot="badge">
                                 <span v-show="booking.feedBackSendingLoading"><v-icon color="#fff" class="spinner-badge">fas fa-spinner</v-icon></span>
@@ -676,7 +683,7 @@
             </div>
           </v-tab-item> -->
 
-           <!-- Tab for FeedBack Forms -->
+           <!-- Tab for Online FeedBack Forms -->
           <v-tab-item>
              <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 4">
              <div v-if="feedBacks.length > 0">
@@ -689,13 +696,30 @@
              </div>
              </div>
           </v-tab-item>
+
+
+           <!-- Tab for Manual FeedBack Forms -->
+          <v-tab-item>
+             <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 5">
+             <div v-if="manualfeedBacks.length > 0">
+                <div v-for="(feedback,i) in manualfeedBacks" :key="feedback.id">
+                      <a style="border-color: #333;" class="col-0 border-right-0" @click="$router.push('/feedback-form?feedbackId=' + feedback.id+'&trainingEventId=' + trainingEvent.id +'&addmanual=true')">FeedBack {{i+1}}</a> 
+                </div>
+              </div>
+             <div v-else>
+                 {{$t("noFeedBack")}}
+             </div>
+             </div>
+          </v-tab-item>
+
+
              <!-- Tab for Seat Share -->
           <v-tab-item v-show="$rights.includes('CREATE_TRAINING_EVENT')">
             
              <div class="headlinecolor text-h6 col-md-6 "><b>{{$t("customerName")}}</b> <span class="text-dark pl-2 " v-if="trainingEvent.tenant && trainingEvent.tenant.name">{{trainingEvent.tenant.name}}</span></div>
 
             <div class="headlinecolor col-md-6 ">{{$t("availableSeats")}}{{trainingEvent.freeSpaces - seatOccupied}}</div>
-             <div class="right-side-block d-flex" v-show="trainingEventTab == 5">
+             <div class="right-side-block d-flex" v-show="trainingEventTab == 6">
                 <div  class="col-sm-6 col-md-6">
 
 
@@ -1212,8 +1236,19 @@
            <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
         </div>
 
-  <!-- Actions for fifth Tab -->
+ <!-- Actions for Fifth Tab -->
   <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 5">
+          <h4 class="text-uppercase">{{ $t("actions") }}</h4>
+          <div class="right-side divider"></div>
+          <div class="mt-6"></div>
+           <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
+        <v-btn  @click="$router.push('/feedback-form?trainingEventId='+trainingEventId+'&addmanual=true')" outlined depressed tile class="save mb-2">{{ $t("add") }}</v-btn>
+        </div>
+
+
+
+  <!-- Actions for Sixth Tab -->
+  <div class="col-xl-12 right-side-block" v-if="$user != null && !$user.translator" v-show="trainingEventTab == 6">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
@@ -1296,7 +1331,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="openSendMailAgainFeedBackDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2">{{ $t("cancel") }}</v-btn>
-        <v-btn @click="sendMailToParticipantForFeedBack(sendMailAgainFeedBackBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_feedback_mail") }}</v-btn>
+        <v-btn @click="sendMailToParticipantForOnlineFeedBack(sendMailAgainFeedBackBooking)" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_feedback_mail") }}</v-btn>
       </v-card-actions>
       </v-dialog>
 
@@ -1415,6 +1450,7 @@ export default {
       seatShareCustomers:[],
       users: [],
       feedBacks:[],
+      manualfeedBacks:[],
       selectedLocationId: null,
 
 
@@ -1536,7 +1572,8 @@ export default {
     if(!this.$rights.includes("VIEW_BOOKINGS")){
       this.trainingEventTab = 1;
     }
-     this.fetchFeedBacks();
+     this.fetchOnlineFeedBacks();
+     this.fetchManualFeedBacks();
   },
 
   watch: {
@@ -1581,6 +1618,8 @@ export default {
    displaySeatShare(share) {
      return `${share.company} : ${share.seatAlloted} Seats `;
   },
+
+
 
    seatShareSave(){
     let _this=this;
@@ -1647,7 +1686,7 @@ export default {
       this.seatOccupied+=parseInt(_this.seatNumber);
       }
     },
-    fetchFeedBacks(){
+    fetchOnlineFeedBacks(){
         var _this = this;
          if (_this.editMode) {
         progressIndicator.hidden = false;
@@ -1662,9 +1701,26 @@ export default {
           .catch(this.onError).finally(this.onFinally);
          }
     },
-    sendFeedBack(booking)
+
+
+     fetchManualFeedBacks(){
+        var _this = this;
+         if (_this.editMode) {
+        progressIndicator.hidden = false;
+        showLoadingCircle(true);
+        this.$axios
+          .get("/api/training/event/"+_this.trainingEventId+"/retrieveManualFeedbacks")
+          .then(function (response) {
+            for(let i=0;i<response.data.length;i++){
+               _this.manualfeedBacks.push(response.data[i]);
+            }
+          })
+          .catch(this.onError).finally(this.onFinally);
+         }
+    },
+    sendOnlineFeedBack(booking)
     {
-      this.sendMailForFeedBack(booking);
+      this.sendMailForOnlineFeedBack(booking);
         //this.$router.push({path: '/feedback-form',query: { trainingEventId:this.trainingEventId , bookingId: booking.id }});
     },
     beforeOpenModal(booking) {
@@ -2584,16 +2640,16 @@ export default {
       this.openSendMailAgainDialog = true;
     },
 
-    sendMailForFeedBack(booking){
+    sendMailForOnlineFeedBack(booking){
       if(booking.feedbackSent == 0){
-        this.sendMailToParticipantForFeedBack(booking);
+        this.sendMailToParticipantForOnlineFeedBack(booking);
         return;
       }
       this.sendMailAgainFeedBackBooking = booking;
       this.openSendMailAgainFeedBackDialog = true;
     },
 
-     sendMailToParticipantForFeedBack(booking) {
+     sendMailToParticipantForOnlineFeedBack(booking) {
       if(booking == null) return;
 
       var _this = this;
