@@ -875,7 +875,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn  outlined depressed tile class="save mr-2 mb-2" v-if="!$rights.includes('CREATE_TRAINING_EVENT')" @click="submitfeedback()">{{ $t("save") }}</v-btn>
+          <v-btn  outlined depressed tile class="save mr-2 mb-2" v-if="!$rights.includes('CREATE_TRAINING_EVENT') || (addmanual==='true' && $rights.includes('CREATE_TRAINING_EVENT'))" @click="submitfeedback()">{{ $t("save") }}</v-btn>
           <v-btn  outlined depressed tile class="cancelbutton mr-2 mb-2" @click="$routerBack()">{{ $t("back") }}</v-btn>
         </div>
         <Contact />
@@ -889,6 +889,7 @@
 export default {
     data() {
       return {
+        addmanual:null,
         request:{
         bookingId:null,
         trainingEventId:null,
@@ -920,12 +921,17 @@ export default {
     },
 
      mounted() {
+      this.addmanual=this.$route.query.addmanual;
       this.request.bookingId=this.$route.query.bookingId;
       this.request.trainingEventId=this.$route.query.trainingEventId;
       this.fetchEditingTrainingEvent();
       if(this.request.bookingId && this.request.trainingEventId)
       {
-      this.fetchFeedBackForm();
+      this.fetchOnlineFeedBackForm();
+      }
+      else if(this.request.trainingEventId && this.addmanual==='true')
+      {
+      this.fetchManualFeedBackForm();
       }
       else if(this.$route.query.feedbackId!=null)
       {
@@ -939,7 +945,7 @@ export default {
        this.$axios
         .get("/api/training/event/" + this.request.trainingEventId)
         .then(function (response) {
-          _this.request.trainerName = response.data.trainer.fullname;
+          _this.request.trainerName = response.data.trainers;
           _this.request.trainingName = response.data.training.designationsMap[_this.$locale];
           _this.request.trainingDate=response.data.startDateFormatted ;
           _this.request.trainingLocation=response.data.locationFormatted;
@@ -947,7 +953,7 @@ export default {
           .catch(this.onError);
     },
 
-    fetchFeedBackForm() {
+    fetchOnlineFeedBackForm() {
        var _this = this;
        this.$axios
         .get("/api/booking/feedback/" + parseInt(this.request.bookingId, 10))
@@ -977,10 +983,42 @@ export default {
           })
           .catch(this.onError);
     },
+
+    fetchManualFeedBackForm(){
+       var _this = this;
+       this.$axios
+        .get("/api/training/event/feedback/" + parseInt(this.$route.query.trainingEventId, 10)+"/"+parseInt(this.$route.query.feedbackId, 10))
+        .then(function (response) {
+           if(response.data!==null)
+          {
+          _this.request.receivedInvitation=response.data.receivedInvitation;
+          _this.request.satisfiedPreparation=response.data.satisfiedPreparation;
+          _this.request.suitableTrainingRoom=response.data.suitableTrainingRoom;
+          _this.request.expectedTrainingRoom=response.data.expectedTrainingRoom;
+          _this.request.breakTimes=response.data.breakTimes;
+          _this.request.cleanTrainingRoom=response.data.cleanTrainingRoom;
+          _this.request.easyTrainingMaterial=response.data.easyTrainingMaterial;
+          _this.request.theorypractice=response.data.theorypractice;
+          _this.request.supportedlearningprocess=response.data.supportedlearningprocess;
+          _this.request.learningspeed=response.data.learningspeed;
+          _this.request.involvedtraining=response.data.involvedtraining;
+          _this.request.newthings=response.data.newthings;
+          _this.request.trainerwellprepared=response.data.trainerwellprepared;
+          _this.request.trainerprofessional=response.data.trainerprofessional;
+          _this.request.trainerexplained=response.data.trainerexplained;
+          _this.request.trainerorganized=response.data.trainerorganized;
+          _this.request.benefitseveryday=response.data.benefitseveryday;
+          _this.request.recommendKnorr=response.data.recommendKnorr;
+          _this.request.recommendtraining=response.data.recommendtraining;
+          }
+          })
+    },
     submitfeedback()
     {
       let _this=this;
-        this.request.bookingId=parseInt(this.request.bookingId, 10);
+      if(this.request.bookingId)
+      {
+      this.request.bookingId=parseInt(this.request.bookingId, 10);
         this.$axios
         .post("/api/booking/feedback", this.request)
         .then(function (response) {
@@ -991,6 +1029,20 @@ export default {
         .catch(this.onError)
         .finally(() => {
         });
+      }
+      else{
+        this.$axios
+        .post("/api/training/event/manualfeedback", this.request)
+        .then(function (response) {
+          _this.$noty.success(
+              _this.$t("feedback_submitted")
+            );
+        })
+        .catch(this.onError)
+        .finally(() => {
+        });
+
+      }
     },
     viewFeedBackForm()
     {

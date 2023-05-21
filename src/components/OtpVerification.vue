@@ -28,12 +28,14 @@ export default {
     return {
        bookingId:null,
        trainingId:null,
+       trainingEventId:null,
        otp:null
     }
  },
 mounted() {
       this.bookingId=this.$route.query.bookingId;
       this.trainingId=this.$route.query.trainingId;
+       this.trainingEventId=this.$route.query.trainingEventId;
       
 },
 methods: {
@@ -46,17 +48,33 @@ methods: {
     },
     verifyOtp() {
      var _this = this;
-      if(_this.otp && /^[0-9]{6}$/.test(_this.otp)){
+    if(_this.otp && /^[0-9]{6}$/.test(_this.otp))
+    {
       let bookingId=parseInt(_this.bookingId);
       let trainingId= parseInt(_this.trainingId);
       let otp= parseInt(_this.otp);
+      if(this.$route.query.feedback==="true")
+      {
+        let trainingEventId= parseInt(_this.trainingEventId);
+        this.$axios
+        .get("/api/booking/feedbackOtpVerification/"+bookingId+ "/"+ trainingEventId+ "/"+ otp)
+        .then(function (response) {
+          _this.$router.push('/feedback-form?bookingId='+bookingId+"&trainingEventId="+trainingEventId);       
+        })
+        .catch(this.onError);
+     }
+      else
+      {     
       this.$axios
         .get("/api/booking/otpVerification/"+bookingId+ "/"+ trainingId+ "/"+ otp)
         .then(function (response) {
          _this.$router.push('/download-documents?trainingId=' + _this.trainingId +"&bookingId="+_this.bookingId+"&otp="+_this.otp);
         })
         .catch(this.onError);
-     } else {
+     }
+     }
+     
+     else {
         // OTP value is either empty or invalid
         this.$noty.error(this.$t("invalid_otp"));
         return;
