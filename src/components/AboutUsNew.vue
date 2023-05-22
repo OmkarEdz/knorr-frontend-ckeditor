@@ -71,7 +71,7 @@
             />
           </button>
           <v-dialog v-model="openAddDialog" width="unset" content-class="vdialognew">
-            <video class="video_popup" controls autoplay v-if="openAddDialog == true" controlsList="nodownload">
+            <video class="video_popup" controls autoplay v-if="openAddDialog == true && $locale === 'en' || $locale === 'hu' || $locale === 'fr' ||  $locale === 'pl'" controlsList="nodownload">
               <source src="/static/img/KNORR_2_English_380mb.mp4" type="video/mp4">
             </video>
             <video class="video_popup" controls controlsList="nodownload" oncontextmenu="return false;" autoplay v-if="openAddDialog == true && $locale === 'de'">
