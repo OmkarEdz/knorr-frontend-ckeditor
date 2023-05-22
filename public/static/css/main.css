@@ -2702,7 +2702,7 @@ div.bg-blue{
   .v-application--is-ltr .cp_wrapper .v-expansion-panel-header {pointer-events: none;}
 
   /* About New page css start here */
-  .aboutus-image-big.aboutus-image-new {height: unset;}
+  .aboutus-image-big.aboutus-image-new {height: unset;border-bottom: 1px solid #004581;padding-bottom: 25px;margin-bottom: 35px;}
   .aboutus-image-big.aboutus-image-new img {width:100%;height: 100%;}
   .aboutus_new_content {margin-bottom: 40px;}
   .aboutus_new_content h3 {font-weight: 600;font-size: 25px;line-height: 34px;color: #004380;margin-bottom: 16px;}
@@ -2716,6 +2716,7 @@ div.bg-blue{
   .play_image {width: 111px;position: absolute;left: 0;top: 0;margin: auto;bottom: 0;right: 0;}
   .video_item:hover .video_image {filter: brightness(0.8);}
   .video_popup {max-width: 1000px;margin-bottom: -5px;}
+  .stop_video_btn {height: 36px;min-width: 64px;padding: 0 16px;width: auto;margin: 20px auto 10px;display: block;background-color: var(--accent-color);color: white !important;border: none !important;text-transform: capitalize;}
 
   /* Marketing team feedback css */
   .toolDetailsPg .mx-0.pa-0.text-content p {font-size: 20px;}
