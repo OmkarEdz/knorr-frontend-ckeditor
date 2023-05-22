@@ -1233,7 +1233,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-           <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
+           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
         </div>
 
  <!-- Actions for Fifth Tab -->
@@ -1241,7 +1241,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-           <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
+           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
         <v-btn  @click="$router.push('/feedback-form?trainingEventId='+trainingEventId+'&addmanual=true')" outlined depressed tile class="save mb-2">{{ $t("add") }}</v-btn>
         </div>
 
@@ -1252,7 +1252,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-           <v-btn @click="afterCloseModal()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
+           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2">  <v-icon>mdi-chevron-left</v-icon>{{ $t("back") }}</v-btn>
         <v-btn @click="seatShareSave()" outlined depressed tile class="save mb-2">{{ $t("save") }}</v-btn>
         </div>
        
