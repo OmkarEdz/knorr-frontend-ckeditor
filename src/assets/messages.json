@@ -1,5 +1,6 @@
 {
     "de": {
+        "participant_edited":"Teilnehmer erfolgreich bearbeitet",
         "confirm_delete_training": "Sind Sie sicher, dass Sie dieses Training löschen möchten?",
         "confirm_delete_category": "Sind Sie sicher, dass Sie diese Kategorie löschen möchten?",
         "sortNumber":"Sortierungsnummer",
@@ -960,6 +961,7 @@
         "cookies_session_end": "Sitzungsende"
     },
     "en": {
+        "participant_edited":"Participant Edited Successfully",
         "confirm_delete_training": "Are you sure you want to delete this training?",
         "confirm_delete_category": "Are you sure you want to delete this category?",
         "sortNumber":"Sort Number",
@@ -1924,6 +1926,7 @@
         "cookies_session_end": "End of Session"
     },
     "pl": {
+        "participant_edited":"Uczestnik edytował pomyślnie",
         "confirm_delete_training": "Czy na pewno chcesz usunąć to szkolenie?",
         "confirm_delete_category": "Czy na pewno chcesz usunąć tę kategorię?",
         "sortNumber":"Numer sortowania",
@@ -2883,6 +2886,7 @@
         "cookies_session_end": "Koniec sesji"
     },
    "fr": {
+    "participant_edited":"Participant modifié avec succès",
     "confirm_delete_training": "Êtes-vous sûr de vouloir supprimer cette formation ?",
     "confirm_delete_category": "Êtes-vous sûr de vouloir supprimer cette catégorie ?",
     "sortNumber":"Numéro de tri",
@@ -3845,6 +3849,7 @@
     "cookies_session_end": "Fin de session"
     },
   "hu":{
+    "participant_edited":"A résztvevő sikeresen szerkesztve",
     "confirm_delete_training": "Biztosan törölni szeretné ezt a képzést?",
     "confirm_delete_category": "Biztosan törölni szeretné ezt a kategóriát?",
     "sortNumber":"Rendezési szám",
