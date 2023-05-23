@@ -1025,6 +1025,7 @@ export default {
           _this.$noty.success(
               _this.$t("feedback_submitted")
             );
+            
         })
         .catch(this.onError)
         .finally(() => {
@@ -1037,6 +1038,7 @@ export default {
           _this.$noty.success(
               _this.$t("feedback_submitted")
             );
+            _this.$routerBack();
         })
         .catch(this.onError)
         .finally(() => {
