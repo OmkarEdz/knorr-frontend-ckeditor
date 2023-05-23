@@ -59,7 +59,7 @@
       <div class="col-xl-4 pl-8 pl-md-12 pl-xl-8 row">
         <Contact />
         <div class="video_section">
-          <h5 class="video_head">Lorem Ipsum is simply dummy text of the printing and typesetting.</h5>
+          <h5 class="video_head"></h5>
           <button class="video_item" @click.stop="openAddDialog = true">
             <img
               class="video_image"
