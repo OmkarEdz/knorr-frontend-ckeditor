@@ -120,7 +120,7 @@ export default {
               goal_headline: "goal_headline_practical_training",
               goal: "practical_goal",
               usage: "practical_usage",
-              image: "practical_header.jpg",
+              image: "practical_training_new_header.jpg",
               backgroundPosition: "top",
           },
           technical: {
@@ -129,7 +129,7 @@ export default {
               goal_headline: "goal_headline_technical_coaching",
               goal: "technical_goal",
               usage: "technical_usage",
-              image: "technicalcoaching_header.jpg",
+              image: "technical_coaching_new_header.jpg",
               backgroundPosition: "center",
           },
           virtualclassroom: {
@@ -138,7 +138,7 @@ export default {
               goal_headline: "goal_headline_virtual_classroom",
               goal: "virtualclassroom_goal",
               usage: "virtualclassroom_usage",
-              image: "virtualclassroom_header.jpg",
+              image: "virtual_classroom_new_header.jpg",
               backgroundPosition: "center",
           },
           theory: {
@@ -156,7 +156,7 @@ export default {
               goal_headline: "goal_headline_advisory",
               goal: "advisory_goal",
               usage: "advisory_usage",
-              image: "advisory_header.jpg",
+              image: "advisory_new_header.jpg",
               backgroundPosition: "center",
           },
           virtualreality: {
