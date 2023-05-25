@@ -68,6 +68,7 @@
             <img
               class="play_image"
               src="/static/img/play-circle.png"
+              style="width: 53px; height: 53px;" 
             />
           </button>
           <v-dialog v-model="openAddDialog" width="unset" content-class="vdialognew">
