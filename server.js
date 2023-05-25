@@ -25,19 +25,19 @@ app.use('*/js',express.static(path.join(__dirname , "/target/dist/",'/static/js'
   etag: true,
   maxAge: '1d'
 }));
-app.use('*/img',express.static(path.join(__dirname , "/public/static/img"),{
+app.use('*/img',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
   etag: true,
   maxAge: '1d'
 }));
-app.use('*/jpg',express.static(path.join(__dirname , "/public/static/img"),{
+app.use('*/jpg',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
   etag: true,
   maxAge: '1d'
 }));
-app.use('*/png',express.static(path.join(__dirname , "/public/static/img"),{
+app.use('*/png',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
   etag: true,
   maxAge: '1d'
 }));
-app.use('*/svg',express.static(path.join(__dirname , "/public/static/img"),{
+app.use('*/svg',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
   etag: true,
   maxAge: '1d'
 }));
