@@ -25,7 +25,7 @@ app.use('*/js',express.static(path.join(__dirname , "/target/dist/",'/static/js'
   etag: true,
   maxAge: '1d'
 }));
-app.use('*/img',express.static(path.join(__dirname , "/public/static/"),{
+app.use('*/img',express.static(path.join(__dirname , "/public/static/img"),{
   etag: true,
   maxAge: '1d'
 }));
