@@ -3133,7 +3133,7 @@ export default {
           .finally (function(){
             setTimeout(function(){
               progressIndicator.hidden = true;
-            }, 2000);
+            }, 4000);
           });
       },
 
@@ -3156,7 +3156,7 @@ export default {
           .finally (function(){
             setTimeout(function(){
               progressIndicator.hidden = true;
-            }, 2000);
+            }, 4000);
           });
       },
 
