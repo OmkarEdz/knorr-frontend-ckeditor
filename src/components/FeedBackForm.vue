@@ -1025,18 +1025,24 @@ export default {
           _this.$noty.success(
               _this.$t("feedback_submitted")
             );
+            
         })
         .catch(this.onError)
         .finally(() => {
         });
       }
       else{
+        if(this.$route.query.feedbackId)
+        {
+        this.request.id=parseInt(this.$route.query.feedbackId, 10)
+        }
         this.$axios
-        .post("/api/training/event/manualfeedback", this.request)
+        .put("/api/training/event/manualfeedback", this.request)
         .then(function (response) {
           _this.$noty.success(
               _this.$t("feedback_submitted")
             );
+            _this.$routerBack();
         })
         .catch(this.onError)
         .finally(() => {

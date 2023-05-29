@@ -58,7 +58,7 @@
       <div class="col-xl-4 pl-8 pl-md-12 pl-xl-8 row">
         <Contact />
         <div class="video_section">
-          <h5 class="video_head">Lorem Ipsum is simply dummy text of the printing and typesetting.</h5>
+          <h5 class="video_head"></h5>
           <button class="video_item" @click.stop="openAddDialog = true">
             <img
               class="video_image"
@@ -67,14 +67,15 @@
             <img
               class="play_image"
               src="/static/img/play-circle.png"
+              style="width: 53px; height: 53px;" 
             />
           </button>
           <v-dialog v-model="openAddDialog" width="unset" content-class="vdialognew">
             <video class="video_popup" controls autoplay v-if="openAddDialog == true && $locale === 'en' || $locale === 'hu' || $locale === 'fr' ||  $locale === 'pl'" controlsList="nodownload">
-              <source src="/static/img/KNORR_2_English_380mb.mp4" type="video/mp4">
+              <source :src="`/files/images/KNORR_2_English_380mb.mp4`" type="video/mp4">
             </video>
             <video class="video_popup" controls controlsList="nodownload" oncontextmenu="return false;" autoplay v-if="openAddDialog == true && $locale === 'de'">
-              <source src="/static/img/KNORR_2_German_380mb.mp4" type="video/mp4">
+              <source :src="`/files/images/KNORR_2_German_380mb.mp4`" type="video/mp4">
             </video>
             <button class="stop_video_btn" @click="openAddDialog = false">Stop</button>
           </v-dialog>

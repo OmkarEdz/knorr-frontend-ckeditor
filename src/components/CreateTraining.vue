@@ -9,6 +9,16 @@
       </div>
       </div>
   </div>
+   <div class="text-center">
+      <v-dialog v-model="openDeleteDialog" width="500">
+        <h4>{{ $t("confirm_delete_training") }}</h4>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="openDeleteDialog = false" outlined depressed tile class="cancelbutton mr-2 mb-2"> {{ $t("cancel") }}</v-btn>
+          <v-btn @click="deleteTraining()" outlined depressed tile class="deletebutton mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+        </v-card-actions>
+      </v-dialog>
+    </div>
   <div class="pt-8">
     <!-- <div class="row justify-content-between ml-0 mr-n8">
       	<span v-if="selectedCategory != null" class="text-uppercase text-h6 text-sm-h5 text-md-h5 mb-0 pt-1">{{ selectedCategory.designationMap[$locale] }} >> {{$t("create_training")}} </span>
@@ -245,7 +255,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn v-show="editMode" @click="deleteTraining()" outlined depressed tile class="deletebutton mr-2 mb-2"><v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+          <v-btn v-show="editMode" @click="openDeleteDialog= true"  outlined depressed tile class="deletebutton mr-2 mb-2"><v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
           <v-btn @click="saveTraining()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
         </div>
@@ -276,6 +286,7 @@ export default {
         categories: [],     // only data for select boxes
         languageTab: null,
         selectedCategory: null,
+         openDeleteDialog:false,
         customToolbar: [
           ["bold", "italic", "underline"],
           [{ list: "ordered" }, { list: "bullet" }],

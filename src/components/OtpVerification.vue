@@ -48,7 +48,7 @@ methods: {
     },
     verifyOtp() {
      var _this = this;
-    if(_this.otp && /^[0-9]{6}$/.test(_this.otp))
+    if(_this.otp && /^\d+$/.test(_this.otp))
     {
       let bookingId=parseInt(_this.bookingId);
       let trainingId= parseInt(_this.trainingId);
