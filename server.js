@@ -29,18 +29,6 @@ app.use('*/img',express.static(path.join(__dirname , "/target/dist/",'/static/im
   etag: true,
   maxAge: '1d'
 }));
-app.use('*/jpg',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
-  etag: true,
-  maxAge: '1d'
-}));
-app.use('*/png',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
-  etag: true,
-  maxAge: '1d'
-}));
-app.use('*/svg',express.static(path.join(__dirname , "/target/dist/",'/static/img'),{
-  etag: true,
-  maxAge: '1d'
-}));
 app.use('*/fonts',express.static(path.join(__dirname , "/target/dist/",'/static/fonts'),{
   etag: true,
   maxAge: '1d'
