@@ -10,7 +10,7 @@
   "author": "CodeGuides GmbH <info@codeguides.de>",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --openssl-legacy-provider",
+    "build": "rm -rf target/dist && vue-cli-service build --openssl-legacy-provider",
     "test:unit": "vue-cli-service test:unit --coverage",
     "test:e2e": "vue-cli-service test:e2e",
     "test": "vue-cli-service test:unit && vue-cli-service test:e2e",
