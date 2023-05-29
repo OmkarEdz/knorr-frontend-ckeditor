@@ -133,7 +133,19 @@
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ getTrainerById(trainerAppointment.trainer).fullname }}</p>
-                <p class="trainerTypeName" >{{ getTrainerById(trainerAppointment.trainerType) === 'fullTime' ? 'Full Time':'Part Time' }}</p>
+                <p class="trainerTypeName" v-if="getTrainerById(trainerAppointment.trainerType) === 'fullTime'">
+                  <span>
+                    <img class="trainerTypeImg" src="/static/img/fulltime@2x.png"/>
+                  </span>
+                  Full Time
+                </p>
+                <p class="trainerTypeName trainerPartTypeName" v-if="getTrainerById(trainerAppointment.trainerType) === 'partTime'">
+                  <span>
+                    <img class="trainerTypeImg" src="/static/img/parttime@2x.png"/>
+                  </span>
+                  Part Time
+                </p>
+                <p class="trainerLoc"><v-icon>fas fa-map-marker-alt</v-icon> {{ getTrainerById(trainerAppointment.trainer).location.toLowerCase() }}</p>
               </div>
             </td>
             <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER')">
@@ -1856,6 +1868,7 @@
             <td>
               <div class="bg-beige">
                 <p class="trainerName">{{ roomAppointment.room.designation }}</p>
+                <p class="roomLoc"><v-icon>fas fa-map-marker-alt</v-icon> {{ roomAppointment.roomLocation.toLowerCase() }}</p>
               </div>
             </td>
             <td class="bg-beige calendar-day" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM')">
@@ -3133,7 +3146,7 @@ export default {
           .finally (function(){
             setTimeout(function(){
               progressIndicator.hidden = true;
-            }, 2000);
+            }, 4000);
           });
       },
 
@@ -3156,7 +3169,7 @@ export default {
           .finally (function(){
             setTimeout(function(){
               progressIndicator.hidden = true;
-            }, 2000);
+            }, 4000);
           });
       },
 

@@ -17,7 +17,6 @@
             <p>{{ $t("aboutus_new_para1") }}</p>
             <p>{{ $t("aboutus_new_para2") }}</p>
             <p>{{ $t("aboutus_new_para3") }}</p>
-            <p>{{ $t("aboutus_new_para4") }}</p>
           </div>
           <div class="aboutus-image-big aboutus-image-new">
             <img
