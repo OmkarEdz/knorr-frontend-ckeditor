@@ -2594,7 +2594,7 @@ div.bg-blue{
   #weekviewcontainer td p {margin: 0px;}
   .trainerName {font-weight: 400;font-size: 12px;line-height: 16px;color: #000000de;}
   .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000000de;}
-  .trainerTypeName {font-size: 12px;line-height: 11px;background: #fff;width: max-content;padding: 3px 5px;border-radius: 2px;color: #000000de;margin-top:5px !important;text-transform:capitalize;}
+  .trainerTypeName {display:flex;align-items:center;font-size: 11px;line-height: 11px;background: #6D73DC;width: max-content;padding: 3px 5px;border-radius: 3px;color: #fff;margin-top:5px !important;text-transform:capitalize;}
   .partTimeType {background: #FFFCE3;}
   .traningData {font-size:11px;line-height: 1.4;vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;}
   .traningData > div {display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;}
@@ -2717,6 +2717,12 @@ div.bg-blue{
   .video_item:hover .video_image {filter: brightness(0.8);}
   .video_popup {max-width: 1000px;margin-bottom: -5px;}
   .stop_video_btn {height: 36px;min-width: 64px;padding: 0 16px;width: auto;margin: 20px auto 10px;display: block;background-color: var(--accent-color);color: white !important;border: none !important;text-transform: capitalize;}
+  .trainerLoc, .roomLoc {font-size: 12px;line-height: 11px;width: max-content;padding: 3px 0px;border-radius: 2px;color: #000000de;
+    margin-top: 5px !important;text-transform: capitalize;display: flex;align-items: center;}
+  .trainerLoc .v-icon, .roomLoc .v-icon {font-size: 10px;margin-right: 3px;}
+  .trainerTypeName span {line-height: 9px;}
+  .trainerTypeName .trainerTypeImg {width: 10px;margin-right: 4px;}
+  .trainerTypeName.trainerPartTypeName {background: #BFB499;}
 
   /* Marketing team feedback css */
   .toolDetailsPg .mx-0.pa-0.text-content p {font-size: 20px;}
