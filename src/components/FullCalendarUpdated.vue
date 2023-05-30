@@ -546,7 +546,7 @@
                         </div>
                       </div>
                       <div v-show="appointmentOnDay.type == 'MISCELLANEOUS'">
-                        <div class="traningData pink_traning">
+                        <div class="traningData white_traning">
                           <span v-bind:class="{'clickable-link': appointmentOnDay.clickable}" @click.stop="appointmentClicked(getAppointment(trainerAppointment, day.day))">{{ appointmentOnDay.designationsMap[$locale] != null ? appointmentOnDay.designationsMap[$locale] : $t("appointment_type_" + appointmentOnDay.type.toLowerCase()) }}</span>
                           <div v-html="appointmentOnDay.description"></div>
                         </div>
