@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="sixteentosix omt-6 omt-md-25">
-    <div class="kachelimage header-image" style="background: url('/static/img/laptop_lock.jpg')">
+    <div class="kachelimage header-image" style="background: url('/static/img/training_request.jpg')">
       <div class="headline">
         <div class="text-subtitle-2 text-md-h5">{{ $t("training_requests") }}</div>
       </div>
