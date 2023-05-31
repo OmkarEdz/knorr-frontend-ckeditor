@@ -2042,36 +2042,35 @@ export default {
       },
 
     fetchTrainings() {
-      var _this = this;
-       progressIndicator.hidden = false;
-        showLoadingCircle(true);
-      this.$axios
-        .get("/api/training/trainings", {
-        })
-        .then(function (response) {
-          let trainings = response.data;
-          if(trainings.length > 0){
-            for (let p = 0; p < trainings.length; p++) {
-              let previousTraining = trainings[0];
-              for (let i = 1; i < trainings.length; i++) {
-                const training = trainings[i];
-                if(previousTraining.designationsMap[_this.$locale] > training.designationsMap[_this.$locale]){
-                  trainings[i] = previousTraining;
-                  trainings[i-1] = training;
-                }
-              }
-            }
-          }
-          // trainings.sort((a,b) => a.designationsMap[_this.$locale] - b.designationsMap[_this.$locale]);
-          for (let i = 0; i < trainings.length; i++) {
-            const training = trainings[i];
-            training.text = training.designationsMap[_this.$locale];
-          }
-          _this.trainings = trainings;
-        })
-        .catch(this.onError).finally(this.onFinally);
-    },
+  var _this = this;
+  progressIndicator.hidden = false;
+  showLoadingCircle(true);
+  this.$axios
+    .get("/api/training/trainings")
+    .then(function(response) {
+      let trainings = response.data;
 
+      if (trainings.length > 0) {
+        trainings.sort((a, b) => {
+          const designationA = a.designationsMap[_this.$locale] || "";
+          const designationB = b.designationsMap[_this.$locale] || "";
+
+          return designationA.localeCompare(designationB, undefined, {
+            sensitivity: "base",
+          });
+        });
+      }
+
+      for (let i = 0; i < trainings.length; i++) {
+        const training = trainings[i];
+        training.text = training.designationsMap[_this.$locale] || "";
+      }
+
+      _this.trainings = trainings;
+    })
+    .catch(this.onError)
+    .finally(this.onFinally);
+},
     fetchTrainers() {
       var _this = this;
        progressIndicator.hidden = false;
