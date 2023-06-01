@@ -2211,7 +2211,7 @@
               <DatePicker v-model="appointment.start" clearable :label="$t('begin_date')" />
           </div>
           <div class="col-sm-6 col-md-6 ">
-              <DatePicker min="2023-06-15" v-model="appointment.end" clearable :label="$t('end_date')" />
+              <DatePicker v-model="appointment.end" clearable :label="$t('end_date')" />
           </div>
           <div class="col-sm-12 col-md-12">
             <v-select
