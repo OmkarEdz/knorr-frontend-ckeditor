@@ -58,7 +58,6 @@
       <div class="col-xl-4 pl-8 pl-md-12 pl-xl-8 row">
         <Contact />
         <div class="video_section">
-          <h5 class="video_head"></h5>
           <button class="video_item" @click.stop="openAddDialog = true">
             <img
               class="video_image"
@@ -70,6 +69,7 @@
               style="width: 53px; height: 53px;" 
             />
           </button>
+          <h5 class="video_head">{{ $t("aboutus_knowhow_headline") }}</h5>
           <v-dialog v-model="openAddDialog" width="unset" content-class="vdialognew">
             <video class="video_popup" controls autoplay v-if="openAddDialog == true && $locale === 'en' || $locale === 'hu' || $locale === 'fr' ||  $locale === 'pl'" controlsList="nodownload">
               <source :src="`/files/images/KNORR_2_English_380mb.mp4`" type="video/mp4">

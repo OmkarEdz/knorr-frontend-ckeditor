@@ -2645,7 +2645,8 @@ div.bg-blue{
   .trainer-row {display: none;}
   .calendar-day > div > div {display:none;}
   .calendar-day > div > div.training_as_trainer, .calendar-day > div > div.room_blocked, .calendar-day > div > div[set]{display:block;position:relative;}
- 
+  #weekviewcontainer td.calendar-day div[set] > span {display: none;}
+
   tbody#FullTime .trainerType,
   tbody#PartTime .trainerType {display:none;}
   tbody#FullTime .trainerType.fullTime,
@@ -2700,6 +2701,7 @@ div.bg-blue{
   .cp_wrapper .v-expansion-panel-content {display: flex !important;}
   .v-application--is-ltr .cp_wrapper .v-expansion-panel-header__icon {display: none;}
   .v-application--is-ltr .cp_wrapper .v-expansion-panel-header {pointer-events: none;}
+  .cp_wrapper_new .v-expansion-panel-content__wrap {background: #fff;}
 
   /* About New page css start here */
   .aboutus-image-big.aboutus-image-new {height: unset;border-bottom: 1px solid #004581;padding-bottom: 25px;margin-bottom: 35px;}
@@ -2710,7 +2712,7 @@ div.bg-blue{
   .aboutus_new_content p:last-child {margin: 0px;}
   .vdialognew {padding: 15px;}
   .video_section {padding: 0px 50px 0px 15px;}
-  .video_head {font-weight: 600;font-size: 25px;line-height: 34px;color: #004380;margin-bottom: 15px;}
+  .video_head {font-weight: 600;font-size: 25px;line-height: 34px;color: #004380;margin-top: 15px;}
   .video_item {position: relative;}
   .video_image {width: 100%;transition: 0.5s all;}
   .play_image {width: 111px;position: absolute;left: 0;top: 0;margin: auto;bottom: 0;right: 0;}

@@ -8,7 +8,7 @@
     </div>
   </div>
   <div>
-    <div class="mx-0 row align-items-start cp_wrapper">
+    <div class="mx-0 row align-items-start cp_wrapper cp_wrapper_new">
       <!-- Left Area -->
       <div class="col-xl-8 px-0">        
         <div class="mx-0 pa-0 text-content">
