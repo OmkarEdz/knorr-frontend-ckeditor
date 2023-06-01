@@ -232,7 +232,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, MondayDate, MondayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="mondayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -477,7 +477,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, TuesdayDate, TuesdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="tuesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
@@ -558,7 +558,7 @@
               </div>
               <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, TuesdayDate, TuesdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="tuesdayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -722,7 +722,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, WednesdayDate, WednesdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="wednesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
@@ -803,7 +803,7 @@
               </div>
               <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, WednesdayDate, WednesdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="wednesdayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -967,7 +967,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, ThursdayDate, ThursdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="thursdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
@@ -1048,7 +1048,7 @@
               </div>
               <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, ThursdayDate, ThursdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="thursdayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -1212,7 +1212,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, FridayDate, FridayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="fridayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
@@ -1293,7 +1293,7 @@
               </div>
               <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, FridayDate, FridayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="fridayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -1457,7 +1457,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SatdayDate, SaturdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="saturdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
@@ -1538,7 +1538,7 @@
               </div>
               <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SatdayDate, SaturdayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="saturdayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -1702,7 +1702,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SundayDate, SundayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="sundayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'VACATION'">
                         <div class="traningData white_traning">
@@ -1783,7 +1783,7 @@
               </div>
               <div v-for="(trainerAppointment, index) in allObjectsMonthNext.trainerAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in trainerAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" v-bind:data-id="index + 1" @click.stop="calendarDayClicked(getTrainerById(trainerAppointment.trainer).id, SundayDate, SundayMonthCount, 'TRAINER', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="sundayDate == appointmentDate">
                         <div v-show="appointmentOnDay.type == 'VACATION'">
                           <div class="traningData white_traning">
@@ -1889,7 +1889,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="mondayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -1904,7 +1904,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, MondayDate, MondayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="mondayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -1936,7 +1936,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, TuesdayDate, TuesdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="tuesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -1951,7 +1951,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, TuesdayDate, TuesdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="tuesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -1983,7 +1983,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, WednesdayDate, WednesdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="wednesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -1998,7 +1998,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, WednesdayDate, WednesdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="wednesdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2030,7 +2030,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, ThursdayDate, ThursdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="thursdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2045,7 +2045,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, ThursdayDate, ThursdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="thursdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2077,7 +2077,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, FridayDate, FridayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="fridayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2092,7 +2092,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, FridayDate, FridayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="fridayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2124,7 +2124,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SatdayDate, SaturdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="saturdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2139,7 +2139,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SatdayDate, SaturdayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="saturdayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2171,7 +2171,7 @@
               </div>
               <div>
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SundayDate, SundayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="day.date.slice(0, 8) + (index + 1)" :set="appointmentDate = day.date.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="sundayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2186,7 +2186,7 @@
               </div>
               <div v-for="(roomAppointment, index) in allObjectsMonthNext.roomAppointments" v-if="itemIndex == index">
                 <div v-for="(day, index) in roomAppointment.daysWithAppointments" :set="appointmentOnDay = day.appointment" @click.stop="calendarDayClicked(roomAppointment.room.id, SundayDate, SundayMonthCount, 'ROOM', day.appointment)">
-                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.start.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.start.slice(0, 8) + (index + 1)">
+                  <div v-if="appointmentOnDay != null" v-bind:data-date="appointmentOnDay.end.slice(0, 8) + (index + 1)" :set="appointmentDate = appointmentOnDay.end.slice(0, 8) + (index + 1)">
                     <div class="checkItem" v-if="sundayDate == appointmentDate">
                       <div v-show="appointmentOnDay.type == 'ROOM_BLOCKED'">
                         <div class="traningData lightBlue_traning">
@@ -2419,11 +2419,11 @@ export default {
         });
       }
       
-      this.allObjectsMonth = this.allObjects[dt.getMonth()];
       this.allObjectsMonthPrev = this.allObjects[dt.getMonth() - 1];
+      this.allObjectsMonth = this.allObjects[dt.getMonth()];
       this.allObjectsMonthNext = this.allObjects[dt.getMonth() + 1];
       console.log(this.allObjects);
-      console.log(this.allObjectsMonth);
+      console.log(this.allObjectsMonthNext);
       
       this.currentDay = new Date().getDate();
       this.currentMonth = new Date().getMonth();
@@ -2433,7 +2433,7 @@ export default {
       this.fetchTrainers();
       this.fetchAppointmentTypes();
 
-      this.weekNumber = Math.ceil(days / 7);
+      this.weekNumber = Math.ceil(days / 7) + 1;
       this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
       this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
       this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2542,7 +2542,7 @@ export default {
         var ldaydt = lweekdt.split(' ')[1];
         var fyeardt = fweekdt.split(',')[1];
         var lyeardt = lweekdt.split(',')[1];
-        this.weekNumber = Math.ceil(days / 7);
+        this.weekNumber = Math.ceil(days / 7) + 1;
         this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
         this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
         this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2807,6 +2807,10 @@ export default {
         if(this.fdweek.getMonth() == 0){
           this.allObjectsMonthPrev = 0;
         }
+
+        if(this.fdweek.getMonth() == 0){
+          alert();
+        }
         
         this.MondayDate = this.mondayDate.slice(8,10);
         this.TuesdayDate = this.tuesdayDate.slice(8,10);
@@ -2847,7 +2851,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 1, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7);
+          this.weekNumber = Math.ceil(days / 7) + 1;
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2912,6 +2916,8 @@ export default {
         this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
+
+        
       },  
 
       //change month filter funtion
@@ -2933,7 +2939,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7);
+          this.weekNumber = Math.ceil(days / 7) + 1;
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2983,7 +2989,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7);
+          this.weekNumber = Math.ceil(days / 7) + 1;
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -3033,7 +3039,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7);
+          this.weekNumber = Math.ceil(days / 7) + 1;
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -3096,6 +3102,10 @@ export default {
           this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
           this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
           this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
+
+          if(this.monthCount == 0 ){
+            this.weekNumber = 1;
+          }
         }
       },
 
