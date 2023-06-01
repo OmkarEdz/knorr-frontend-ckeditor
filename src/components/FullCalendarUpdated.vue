@@ -2211,7 +2211,7 @@
               <DatePicker v-model="appointment.start" clearable :label="$t('begin_date')" />
           </div>
           <div class="col-sm-6 col-md-6 ">
-              <DatePicker v-model="appointment.end" clearable :label="$t('end_date')" />
+              <DatePicker min="2023-06-15" v-model="appointment.end" clearable :label="$t('end_date')" />
           </div>
           <div class="col-sm-12 col-md-12">
             <v-select
@@ -2478,8 +2478,10 @@ export default {
       this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
       this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-      this.monthCount = this.fdweek.getMonth();
+      this.monthCount = this.fdweek.getMonth() + 1;
       this.newYr = this.fdweek.getFullYear();
+
+      
     },
     
     methods: {
@@ -2708,6 +2710,9 @@ export default {
         this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
+
+        this.monthCount = this.fdweek.getMonth();
+        
       },
 
       //next week funtion
@@ -2807,10 +2812,6 @@ export default {
         if(this.fdweek.getMonth() == 0){
           this.allObjectsMonthPrev = 0;
         }
-
-        if(this.fdweek.getMonth() == 0){
-          alert();
-        }
         
         this.MondayDate = this.mondayDate.slice(8,10);
         this.TuesdayDate = this.tuesdayDate.slice(8,10);
@@ -2827,6 +2828,9 @@ export default {
         this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
+
+        this.monthCount = this.fdweek.getMonth();
+        
       },
 
       //change year filter funtion
@@ -2838,6 +2842,7 @@ export default {
           this.todayClick();
         }
         else{
+          
           this.newYr = this.yearFilter;
           this.selectedYear = this.newYr;
           this.nd = new Date(this.newYr,this.monthCount,1);
@@ -2917,7 +2922,9 @@ export default {
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-        
+        if(this.monthCount == 0 ){
+            this.weekNumber = 1;
+        }
       },  
 
       //change month filter funtion
@@ -3028,6 +3035,7 @@ export default {
             this.weekDisplay = (fweekdt+" - "+lweekdt);
           }
         }else{
+          
           this.nd = new Date(this.newYr,this.monthCount,1);
           let nav=0;var cnav=0;var inc=1;var dec=1;var wnav=0;var wlnav =0;
           var year = this.nd.getFullYear();
