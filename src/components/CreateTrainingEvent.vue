@@ -2368,6 +2368,7 @@ export default {
             //_this.$router.push("/training-events");
           })
           .catch(this.onError).finally(this.onFinally);
+           _this.fetchEditingTrainingEvent();
       } else {
         // Create new Training
 
@@ -2770,6 +2771,7 @@ export default {
           );
           _this.fetchBookings();
           _this.fetchUsers();
+          _this.fetchEditingTrainingEvent();
 
           _this.adduser = {
             firstname: null,
