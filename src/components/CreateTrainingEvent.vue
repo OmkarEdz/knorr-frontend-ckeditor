@@ -1635,7 +1635,7 @@ export default {
             _this.$noty.success(
               _this.$t("seatShared", { name: response.data.designation })
             );
-            _this.$router.push("/training-events");
+           // _this.$router.push("/training-events");
           })
           .catch(this.onError).finally(this.onFinally);
       } 
@@ -1643,6 +1643,14 @@ export default {
 
   remove(index) {
     let _this=this;
+    for (let i = 0; i < _this.bookings.length; i++) {
+        const booking = this.bookings[i];
+        if(booking.participant.tenantId === _this.seatShare[index].tenant.id) 
+        {
+        _this.$noty.error(this.$t("removeParticipantsFromTenant", { name: this.$t("language") }));
+        return;
+        }
+      }
     let removedTenantId=this.seatShare[index].tenant.id;
     _this.customers.forEach((customer) => {
                    if (customer.id === removedTenantId ) {
@@ -2357,7 +2365,7 @@ export default {
             _this.$noty.success(
               _this.$t("trainingEvent_edited", { name: response.data.designation })
             );
-            _this.$router.push("/training-events");
+            //_this.$router.push("/training-events");
           })
           .catch(this.onError).finally(this.onFinally);
       } else {
