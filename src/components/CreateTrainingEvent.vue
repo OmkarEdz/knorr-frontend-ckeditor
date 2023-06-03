@@ -2771,7 +2771,6 @@ export default {
           );
           _this.fetchBookings();
           _this.fetchUsers();
-          _this.fetchEditingTrainingEvent();
 
           _this.adduser = {
             firstname: null,
