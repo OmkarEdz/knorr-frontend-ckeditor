@@ -1971,7 +1971,13 @@ export default {
     },
 
     fetchEditingTrainingEvent() {
+       
       var _this = this;
+      _this.seatOccupied=0;
+      _this.seatTenant=null;
+      _this.seatNumber=null;
+      _this.seatShare=[];
+      _this.seatShareCustomers=[];
        progressIndicator.hidden = false;
         showLoadingCircle(true);
       this.$axios
@@ -2771,6 +2777,7 @@ export default {
           );
           _this.fetchBookings();
           _this.fetchUsers();
+          _this.fetchEditingTrainingEvent();
 
           _this.adduser = {
             firstname: null,
