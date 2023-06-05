@@ -1635,7 +1635,7 @@ export default {
             _this.$noty.success(
               _this.$t("seatShared", { name: response.data.designation })
             );
-            _this.$router.push("/training-events");
+           // _this.$router.push("/training-events");
           })
           .catch(this.onError).finally(this.onFinally);
       } 
@@ -1643,6 +1643,14 @@ export default {
 
   remove(index) {
     let _this=this;
+    for (let i = 0; i < _this.bookings.length; i++) {
+        const booking = this.bookings[i];
+        if(booking.participant.tenantId === _this.seatShare[index].tenant.id) 
+        {
+        _this.$noty.error(this.$t("removeParticipantsFromTenant", { name: this.$t("language") }));
+        return;
+        }
+      }
     let removedTenantId=this.seatShare[index].tenant.id;
     _this.customers.forEach((customer) => {
                    if (customer.id === removedTenantId ) {
@@ -1963,7 +1971,13 @@ export default {
     },
 
     fetchEditingTrainingEvent() {
+       
       var _this = this;
+      _this.seatOccupied=0;
+      _this.seatTenant=null;
+      _this.seatNumber=null;
+      _this.seatShare=[];
+      _this.seatShareCustomers=[];
        progressIndicator.hidden = false;
         showLoadingCircle(true);
       this.$axios
@@ -2357,9 +2371,10 @@ export default {
             _this.$noty.success(
               _this.$t("trainingEvent_edited", { name: response.data.designation })
             );
-            _this.$router.push("/training-events");
+            //_this.$router.push("/training-events");
           })
           .catch(this.onError).finally(this.onFinally);
+           _this.fetchEditingTrainingEvent();
       } else {
         // Create new Training
 
@@ -2762,6 +2777,7 @@ export default {
           );
           _this.fetchBookings();
           _this.fetchUsers();
+          _this.fetchEditingTrainingEvent();
 
           _this.adduser = {
             firstname: null,
