@@ -2602,7 +2602,7 @@ div.bg-blue{
   .traningData p {font-weight: 500;font-size: 10px;margin:0;line-height: 14px;color:#fff;}
   .pink_traning {background: #FC6E71;}
   .yellow_traning {background: #fde976;color: #000;}
-  .nocolor_traning {color:#000;}
+  .nocolor_traning {color:#000;background: #eae4da;}
   .grey_traning {background:#706d6b;}
   .lightBlue_traning {background: #6DECE7;color:#000;}
   .purple_traning {background: #6D73DC;}
