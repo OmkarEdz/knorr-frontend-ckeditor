@@ -2403,6 +2403,8 @@ export default {
         SundayMonthCount: null,
         getMonthCount: null,
         spinner: null,
+
+        startDate: null,
       }
     },
     
@@ -2607,8 +2609,8 @@ export default {
 	          this.dec = 1;
 	          this.cnav--;
 	        }else{
-            this.fdweek.setDate(this.fdweek.getDate() - 7)
-	          this.getweekdt.setDate(this.getweekdt.getDate() - 7)
+            this.fdweek.setDate(this.fdweek.getDate() - 7);
+	          this.getweekdt.setDate(this.getweekdt.getDate() - 7);
             nav = 4;
 	        }
 
@@ -2710,7 +2712,6 @@ export default {
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
         this.monthCount = this.fdweek.getMonth();
-        
       },
 
       //next week funtion
@@ -2921,8 +2922,8 @@ export default {
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-        if(this.monthCount == 0 ){
-            this.weekNumber = 0;
+        if(this.monthCount == 52 || this.monthCount == 53){
+            this.weekNumber = 1;
         }
       },  
 
@@ -3110,8 +3111,8 @@ export default {
           this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
           this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-          if(this.monthCount == 0 ){
-            this.weekNumber = 0;
+          if(this.monthCount == 52 || this.monthCount == 53){
+            this.weekNumber = 1;
           }
         }
       },
