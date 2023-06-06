@@ -2433,7 +2433,7 @@ export default {
       this.fetchTrainers();
       this.fetchAppointmentTypes();
 
-      this.weekNumber = Math.ceil(days / 7) + 1;
+      this.weekNumber = Math.ceil(days / 7);
       this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
       this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
       this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2478,10 +2478,8 @@ export default {
       this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
       this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-      this.monthCount = this.fdweek.getMonth() + 1;
+      this.monthCount = this.fdweek.getMonth();
       this.newYr = this.fdweek.getFullYear();
-
-      
     },
     
     methods: {
@@ -2544,7 +2542,7 @@ export default {
         var ldaydt = lweekdt.split(' ')[1];
         var fyeardt = fweekdt.split(',')[1];
         var lyeardt = lweekdt.split(',')[1];
-        this.weekNumber = Math.ceil(days / 7) + 1;
+        this.weekNumber = Math.ceil(days / 7);
         this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
         this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
         this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2597,7 +2595,7 @@ export default {
 
       //previous week funtion
       prevWeek() {
-        if(this.weekNumber > 1 ){
+        if(this.weekNumber >= 1 ){
           var weekNumberNew = this.weekNumber - 1;
           this.weekNumber--;
           this.nav++;
@@ -2717,7 +2715,7 @@ export default {
 
       //next week funtion
       nextWeek() {
-        if(this.weekNumber >= 1 ){
+        if(this.weekNumber >= 0 ){
           var weekNumberNew = this.weekNumber + 1;
           this.weekNumber++;
           nav++;
@@ -2829,8 +2827,10 @@ export default {
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-        this.monthCount = this.fdweek.getMonth();
-        
+        if (this.weekNumber == 53){
+          this.weekNumber = 1;
+        }
+    
       },
 
       //change year filter funtion
@@ -2842,7 +2842,6 @@ export default {
           this.todayClick();
         }
         else{
-          
           this.newYr = this.yearFilter;
           this.selectedYear = this.newYr;
           this.nd = new Date(this.newYr,this.monthCount,1);
@@ -2854,9 +2853,9 @@ export default {
           nav = weekOfMonth;
           this.fdweek = this.nd.GetFirstDayOfWeek();
           this.getweekdt = this.nd.GetFirstDayOfWeek();
-          var startDate = new Date(this.nd.getFullYear(), 1, 1);
+          var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7) + 1;
+          this.weekNumber = Math.ceil(days / 7);
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2923,7 +2922,7 @@ export default {
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
         if(this.monthCount == 0 ){
-            this.weekNumber = 1;
+            this.weekNumber = 0;
         }
       },  
 
@@ -2946,7 +2945,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7) + 1;
+          this.weekNumber = Math.ceil(days / 7);
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2996,7 +2995,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7) + 1;
+          this.weekNumber = Math.ceil(days / 7);
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -3047,7 +3046,7 @@ export default {
           this.getweekdt = this.nd.GetFirstDayOfWeek();
           var startDate = new Date(this.nd.getFullYear(), 0, 1);
           var days = Math.floor((this.nd - startDate) / (24 * 60 * 60 * 1000));
-          this.weekNumber = Math.ceil(days / 7) + 1;
+          this.weekNumber = Math.ceil(days / 7);
 
           this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
           this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -3112,7 +3111,7 @@ export default {
           this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
           if(this.monthCount == 0 ){
-            this.weekNumber = 1;
+            this.weekNumber = 0;
           }
         }
       },
