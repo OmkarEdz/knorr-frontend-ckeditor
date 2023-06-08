@@ -2373,8 +2373,15 @@ export default {
             );
             //_this.$router.push("/training-events");
           })
-          .catch(this.onError).finally(this.onFinally);
-           _this.fetchEditingTrainingEvent();
+           .finally(() => {
+    this.trainingEvent = {};
+    this.fetchEditingTrainingEvent();
+    this.onFinally();
+  });
+          
+          
+         
+          
       } else {
         // Create new Training
 
