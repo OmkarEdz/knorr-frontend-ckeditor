@@ -2609,6 +2609,7 @@ div.bg-blue{
   .green_traning {background:#0ee920;color:#000;}
   .white_traning {background: #fff;color: #000000;}
   .white_traning p, .lightBlue_traning p {color:#000;}
+  .stopClick {pointer-events: none;}
   /* #weekviewcontainer table tbody {display:none;} 
   #weekviewcontainer table tbody[data-index="0"] {display:table-row-group;}*/
 
