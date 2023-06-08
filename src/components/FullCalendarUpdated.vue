@@ -12,7 +12,7 @@
       <div id="grouphead">
         <div class="left-group">
           <button class="today_btn" @click="todayClick()">Today</button>
-          <button class="btn btn-info btn-arrow wpreviousBtn" @click="prevWeek()">
+          <button class="btn btn-info btn-arrow wpreviousBtn" @click="prevWeek()" id="prevClick">
             <v-icon>fa-solid fa-chevron-left</v-icon>
           </button>
           <button class="btn btn-info btn-arrow wnextBtn" @click="nextWeek()">
@@ -2712,6 +2712,14 @@ export default {
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
         this.monthCount = this.fdweek.getMonth();
+
+        if(this.weekNumber == 1){
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.add("stopClick");
+          }else{
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.remove("stopClick");
+          }
       },
 
       //next week funtion
@@ -2828,10 +2836,17 @@ export default {
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-        if (this.weekNumber == 53){
+        if (this.weekNumber == 52 || this.weekNumber == 53){
           this.weekNumber = 1;
         }
-    
+
+        if(this.weekNumber == 1){
+          const prevElement = document.getElementById("prevClick");
+          prevElement.classList.add("stopClick");
+        }else{
+          const prevElement = document.getElementById("prevClick");
+          prevElement.classList.remove("stopClick");
+        }
       },
 
       //change year filter funtion
@@ -2922,8 +2937,16 @@ export default {
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-        if(this.monthCount == 52 || this.monthCount == 53){
+        if(this.monthCount == 0 || this.monthCount == 52 || this.monthCount == 53){
             this.weekNumber = 1;
+        }
+
+        if(this.weekNumber == 1){
+          const prevElement = document.getElementById("prevClick");
+          prevElement.classList.add("stopClick");
+        }else{
+          const prevElement = document.getElementById("prevClick");
+          prevElement.classList.remove("stopClick");
         }
       },  
 
@@ -3111,8 +3134,16 @@ export default {
           this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
           this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-          if(this.monthCount == 52 || this.monthCount == 53){
+          if(this.monthCount == 0 || this.monthCount == 52 || this.monthCount == 53){
             this.weekNumber = 1;
+          }
+
+          if(this.weekNumber == 1){
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.add("stopClick");
+          }else{
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.remove("stopClick");
           }
         }
       },
