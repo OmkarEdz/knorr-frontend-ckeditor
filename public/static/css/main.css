@@ -2604,7 +2604,7 @@ div.bg-blue{
   .yellow_traning {background: #fde976;color: #000;}
   .nocolor_traning {color:#000;background: #eae4da;}
   .grey_traning {background:#706d6b;}
-  .lightBlue_traning {background: #6DECE7;color:#000;}
+  .lightBlue_traning {background: #6DECE7;color:#000;text-transform: capitalize;}
   .purple_traning {background: #6D73DC;}
   .green_traning {background:#0ee920;color:#000;}
   .white_traning {background: #fff;color: #000000;}
