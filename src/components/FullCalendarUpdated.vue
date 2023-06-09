@@ -15,7 +15,7 @@
           <button class="btn btn-info btn-arrow wpreviousBtn" @click="prevWeek()" id="prevClick">
             <v-icon>fa-solid fa-chevron-left</v-icon>
           </button>
-          <button class="btn btn-info btn-arrow wnextBtn" @click="nextWeek()">
+          <button class="btn btn-info btn-arrow wnextBtn" @click="nextWeek()" id="nextClick">
             <v-icon>fa-solid fa-chevron-right</v-icon>
           </button>
           <div id="weekDisplay" v-bind:title="weekDisplay">{{ weekDisplay }}</div>
@@ -2306,7 +2306,6 @@
       const firstweek = new Date(year,month,1).getWeek();
       const lastweek = new Date(year,month+1,0).getWeek();
       var used = new Date(year,month,1).getDay() + new Date(year,month+1,0).getDate();
-      var numofweeks = Math.ceil( used / 7);
 
       const fweekdt = headwdate.format(getweekdt.setDate(getweekdt.getDate()));
       const lweekdt = headwdate.format(getweekdt.setDate(getweekdt.getDate()+6));
@@ -2405,6 +2404,20 @@ export default {
         spinner: null,
 
         startDate: null,
+        weekNumDays: null,
+        prevYear: null,
+        nextYear: null,
+        firstDayOfPrevYear: null,
+        lastDayOfPrevYear: null, 
+        startOfWeekPrevYear:null,
+        endOfWeekPrevYear:null,
+        totalDays: null,
+        totalWeeks :null,
+        firstDayOfNextYear: null,
+        lastDayOfNextYear: null, 
+        startOfWeekNextYear:null,
+        endOfWeekNextYear:null,
+        firstWeek: null,
       }
     },
     
@@ -2435,7 +2448,11 @@ export default {
       this.fetchTrainers();
       this.fetchAppointmentTypes();
 
-      this.weekNumber = Math.ceil(days / 7);
+      this.prevYear = this.selectedYear - 1;
+      this.nextYear = this.selectedYear + 1;
+      this.startDate = new Date(this.nd.getFullYear(), 0, 1);
+      this.weekdays = Math.floor((this.nd - this.startDate) / (24 * 60 * 60 * 1000));
+      this.weekNumber = Math.ceil(this.weekdays / 7);
       this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
       this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
       this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2510,8 +2527,9 @@ export default {
         nav = weekOfMonth;
         this.fdweek = this.nd.GetFirstDayOfWeek();
         this.getweekdt = this.nd.GetFirstDayOfWeek();
-        var startDate = new Date(this.nd.getFullYear(), 0, 1);
-        var days = Math.floor((nd - startDate) / (24 * 60 * 60 * 1000));
+        this.startDate = new Date(this.nd.getFullYear(), 0, 1);
+        this.weekdays = Math.floor((this.nd - this.startDate) / (24 * 60 * 60 * 1000));
+        this.weekNumber = Math.ceil(this.weekdays / 7);
         const formatDate = new Intl.DateTimeFormat("en" , {day: "2-digit",month: "2-digit"});
         const headwdate = new Intl.DateTimeFormat("en" , {year: 'numeric', month: 'short', day: 'numeric' });
         const headwdateFull = new Intl.DateTimeFormat("en-CA" , {year: 'numeric', month: '2-digit', day: 'numeric' });
@@ -2533,7 +2551,6 @@ export default {
         const firstweek = new Date(year,month,1).getWeek();
         const lastweek = new Date(year,month+1,0).getWeek();
         var used = new Date(year,month,1).getDay() + new Date(year,month+1,0).getDate();
-        var numofweeks = Math.ceil( used / 7);
 
         const fweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()));
         const lweekdt = headwdate.format(this.getweekdt.setDate(this.getweekdt.getDate()+6));
@@ -2544,7 +2561,6 @@ export default {
         var ldaydt = lweekdt.split(' ')[1];
         var fyeardt = fweekdt.split(',')[1];
         var lyeardt = lweekdt.split(',')[1];
-        this.weekNumber = Math.ceil(days / 7);
         this.monday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate()));
         this.tuesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
         this.wednesday = formatDate.format(this.fdweek.setDate(this.fdweek.getDate() + 1 ));
@@ -2599,8 +2615,8 @@ export default {
       prevWeek() {
         if(this.weekNumber >= 1 ){
           var weekNumberNew = this.weekNumber - 1;
-          this.weekNumber--;
           this.nav++;
+          this.weekNumber--;
 	        if(nav == -1){
 	          // nav = 4; 
             this.fdweek.setDate(this.fdweek.getDate() - 5);
@@ -2688,6 +2704,20 @@ export default {
           }else{}
           this.fdweek.setDate(this.fdweek.getDate()-6);
           this.getweekdt.setDate(this.getweekdt.getDate()-6);
+          this.firstWeek = lyeardt;
+          if (fyeardt == this.prevYear){
+            this.firstDayOfPrevYear = new Date(this.prevYear, 0, 1);
+            this.lastDayOfPrevYear = new Date(this.prevYear, 11, 31);
+            this.startOfWeekPrevYear = this.firstDayOfPrevYear.getDay();
+            this.endOfWeekPrevYear = this.lastDayOfPrevYear.getDay();
+            this.totalDays = Math.round((this.lastDayOfPrevYear - this.firstDayOfPrevYear) / (1000 * 60 * 60 * 24)) + 1;
+            this.weekNumber = Math.floor(this.totalDays / 7);
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.add("stopClick");
+          }else {
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.remove("stopClick");
+          }
         }else{}
         this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
         this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
@@ -2712,19 +2742,16 @@ export default {
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
         this.monthCount = this.fdweek.getMonth();
-
-        if(this.weekNumber == 1){
-            const prevElement = document.getElementById("prevClick");
-            prevElement.classList.add("stopClick");
-          }else{
-            const prevElement = document.getElementById("prevClick");
-            prevElement.classList.remove("stopClick");
-          }
+        const nextElement = document.getElementById("nextClick");
+        nextElement.classList.remove("stopClick");
       },
 
       //next week funtion
       nextWeek() {
         if(this.weekNumber >= 0 ){
+          if(this.weekNumber >= 52 ){
+            this.weekNumber = 0;
+          }
           var weekNumberNew = this.weekNumber + 1;
           this.weekNumber++;
           nav++;
@@ -2773,6 +2800,23 @@ export default {
           if(fyeardt != lyeardt && fmondt != lmondt){
             this.weekDisplay = (fweekdt+" - "+lweekdt);
           }
+          
+            this.firstWeek = fyeardt;
+            this.firstDayOfNextYear = new Date(this.nextYear, 0, 1);
+            this.lastDayOfNextYear = new Date(this.nextYear, 11, 31);
+            this.startOfWeekNextYear = this.firstDayOfNextYear.getDay();
+            this.endOfWeekNextYear = this.lastDayOfNextYear.getDay();
+            this.totalDays = Math.round((this.lastDayOfNextYear - this.firstDayOfNextYear) / (1000 * 60 * 60 * 24)) + 1;
+            this.totalWeeks = Math.floor(this.totalDays / 7);
+
+            if (this.totalWeeks == this.weekNumber){
+              const nextElement = document.getElementById("nextClick");
+              nextElement.classList.add("stopClick");
+            }else {
+              const nextElement = document.getElementById("nextClick");
+              nextElement.classList.remove("stopClick");
+            }
+
           if(fmondt == 'Jan'){
             fmondt = 0;
             this.allObjectsMonth = this.allObjects[fmondt];
@@ -2813,6 +2857,8 @@ export default {
           this.fdweek.setDate(this.fdweek.getDate()-6);
           this.getweekdt.setDate(this.getweekdt.getDate()-6);
         }else{}
+        const prevElement = document.getElementById("prevClick");
+        prevElement.classList.remove("stopClick");
         this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
         this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
         this.allObjectsMonthNext = this.allObjects[this.fdweek.getMonth() + 1];
@@ -2835,18 +2881,6 @@ export default {
         this.FridayMonthCount = this.fridayDate.slice(5,7) - 1;
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
-
-        if (this.weekNumber == 52 || this.weekNumber == 53){
-          this.weekNumber = 1;
-        }
-
-        if(this.weekNumber == 1){
-          const prevElement = document.getElementById("prevClick");
-          prevElement.classList.add("stopClick");
-        }else{
-          const prevElement = document.getElementById("prevClick");
-          prevElement.classList.remove("stopClick");
-        }
       },
 
       //change year filter funtion
@@ -2937,16 +2971,12 @@ export default {
         this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
         this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-        if(this.monthCount == 0 || this.monthCount == 52 || this.monthCount == 53){
-            this.weekNumber = 1;
+        if(this.weekNumber == 52 || this.weekNumber == 53){
+            const prevElement = document.getElementById("prevClick");
+            prevElement.classList.add("stopClick");
         }
-
-        if(this.weekNumber == 1){
-          const prevElement = document.getElementById("prevClick");
-          prevElement.classList.add("stopClick");
-        }else{
-          const prevElement = document.getElementById("prevClick");
-          prevElement.classList.remove("stopClick");
+        if(this.weekNumber == 0){
+          this.weekNumber = 1;
         }
       },  
 
@@ -3134,17 +3164,17 @@ export default {
           this.SaturdayMonthCount = this.saturdayDate.slice(5,7) - 1;
           this.SundayMonthCount = this.sundayDate.slice(5,7) - 1;
 
-          if(this.monthCount == 0 || this.monthCount == 52 || this.monthCount == 53){
-            this.weekNumber = 1;
-          }
-
-          if(this.weekNumber == 1){
+          if(this.weekNumber == 52 || this.weekNumber == 53){
             const prevElement = document.getElementById("prevClick");
             prevElement.classList.add("stopClick");
-          }else{
+          }else {
             const prevElement = document.getElementById("prevClick");
             prevElement.classList.remove("stopClick");
           }
+        }
+        
+        if(this.weekNumber == 0){
+          this.weekNumber = 1;
         }
       },
 
@@ -3195,7 +3225,7 @@ export default {
           .finally (function(){
             setTimeout(function(){
               progressIndicator.hidden = true;
-            }, 4000);
+            }, 7000);
           });
       },
 
@@ -3218,7 +3248,7 @@ export default {
           .finally (function(){
             setTimeout(function(){
               progressIndicator.hidden = true;
-            }, 4000);
+            }, 7000);
           });
       },
 
