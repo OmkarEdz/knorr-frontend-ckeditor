@@ -2718,6 +2718,11 @@ export default {
             const prevElement = document.getElementById("prevClick");
             prevElement.classList.remove("stopClick");
           }
+          if(this.weekNumber < 1 ){
+              this.weekNumber = 52;
+              const prevElement = document.getElementById("prevClick");
+              prevElement.classList.add("stopClick");
+          }
         }else{}
         this.allObjectsMonth = this.allObjects[this.fdweek.getMonth()];
         this.allObjectsMonthPrev = this.allObjects[this.fdweek.getMonth() - 1];
@@ -2974,6 +2979,11 @@ export default {
         if(this.weekNumber == 52 || this.weekNumber == 53){
             const prevElement = document.getElementById("prevClick");
             prevElement.classList.add("stopClick");
+        }else{
+          const prevElement = document.getElementById("prevClick");
+          prevElement.classList.remove("stopClick");
+          const nextElement = document.getElementById("nextClick");
+          nextElement.classList.remove("stopClick");
         }
         if(this.weekNumber == 0){
           this.weekNumber = 1;
@@ -3170,6 +3180,8 @@ export default {
           }else {
             const prevElement = document.getElementById("prevClick");
             prevElement.classList.remove("stopClick");
+            const nextElement = document.getElementById("nextClick");
+            nextElement.classList.remove("stopClick");
           }
         }
         
