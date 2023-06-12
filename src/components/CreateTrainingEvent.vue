@@ -2887,7 +2887,7 @@ export default {
        progressIndicator.hidden = false;
         showLoadingCircle(true);
       this.$axios
-        .put("/api/booking/"+ this.currentBookingID, request)
+        .put("/api/booking/updateBooking/"+ this.currentBookingID, request)
         .then(function (response) {
           _this.$noty.success(
             _this.$t("participant_edited", { name: username })
