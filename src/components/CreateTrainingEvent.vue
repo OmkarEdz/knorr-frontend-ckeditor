@@ -2878,16 +2878,17 @@ export default {
             certificateTrainingNameOtherPolish:this.edituser.certificateTrainingNameOtherPolish,
             certificateTrainingNameOtherFrench:this.edituser.certificateTrainingNameOtherFrench,
             certificateTrainingNameOtherHungarian:this.edituser.certificateTrainingNameOtherHungarian,
-            certificateTrainingDescriptionEnglish:this.edituser.certificateTrainingDescriptionEnglish,
-            certificateTrainingDescriptionGerman:this.edituser.certificateTrainingDescriptionGerman,
-            certificateTrainingDescriptionPolish:this.edituser.certificateTrainingDescriptionPolish,
-            certificateTrainingDescriptionFrench:this.edituser.certificateTrainingDescriptionFrench,
-            certificateTrainingDescriptionHungarian:this.edituser.certificateTrainingDescriptionHungarian
+            certificateTrainingDescriptionEnglish:this.edituser.certificateTrainingDescriptionEnglish!==null ? this.$convertHtml(this.edituser.certificateTrainingDescriptionEnglish,false):null,
+            certificateTrainingDescriptionGerman:this.edituser.certificateTrainingDescriptionGerman!==null ? this.$convertHtml(this.edituser.certificateTrainingDescriptionGerman,false):null,
+            certificateTrainingDescriptionPolish:this.edituser.certificateTrainingDescriptionPolish!==null ?this.$convertHtml(this.edituser.certificateTrainingDescriptionPolish,false):null,
+            certificateTrainingDescriptionFrench:this.edituser.certificateTrainingDescriptionFrench!==null ?this.$convertHtml(this.edituser.certificateTrainingDescriptionFrench,false):null,
+            certificateTrainingDescriptionHungarian:this.edituser.certificateTrainingDescriptionHungarian!==null ?this.$convertHtml(this.edituser.certificateTrainingDescriptionHungarian,false):null
       }
        progressIndicator.hidden = false;
         showLoadingCircle(true);
+       let currentBookingId= parseInt(this.currentBookingID, 10);
       this.$axios
-        .put("/api/booking/updateBooking/"+ this.currentBookingID, request)
+        .put("/api/booking/updateBooking/"+ currentBookingId, request)
         .then(function (response) {
           _this.$noty.success(
             _this.$t("participant_edited", { name: username })
