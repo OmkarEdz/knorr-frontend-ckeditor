@@ -2610,6 +2610,7 @@ div.bg-blue{
   .white_traning {background: #fff;color: #000000;}
   .white_traning p, .lightBlue_traning p {color:#000;}
   .stopClick {pointer-events: none;opacity: 0.5;}
+  #weekviewcontainer td.calendar-day .currentMonthItem div[set] {z-index: 9;}
   /* #weekviewcontainer table tbody {display:none;} 
   #weekviewcontainer table tbody[data-index="0"] {display:table-row-group;}*/
 
