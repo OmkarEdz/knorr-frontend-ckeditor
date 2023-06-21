@@ -2233,7 +2233,8 @@ export default {
                       '0';
      let updatedTrainingEvent = Object.assign({}, _this.trainingEvent, { eventflag: eventFlagCode });
      trainingEvent = Object.assign(trainingEvent, updatedTrainingEvent);
-
+ if(eventFlagCode==='0' || eventFlagCode==='1')
+     {
       // Validation for empty fields
       if (trainingEvent.language == null) {
         this.$noty.error(this.$t("empty_value", { name: this.$t("language") }));
@@ -2358,6 +2359,7 @@ export default {
           return;
         }
       }
+     }
 
       delete trainingEvent.training;
 
