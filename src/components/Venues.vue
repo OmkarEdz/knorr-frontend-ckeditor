@@ -137,11 +137,11 @@ export default {
   methods: {
     previousPage() {
       this.page = this.page - 1;
-      this.fetchUsers();
+      this.fetchVenues();
     },
     nextPage() {
       this.page = this.page + 1;
-      this.fetchUsers();
+      this.fetchVenues();
     },
     onError(err) {
       if (
@@ -191,7 +191,7 @@ export default {
         .catch(this.onError);
     },
     updatePage() {
-      this.fetchUsers();
+      this.fetchVenues();
     },
     updateVisibleUsers() {
       var _this = this;
