@@ -8,14 +8,26 @@
     </div>
   </div>
   <div id="weekviewcontainer">
+
+    <div class="toggleWrap">
+        <router-link to="/sales-calendar" tag="button" class="savebutton v-btn v-size--default switchBtn">
+          <img src="../assets/img/arrow_right.png" alt="Icon">
+          Sales Calendar
+        </router-link>
+        <router-link to="/calendar" tag="button" class="savebutton v-btn v-size--default switchBtn activeBtn">
+          <img src="../assets/img/arrow_right.png" alt="Icon">
+          Default View
+        </router-link>
+      </div>
+
     <div class="weekviewcontainerWrap">
       <div id="grouphead">
         <div class="left-group">
           <button class="today_btn" @click="todayClick()">Today</button>
-          <button class="btn btn-info btn-arrow wpreviousBtn" @click="prevWeek()" id="prevClick">
+          <button class="btn btn-info btn-arrow wpreviousBtn" @click="prevWeek()" id="prevClick" title="Previous Year">
             <v-icon>fa-solid fa-chevron-left</v-icon>
           </button>
-          <button class="btn btn-info btn-arrow wnextBtn" @click="nextWeek()" id="nextClick">
+          <button class="btn btn-info btn-arrow wnextBtn" @click="nextWeek()" id="nextClick" title="Next Year">
             <v-icon>fa-solid fa-chevron-right</v-icon>
           </button>
           <div id="weekDisplay" v-bind:title="weekDisplay">{{ weekDisplay }}</div>
@@ -132,7 +144,10 @@
           <tr class="calendar-content-row location trainerType" v-for="(trainerAppointment, itemIndex) in allObjectsMonth.trainerAppointments" v-bind:class="trainerAppointment.trainerType" v-if="locationFilter === 'View all Trainer locations' || ( locationFilter === trainerAppointment.trainerLocation && locationFilter !== 'View all Trainer locations' )">
             <td>
               <div class="bg-beige">
-                <p class="trainerName">{{ getTrainerById(trainerAppointment.trainer).fullname }}</p>
+                <p class="trainerName">
+                  <img class="trainerTypeImg" src="../assets/img/trainer-icon.svg"/>
+                  {{ getTrainerById(trainerAppointment.trainer).fullname }}
+                </p>
                 <p class="trainerTypeName" v-if="getTrainerById(trainerAppointment.trainerType) === 'fullTime'">
                   <span>
                     <img class="trainerTypeImg" src="/static/img/fulltime@2x.png"/>
@@ -1993,7 +2008,10 @@
           <tr class="calendar-content-row location" v-for="(roomAppointment, itemIndex) in allObjectsMonth.roomAppointments" v-if="roomlocationFilter === 'View all Room locations' || ( roomlocationFilter === roomAppointment.roomLocation && roomlocationFilter !== 'View all Room locations' )">
             <td>
               <div class="bg-beige">
-                <p class="trainerName">{{ roomAppointment.room.designation }}</p>
+                <p class="trainerName">
+                  <img class="trainerTypeImg" src="../assets/img/room-icon.svg"/>
+                  {{ roomAppointment.room.designation }}
+                </p>
                 <p class="roomLoc"><v-icon>fas fa-map-marker-alt</v-icon> {{ roomAppointment.roomLocation.toLowerCase() }}</p>
               </div>
             </td>
@@ -3319,6 +3337,13 @@ export default {
       //change trainerType filter funtion
       changeTrainerType(){
         this.trainersFilterEdited = this.trainersFilter.replaceAll(' ','');
+      },
+
+      onChangeSwitchCalendar(){
+        this.value = true;
+        if(this.value == true){
+          this.$router.push('/sales-calendar');
+        }
       },
       //new functions end
 

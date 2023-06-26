@@ -13,6 +13,9 @@ import 'vue-cal/dist/vuecal.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+// toggle button
+import { ToggleButton } from 'vue-js-toggle-button';
+
 // QYSIWYG Editor
 import { VueEditor } from "vue2-editor";
 
@@ -42,6 +45,7 @@ import TrainingRequest from './components/TrainingRequest.vue'
 import TrainingRequestOverview from './components/TrainingRequestOverview.vue'
 import ContactForm from './components/Contact.vue'
 import FullCalendarUpdated from './components/FullCalendarUpdated.vue'
+import SalesCalendar from './components/SalesCalendar.vue'
 import OtpVerification from './components/OtpVerification.vue'
 import DownloadDocuments from './components/DownloadDocuments.vue'
 import Trainings from './components/Trainings.vue'
@@ -115,6 +119,9 @@ const i18n = new VueI18n({
     messages,
 });
 
+// toggle button
+Vue.component('ToggleButton', ToggleButton);
+
 
 // Vuetify
 const vuetifyOpts = {
@@ -146,6 +153,7 @@ const router = new VueRouter({
         { path: "/users", component: Users },
         { path: "/tenants", component: Tenants },
         { path: "/full-calendar-updated", component: Schedule },
+        { path: "/sales-calendar", component: SalesCalendar },
         { path: "/venues", component: Venues },
         { path: "/roles", component: Roles },
         { path: "/categories", component: Category },
