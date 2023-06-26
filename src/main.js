@@ -119,9 +119,6 @@ const i18n = new VueI18n({
     messages,
 });
 
-// toggle button
-Vue.component('ToggleButton', ToggleButton);
-
 
 // Vuetify
 const vuetifyOpts = {
