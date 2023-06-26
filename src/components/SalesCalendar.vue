@@ -252,7 +252,7 @@
             <DatePicker v-model="appointment.start" clearable :label="$t('begin_date')" />
         </div>
         <div class="col-sm-6 col-md-6 ">
-            <DatePicker v-model="appointment.end" clearable :label="$t('end_date')" :min-date="appointment.start" />
+            <DatePicker v-model="appointment.end" clearable :label="$t('end_date')" :min-date="begin_date" />
         </div>
         <div class="col-sm-12 col-md-12">
           <v-select
@@ -583,7 +583,7 @@ export default {
 
       handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        this.isSticky = scrollTop > 450; // Adjust the value as per your requirement
+        this.isSticky = scrollTop > 650; // Adjust the value as per your requirement
       },
 
       //new functions end
