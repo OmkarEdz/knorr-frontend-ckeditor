@@ -2,20 +2,22 @@
   <div id="app">
     <v-app>
       <v-app-bar app clipped-left style="height:auto;border-bottom:#003A60 solid d-xl-none" class="flex-grow-0">
-        <div class="row pl-8">
-          <div class="col-md pb-0 pt-md-10">
+        <div class="row pl-8 resMobHeader">
+          <div class="col-md pb-0 pt-md-6">
             <div class="row justify-content-between align-self-center menu-bar">
               <div class="top-bar-title text-center">
                 Customer Training Portal
               </div>
+              <div class="top-Left-wrap">
               <v-app-bar-nav-icon class="d-xl-none" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
               <v-toolbar-title class="d-xl-none align-self-center"><img class="resimg" src="../assets/img/kb-logo.svg" width="150px"></v-toolbar-title>
               <a href="/"><img class="mbres mb-4 kb-header-logo" src="../assets/img/kb-logo.svg" width="200px"></a>
+              </div>
               <div class="row col-7 pb-0 align-self-center">
                 <div class="row justify-content-end align-self-center align-self-md-end pr-3 right-menu-bar">
                   <div class="mr-md-9 align-self-center" style="width:54px">
                     <v-select
-                      class="languagepicker"
+                      class="languagepicker languCustWrap"
                       :menu-props="{minWidth: '180'}"
                       v-model="selectedlanguage"
                       :items="possiblelanguages"
@@ -25,10 +27,10 @@
                       @input="setLanguage(selectedlanguage)"
                     >
                     <template slot="item" slot-scope="data">
-                      <img style="width:26px;height:17px;vertical-align: unset;" :src="'/files/flags/' + data.item.flag"> &nbsp; {{data.item.name}}
+                      <img style="width:36px;height:25px;vertical-align: unset;" :src="'/files/flags/' + data.item.flag"> &nbsp; {{data.item.name}}
                     </template>
                     <template slot='selection' slot-scope='{item}'>
-                      <img style="width:26px;height:17px;vertical-align: unset;" :src="'/files/flags/' + item.flag">
+                      <img style="width:36px;height:25px;vertical-align: unset;" :src="'/files/flags/' + item.flag">
                     </template>
                     </v-select>
                     <!-- <v-img @click="nothing()" width="26px" height="17px"  src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg"></v-img> -->
@@ -322,7 +324,7 @@
 
         </v-list>
       </v-navigation-drawer>
-      <v-main class="mainmobile pt-16 mb-12 mb-md-0" style="padding: 64px 0px 36px 0px !important">
+      <v-main class="mainmobile pt-16 mb-12 mb-md-0" style="padding: 64px 0px 44px 0px !important">
         <router-view></router-view>
       </v-main>
       <!-- <v-row>

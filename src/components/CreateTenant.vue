@@ -18,7 +18,7 @@
               <div class="col-md-12 pt-0">
                 <span class="headlinecolor text-h6"> {{$t("general")}}</span>
               </div>
-              <div class="col-sm-12 col-md-12 pt-0">
+              <div class="col-sm-12 col-md-12">
                 <v-text-field  
                 hide-details="auto"
                 class="datainput justify-content-end align-self-center pb-1"
@@ -30,7 +30,7 @@
                 ></v-text-field>
                 
               </div>
-              <div class="col-sm-12 col-md-12 pt-0">
+              <div class="col-sm-12 col-md-12">
                 <v-text-field  
                 hide-details="auto"
                 class="datainput justify-content-end align-self-center pb-1"

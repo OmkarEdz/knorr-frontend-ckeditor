@@ -33,6 +33,7 @@ html{
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body{
@@ -47,11 +48,12 @@ body{
   font-family: 'noto-sans' !important;
 }
 
-@font-face {
+/* @font-face {
   font-family: noto-sans;
-  src: url(/static/fonts/NotoSans-SemiCondensed.ttf);
+  src: url(/static/fonts/updated-font/NotoSans-SemiCondensed.ttf);
   font-weight: normal;
-}
+} 
+
 @font-face {
   font-family: noto-sans;
   src: url(/static/fonts/NotoSans-SemiCondensedLight.ttf);
@@ -62,6 +64,72 @@ body{
   font-family: noto-sans;
   src: url(/static/fonts/NotoSans-SemiCondensedThin.ttf);
   font-weight: 100;
+} */
+
+@font-face {
+  font-family: noto-sans;
+  src: url(/static/fonts/NotoSans-SemiCondensedBold.eot);
+  src: url(/static/fonts/NotoSans-SemiCondensedBold.eot?#iefix) format('embedded-opentype'),
+      url(/static/fonts/NotoSans-SemiCondensedBold.woff2) format('woff2'),
+      url(/static/fonts/NotoSans-SemiCondensedBold.woff) format('woff'),
+      url(/static/fonts/NotoSans-SemiCondensedBold.ttf) format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: noto-sans;
+  src: url(/static/fonts/NotoSans-SemiCondensedBoldItalic.eot);
+  src: url(/static/fonts/NotoSans-SemiCondensedBoldItalic.eot?#iefix) format('embedded-opentype'),
+      url(/static/fonts/NotoSans-SemiCondensedBoldItalic.woff2) format('woff2'),
+      url(/static/fonts/NotoSans-SemiCondensedBoldItalic.woff) format('woff'),
+      url(/static/fonts/NotoSans-SemiCondensedBoldItalic.ttf) format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: noto-sans;
+  src: url(/static/fonts/NotoSans-SemiCondensedMedium.eot);
+  src: url(/static/fonts/NotoSans-SemiCondensedMedium.eot?#iefix) format('embedded-opentype'),
+      url(/static/fonts/NotoSans-SemiCondensedMedium.woff2) format('woff2'),
+      url(/static/fonts/NotoSans-SemiCondensedMedium.woff) format('woff'),
+      url(/static/fonts/NotoSans-SemiCondensedMedium.ttf) format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: noto-sans;
+  src: url(/static/fonts/NotoSans-SemiCondensedMediumItalic.eot);
+  src: url(/static/fonts/NotoSans-SemiCondensedMediumItalic.eot?#iefix) format('embedded-opentype'),
+      url(/static/fonts/NotoSans-SemiCondensedMediumItalic.woff2) format('woff2'),
+      url(/static/fonts/NotoSans-SemiCondensedMediumItalic.woff) format('woff'),
+      url(/static/fonts/NotoSans-SemiCondensedMediumItalic.ttf) format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: noto-sans;
+  src: url(/static/fonts/NotoSans-SemiCondensed.eot);
+  src: url(/static/fonts/NotoSans-SemiCondensed.eot?#iefix) format('embedded-opentype'),
+      url(/static/fonts/NotoSans-SemiCondensed.woff2) format('woff2'),
+      url(/static/fonts/NotoSans-SemiCondensed.woff) format('woff'),
+      url(/static/fonts/NotoSans-SemiCondensed.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: noto-sans;
+  src: url(/static/fonts/NotoSans-SemiCondensedItalic.eot);
+  src: url(/static/fonts/NotoSans-SemiCondensedItalic.eot?#iefix) format('embedded-opentype'),
+      url(/static/fonts/NotoSans-SemiCondensedItalic.woff2) format('woff2'),
+      url(/static/fonts/NotoSans-SemiCondensedItalic.woff) format('woff'),
+      url(/static/fonts/NotoSans-SemiCondensedItalic.ttf) format('truetype');
+  font-weight: normal;
+  font-style: italic;
 }
 
 /* Top Bar */
@@ -1109,7 +1177,7 @@ div.bg-blue{
   background-color: var(--calendar-turquoise);
 }
 
-.calendar-month .weekday.sa, .calendar-month .weekday.so{
+.calendar-month .weekday.sa, .calendar-month .weekday.pt, .calendar-month .weekday.so, .calendar-month .weekday.su{
   color: maroon;
 }
 
@@ -2578,22 +2646,23 @@ div.bg-blue{
   #weekviewcontainer {max-width: 95%;margin: 50px auto;}
   #weekviewcontainer table {width: 100%;border-collapse: collapse;}
   #weekviewcontainer th, #weekviewcontainer td {padding: 6px 8px;min-width: 160px;max-width: 160px;border: 1px solid #fff;font-weight: 400;font-size: 14px;line-height: 19px;text-align: left;}
-  #weekviewcontainer th {background: #BFB499;text-transform: capitalize;font-size: 14px !important;}
+  #weekviewcontainer th {color:#000;background: #BFB499;text-transform: capitalize;font-size: 14px !important;}
   .redColor {color: #7F0308;}
   #weekviewcontainer td {background: #EAE4DA;vertical-align: top;}
   #weekviewcontainer td.calendar-day {overflow: hidden;padding: 0px;position: relative;vertical-align: baseline;height:130px;}
   #grouphead{display:flex;background: #07477F;border:1px solid #fff;border-bottom:0px;padding: 8px;align-items: center;justify-content: space-between;}
-  #weekviewcontainer button {width: 60px;padding: 1px 6px;cursor:pointer;background: #135A98;border: 1px solid #5596CF;margin-right: 5px;height: 28px;color:#fff;font-weight: 400;font-size: 13px;line-height: 14px;border-radius: 0px;}
-  #weekviewcontainer button:focus {outline: 0;box-shadow: unset;}
-  #weekviewcontainer button:hover {background:#07477f;}
-  #weekviewcontainer .btn-arrow {width: 30px;}
-  #weekviewcontainer .btn-arrow.disabled {pointer-events: none;cursor: no-drop;opacity: 0.5;}
-  #weekviewcontainer .btn-arrow i {font-size: 14px;color: #fff;}
+  #weekviewcontainer .weekviewcontainerWrap button {width: 60px;padding: 1px 6px;cursor:pointer;background: #135A98;border: 1px solid #5596CF;margin-right: 5px;height: 28px;color:#fff;font-weight: 400;font-size: 13px;line-height: 14px;border-radius: 0px;}
+  #weekviewcontainer .weekviewcontainerWrap button:focus {outline: 0;box-shadow: unset;}
+  #weekviewcontainer .weekviewcontainerWrap button:hover {background:#07477f;}
+  #weekviewcontainer .weekviewcontainerWrap .btn-arrow {width: 30px;}
+  #weekviewcontainer .weekviewcontainerWrap .btn-arrow.disabled {pointer-events: none;cursor: no-drop;opacity: 0.5;}
+  #weekviewcontainer .weekviewcontainerWrap .btn-arrow i {font-size: 14px;color: #fff;}
   .left-group {display: flex;align-items: center;}
   #weekDisplay {font-weight: 700;color:#fff;font-size: 16px;line-height: 20px;margin-left: 10px;}
   #weekviewcontainer td p {margin: 0px;}
-  .trainerName {font-weight: 400;font-size: 12px;line-height: 16px;color: #000000de;}
-  .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000000de;}
+  .trainerName {font-weight: 400;font-size: 12px;line-height: 16px;color: #000;display: flex;align-items: self-start;}
+  .trainerName img {width: 14px;margin-right: 3px;margin-top: 2px;opacity: 0.7;}
+  .trainerPlace {font-size: 10px;line-height: 14px;margin: 1px 0px 3px !important;color: #000;}
   .trainerTypeName {display:flex;align-items:center;font-size: 11px;line-height: 11px;background: #6D73DC;width: max-content;padding: 3px 5px;border-radius: 3px;color: #fff;margin-top:5px !important;text-transform:capitalize;}
   .partTimeType {background: #FFFCE3;}
   .traningData {font-size:11px;line-height: 1.4;vertical-align: top;width: -webkit-fill-available;height: -webkit-fill-available;top: 0px;padding: 8px;}
@@ -2731,14 +2800,107 @@ div.bg-blue{
   /* Marketing team feedback css */
   .toolDetailsPg .mx-0.pa-0.text-content p {font-size: 20px;}
 
-  @media (max-width:1602px) and (min-width:1200px){
+
+  /* font updates for 2.5 css start here */
+  header .menu-bar .top-bar-title {border: unset;font-size: 16px;padding: 6px 0px;}
+  header .v-toolbar__content .headerbtn, .v-menu__content .menubtn {font-weight: 400;transition: unset;}
+  .theme--light.v-bottom-navigation .v-btn:not(.v-btn--active), .v-item-group.v-bottom-navigation .v-btn.v-btn--active {font-weight: 400;padding: 8.5px 16px !important;}
+  .category-box > a .bottom-row.bg-blue {font-family: 'noto-sans' !important;font-weight: 400;}
+  .v-application .text-h5, .v-application .text-h6, .v-expansion-panel-header>:not(.v-expansion-panel-header__icon) {font-family: 'noto-sans' !important;font-weight: 400;}
+  /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */
+
+  /* sales calendar */
+  .v-application .pl-md-12.SalesCalendarWrap {padding: 0px !important;max-width: 95%;margin: 50px auto;}
+  .SalesCalendarWrap .calendar-month .calendar-first-row {grid-template-columns: 0px 1391px;border-bottom: 1px solid #fff;}
+  .SalesCalendarWrap .calendar-month .calendar-content-row {margin:0px -1px;grid-gap: 0;border-bottom: 0;grid-template-columns: 120px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px;}
+  .SalesCalendarWrap .bg-beige-dark.firColmn, .SalesCalendarWrap .bg-beige.firColmn {text-align: left;padding: 5px 10px;word-break: break-word;}
+  .SalesCalendarWrap .bg-beige.firColmn {font-size: 13px;}
+  .SalesCalendarWrap .bg-beige.firColmn .trainerTypeName, .SalesCalendarWrap .bg-beige.firColmn .trainerLoc, .SalesCalendarWrap .bg-beige.firColmn .roomLoc {margin-bottom: 0;line-height: 12px;}
+  #salesFilterWrapScroll {width: 100%;position:sticky;top:150px;}
+  #salesFilterWrapScroll.stickyFilter {top: 135px;position: fixed;left: 0px;z-index: 99;border-top: 2px solid #fff;background: #07477F;}
+  .salesFilterWrap {display: flex;justify-content: space-between;margin-right: auto;width: 100%;max-width: 100%;background: #07477F;padding: 8px;}
+  #salesFilterWrapScroll.stickyFilter .salesFilterWrap {max-width: 95%;margin: auto;}
+  .salesFilterWrap .custom-select-dropdown .v-input .v-input__slot {cursor: pointer;min-height: 27px !important;padding: 3px 30px 3px 15px !important;color: #fff;max-width: 150px;background: #135A98;border: 1px solid #5596CF;}
+  .salesFilterWrap .custom-select-dropdown.custom-location-dropdown .v-input .v-input__slot {max-width: 190px;}
+  .salesFilterWrap .custom-select-dropdown .v-input .v-input__slot fieldset {display: none;}
+  .salesFilterWrap .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label {position:unset !important;font-weight: 400;font-size: 13px;line-height: 22px;color: #FFFFFF;}
+  .salesFilterWrap .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label--active {display:none;}
+  .salesFilterWrap .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label ~ input {cursor: pointer;padding: 0px;color: #fff;font-weight: 400;font-size: 13px;line-height: 20px;}
+  .salesFilterWrap .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner {margin:0px;position:absolute;padding: 0px;right: -20px;top: -2px;bottom: 0;}
+  .salesFilterWrap .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {color: #fff !important;font-size: 30px;position:relative;right:-7px;}
+  [data-id="FullTime"] .partTime, [data-id="PartTime"] .fullTime {display:none;}
+  [data-id="FullTime"] .fullTime, [data-id="PartTime"] .partTime {display: grid;}
+  .hideCSVButon  {display:none;}
+  .salesFilterWrap .calendar-year-next-prev {display: flex;justify-content: center;align-items: center;color: #fff;font-family: 'noto-sans';font-weight: 700;}
+  .salesFilterWrap .calendar-year-next-prev button {width: 60px;padding: 1px 6px;cursor:pointer;background: #135A98;border: 1px solid #5596CF;margin-right: 5px;height: 28px;color:#fff;font-weight: 400;font-size: 13px;line-height: 14px;border-radius: 0px;}
+  .salesFilterWrap .calendar-year-next-prev button:focus {outline: 0;box-shadow: unset;}
+  .salesFilterWrap .calendar-year-next-prev button:hover {background:#07477f;}
+  .salesFilterWrap .calendar-year-next-prev button:active, .salesFilterWrap .calendar-year-next-prev button:focus, .salesFilterWrap .calendar-year-next-prev button:focus-within {box-shadow:unset !important;background-color:#135A98 !important;border-color: #5596CF !important;}
+  .salesFilterWrap .calendar-year-next-prev .btn-arrow {width: 30px;margin-right: 0px;}
+  .salesFilterWrap .calendar-year-next-prev .btn-arrow.disabled {pointer-events: none;cursor: no-drop;opacity: 0.5;}
+  .salesFilterWrap .calendar-year-next-prev .btn-arrow i {font-size: 14px;color: #fff;}
+  .salesFilterWrapParent {display: flex;}
+  .SalesCalendarWrap .calendar-month div.bg-blue {padding: 3px 10px;color: #fff;}
+  .SalesCalendarWrap .calendar-year {display: none;}
+  .SalesCalendarWrap .selectedYearNumber {margin:0px 10px;font-size: 16px;line-height: 20px;}
+  .SalesCalendarWrap .calendar-month {padding-top: 230px;margin-bottom: -180px;}
+  .SalesCalendarWrap #January.calendar-month {padding-top: 0px;}
+  .SalesCalendarWrap #December.calendar-month {margin-bottom: 0px;}
+  .languCustWrap .v-select__selections #input-9 {position: absolute;}
+  .languCustWrap .v-input__append-inner {position: relative;right: -10px;}
+  .toggleWrap {margin-bottom: 20px;display: flex;justify-content: flex-end;}
+  .toggleWrap .switchBtn {font-size: 14px;display: flex;align-items: center;line-height: 20px;border:1px solid #CFC9BA !important;background: #DBD5C6;border-radius: 0px;letter-spacing: 0px;text-transform: uppercase;font-size: 14px;}
+  .toggleWrap .switchBtn:first-child {margin: 0px 1px 0px 0px;border-radius: 40px 0px 0px 40px;}
+  .toggleWrap .switchBtn:last-child {margin: 0px 0px 0px 1px;border-radius: 0px 40px 40px 0px;}
+  .toggleWrap .switchBtn:hover {background: #bfb497;border-color: #bfb497 !important;}
+  .toggleWrap .switchBtn img {height: 12px;margin-right: 5px;}
+  .toggleWrap .switchBtn.activeBtn {pointer-events: none;border:1px solid #004078 !important;background: #135A98;}
+  .SalesCalendarWrap .trainerName {margin: 0px;display: flex;align-items: self-start;line-height: 1.5;}
+  .SalesCalendarWrap .trainerName img {margin-top: 2px;}
+  .SalesCalendarWrap .bg-beige-dark {color:#000;border:0.5px solid #fff;}
+  .SalesCalendarWrap .bg-beige {border:0.5px solid #fff;}
+  /* .SalesCalendarWrap .bg-beige-dark.firColmn, .SalesCalendarWrap .bg-beige.firColmn, */
+  .SalesCalendarWrap .calendar-month .weekday.so, .SalesCalendarWrap .calendar-month .weekday.su, .SalesCalendarWrap .bg-beige.so, .SalesCalendarWrap .bg-beige.su {border-right-width: 5px;}
+  .SalesCalendarWrap .bg-beige-dark.mo, .SalesCalendarWrap .bg-beige.mo {border-left: 1px solid #777;}
+
+
+
+
+  @media (min-width:1360px){
+    /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */
+    .v-app-bar--is-scrolled .kb-header-logo {width: 250px;height: auto;margin: 0px !important;}
+    .v-app-bar--is-scrolled .col-md.pb-0.pt-md-6 {padding-top: 20px !important;padding-bottom: 30px !important;}
+    .v-app-bar--is-scrolled .row.justify-content-between.align-self-center.menu-bar {height: fit-content;align-items: center;}
+    .v-app-bar--is-scrolled .row.col-md-12.pl-8.px-0.py-0.justify-content-between {width:auto;justify-content: flex-start !important;position: absolute;bottom: 10px;margin: auto;height: fit-content;right: 0px;padding: 0px !important;}
+    .v-app-bar--is-scrolled .v-toolbar__content .headerbtn {padding: 0px 10px !important;margin: 0px !important;border: 0px;}
+    .v-app-bar--is-scrolled .no-background-hover::before {top: unset;height: 10px;bottom: -10px;background-color: #bfb497 !important;}
+    .v-app-bar--is-scrolled .no-background-hover:hover::before {opacity: 1;}
+    .v-app-bar--is-scrolled .right-menu-bar {position: relative;top: -25px;}
+
+    .SalesCalendarWrap .calendar-month {overflow-x: hidden;}
+    .SalesCalendarWrap .calendar-month .calendar-first-row, .SalesCalendarWrap .calendar-month .calendar-first-row {grid-template-columns: 0 100%;}
+    .SalesCalendarWrap .calendar-month .calendar-content-row {grid-template-columns: 10.7% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88%;}
+  }  
+
+  @media (max-width:1580px){
+    .SalesCalendarWrap .calendar-month .calendar-content-row {grid-template-columns: 10.7% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88%;}
+  }
+
+  @media (max-width:1440px) and (min-width:1280px){
     .mob-mb-2 {margin-top: 8px;}
+    .SalesCalendarWrap .calendar-month .calendar-content-row {grid-template-columns: 10.7% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88% 2.88%;}
+  }
+
+  @media (max-width:1580px) and (min-width:1360px){
+    .v-app-bar--is-scrolled .v-toolbar__content .headerbtn {padding: 0px 7px !important;font-size: 14px !important;}
   }
 
   @media (max-width:1360px){
     #weekviewcontainer {overflow: auto;}
     .weekviewcontainerWrap {display: block; width: 1300px;}
     .video_head {font-size: 18px;line-height: 24px;}
+
+    .v-toolbar__content .headerbtn {padding: 0px 10px !important;}
   }
 
   @media (max-width:1200px){
@@ -2751,10 +2913,15 @@ div.bg-blue{
     .optScreensWrap .v-toolbar__content .v-btn.v-btn--icon.v-size--default {display: none !important;}
     .optScreensWrap .v-application .v-toolbar__content > .row.pl-8 {padding:0px !important;}
     .video_section {padding: 0px 35px 0px 15px;}
+
+    .v-application .pl-8.resMobHeader {padding: 0px !important;}
   }
 
   @media (max-width:1024px){
     .otp-screen-wrap .otp-white-wrapper.download-doc-wrapper {max-width: 90%;}
+
+    #salesFilterWrapScroll {padding-bottom: 10px;margin-bottom: -10px;overflow-x: auto;}
+    .salesFilterWrap {min-width: 1024px;}
   }
 
   @media (max-width:768px){
