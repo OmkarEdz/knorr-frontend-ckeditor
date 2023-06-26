@@ -2915,6 +2915,8 @@ div.bg-blue{
     .video_section {padding: 0px 35px 0px 15px;}
 
     .v-application .pl-8.resMobHeader {padding: 0px !important;}
+    .top-Left-wrap {display: flex;}
+    #salesFilterWrapScroll.stickyFilter {position: unset;}
   }
 
   @media (max-width:1024px){
@@ -2922,6 +2924,7 @@ div.bg-blue{
 
     #salesFilterWrapScroll {padding-bottom: 10px;margin-bottom: -10px;overflow-x: auto;}
     .salesFilterWrap {min-width: 1024px;}
+    .headline .text-md-h5 {font-size: 22px !important;padding: 5px 0px;}
   }
 
   @media (max-width:768px){
@@ -2933,6 +2936,8 @@ div.bg-blue{
     .aboutus h4 {font-size: 20px;}
     .play_image {width: 80px;}
     .video_popup {margin: 0px;}
+    .toggleWrap .switchBtn {font-size: 12px;}
+    .toggleWrap .switchBtn img {width: 10px;}
   }
 
   @media (max-width:545px){
