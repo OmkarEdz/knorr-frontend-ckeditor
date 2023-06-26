@@ -13,9 +13,6 @@ import 'vue-cal/dist/vuecal.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-// toggle button
-import { ToggleButton } from 'vue-js-toggle-button';
-
 // QYSIWYG Editor
 import { VueEditor } from "vue2-editor";
 

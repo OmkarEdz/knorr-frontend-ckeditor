@@ -2937,7 +2937,8 @@ div.bg-blue{
     .play_image {width: 80px;}
     .video_popup {margin: 0px;}
     .toggleWrap .switchBtn {font-size: 12px;}
-    .toggleWrap .switchBtn img {width: 10px;}
+    .toggleWrap .switchBtn img {height: 10px;}
+    .top-Left-wrap .img {width: 200px;}
   }
 
   @media (max-width:545px){
