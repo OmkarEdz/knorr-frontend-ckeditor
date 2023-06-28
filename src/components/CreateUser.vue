@@ -104,6 +104,22 @@
                         </v-autocomplete> 
                     </div>
                     <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-12">
+                        <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('designation')"
+                        v-model="user.designation"
+                        ></v-text-field>
+                          <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('personnelnumber')"
+                        v-model="user.personnelnumber"
+                        ></v-text-field>
                         <v-checkbox
                             v-model="user.trainer"
                             class="no-margin-top"
@@ -163,6 +179,22 @@
                         ></v-checkbox>
                     </div>
                     <div v-show="userTypes[selectedTab] == 'contact_person'" class="col-sm-12 col-md-12">
+                       <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('designation')"
+                        v-model="user.designation"
+                        ></v-text-field>
+                          <v-text-field  
+                        hide-details="auto"
+                        class="datainput justify-content-end align-self-center pb-1"
+                        dense
+                        outlined
+                        :label="$t('personnelnumber')"
+                        v-model="user.personnelnumber"
+                        ></v-text-field>
                         <v-checkbox
                             v-model="user.contactPerson"
                             class="no-margin-top"
@@ -491,7 +523,9 @@ export default {
         booker:false,
         blocked: false,
         trainerType:"fullTime",
-        sortNumber:null
+        sortNumber:null,
+        designation:null,
+        personnelnumber:null
       },
 
       rooms: [],
