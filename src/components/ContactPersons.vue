@@ -33,7 +33,7 @@
                       <div v-if="contactPerson.company" class="py-1 pr-2 pl-2 pl-md-6 ">{{ contactPerson.company }}</div>
                       <div v-if="tenant.addressFormattedSingleLineWithCountry" class="py-1 pr-2 pl-2 pl-md-6 ">{{ tenant.addressFormattedSingleLineWithCountry }}</div>  
                       <div v-if="contactPerson.personnelnumber" class="py-1 pr-2 pl-2 pl-md-6 ">Tel:{{ contactPerson.personnelnumber }}</div>    
-                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.email }}</div>               
+                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 "> {{ contactPerson.email }}</div>               
                     </div>
                   </div>
                   <div class="col-xl-12 pb-0 pl-0 pl-md-6 pl-2" v-show="tenant.contactPersons.trainers.length > 0"><h4>{{ $t("trainers") }}</h4></div>
@@ -45,7 +45,7 @@
                       <div v-if="contactPerson.company" class="py-1 pr-2 pl-2 pl-md-6 ">{{ contactPerson.company }}</div>
                       <div v-if="tenant.addressFormattedSingleLineWithCountry" class="py-1 pr-2 pl-2 pl-md-6 ">{{ tenant.addressFormattedSingleLineWithCountry }}</div>  
                       <div  v-if="contactPerson.personnelnumber" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.personnelnumber }}</div>
-                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.email }}</div>
+                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 "> {{ contactPerson.email }}</div>
                     </div>
                   </div>
                   <div class="col-xl-12 pb-0 pl-0 pl-md-6 pl-2" v-show="tenant.contactPersons.others.length > 0"><h4>{{ $t("contactpersons") }}</h4></div>
@@ -57,7 +57,7 @@
                       <div v-if="contactPerson.company" class="py-1 pr-2 pl-2 pl-md-6 ">{{ contactPerson.company }}</div>
                       <div v-if="tenant.addressFormattedSingleLineWithCountry" class="py-1 pr-2 pl-2 pl-md-6 ">{{ tenant.addressFormattedSingleLineWithCountry }}</div> 
                       <div v-if="contactPerson.personnelnumber" class="py-1 pr-2 pl-2 pl-md-6  ">Tel:{{ contactPerson.personnelnumber }}</div> 
-                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.email }}</div>
+                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">{{ contactPerson.email }}</div>
                     </div>
                   </div>
                 </div>
