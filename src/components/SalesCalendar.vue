@@ -98,7 +98,7 @@
       <!-- Left Area -->
       <v-btn :href="`/api/calendar/export/` +  selectedYear" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mb-2 mr-sm-16 hideCSVButon">{{ $t("export_csv") }}</v-btn>
       
-      <div class="col-xl-12 px-0 pb-0">
+      <div class="col-xl-12 px-0 pb-0 topJanIssue">
         <div class="mx-0 pa-0 text-content mt-0">
 
           <div class="pt-0">

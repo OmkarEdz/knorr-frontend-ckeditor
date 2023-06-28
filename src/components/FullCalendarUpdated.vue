@@ -111,33 +111,33 @@
         <thead>
             <tr class="weekhead">
               <th>Date</th>
-              <th class="title" data-name="Mon" v-bind:data-value="mondayDate">{{ monday }}</th>
-              <th class="title" data-name="Tue" v-bind:data-value="tuesdayDate">{{ tuesday }}</th>
-              <th class="title" data-name="Wed" v-bind:data-value="wednesdayDate">{{ wednesday }}</th>
-              <th class="title" data-name="Thu" v-bind:data-value="thursdayDate">{{ thursday }}</th>
-              <th class="title" data-name="Fri" v-bind:data-value="fridayDate">{{ friday }}</th>
-              <th class="title redColor" data-name="Sat" v-bind:data-value="saturdayDate">{{ saturday }}</th>
-              <th class="title redColor" data-name="Sun" v-bind:data-value="sundayDate">{{ sunday }}</th>
+              <th class="title" data-name="Mon" v-bind:data-value="mondayDate" v-bind:class="{'bg-blue': monday.slice(3) == this.currentDay}">{{ monday }}</th>
+              <th class="title" data-name="Tue" v-bind:data-value="tuesdayDate" v-bind:class="{'bg-blue': tuesday.slice(3) == this.currentDay}">{{ tuesday }}</th>
+              <th class="title" data-name="Wed" v-bind:data-value="wednesdayDate" v-bind:class="{'bg-blue': wednesday.slice(3) == this.currentDay}">{{ wednesday }}</th>
+              <th class="title" data-name="Thu" v-bind:data-value="thursdayDate" v-bind:class="{'bg-blue': thursday.slice(3) == this.currentDay}">{{ thursday }}</th>
+              <th class="title" data-name="Fri" v-bind:data-value="fridayDate" v-bind:class="{'bg-blue': friday.slice(3) == this.currentDay}">{{ friday }}</th>
+              <th class="title redColor" data-name="Sat" v-bind:data-value="saturdayDate" v-bind:class="{'bg-blue': saturday.slice(3) == this.currentDay}">{{ saturday }}</th>
+              <th class="title redColor" data-name="Sun" v-bind:data-value="sundayDate" v-bind:class="{'bg-blue': sunday.slice(3) == this.currentDay}">{{ sunday }}</th>
           </tr>
           <tr>
               <th></th>
-              <th class="one" data-week='0' data-name="Mon">Monday</th>
-              <th class="one" data-week='0' data-name="Tue">Tuesday</th>
-              <th class="one" data-week='0' data-name="Wed">Wednesday</th>
-              <th class="one" data-week='0' data-name="Thu">Thursday</th>
-              <th class="one" data-week='0' data-name="Fri">Friday</th>
-              <th class="one redColor" data-week='0' data-name="Sat">Saturday</th>
-              <th class="one redColor"  data-week='0' data-name="Sun">Sunday</th>
+              <th class="one" data-week='0' data-name="Mon" v-bind:class="{'bg-blue': monday.slice(3) == this.currentDay}">Monday</th>
+              <th class="one" data-week='0' data-name="Tue" v-bind:class="{'bg-blue': tuesday.slice(3) == this.currentDay}">Tuesday</th>
+              <th class="one" data-week='0' data-name="Wed" v-bind:class="{'bg-blue': wednesday.slice(3) == this.currentDay}">Wednesday</th>
+              <th class="one" data-week='0' data-name="Thu" v-bind:class="{'bg-blue': thursday.slice(3) == this.currentDay}">Thursday</th>
+              <th class="one" data-week='0' data-name="Fri" v-bind:class="{'bg-blue': friday.slice(3) == this.currentDay}">Friday</th>
+              <th class="one redColor" data-week='0' data-name="Sat" v-bind:class="{'bg-blue': saturday.slice(3) == this.currentDay}">Saturday</th>
+              <th class="one redColor"  data-week='0' data-name="Sun" v-bind:class="{'bg-blue': sunday.slice(3) == this.currentDay}">Sunday</th>
             </tr>
             <tr>
               <th>KW</th>
-              <th id="weekNumber" v-bind:title="weekNumber">{{ weekNumber }}</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th id="weekNumber" v-bind:title="weekNumber" v-bind:class="{'bg-blue': monday.slice(3) == this.currentDay}">{{ weekNumber }}</th>
+              <th v-bind:class="{'bg-blue': tuesday.slice(3) == this.currentDay}"></th>
+              <th v-bind:class="{'bg-blue': wednesday.slice(3) == this.currentDay}"></th>
+              <th v-bind:class="{'bg-blue': thursday.slice(3) == this.currentDay}"></th>
+              <th v-bind:class="{'bg-blue': friday.slice(3) == this.currentDay}"></th>
+              <th v-bind:class="{'bg-blue': saturday.slice(3) == this.currentDay}"></th>
+              <th v-bind:class="{'bg-blue': sunday.slice(3) == this.currentDay}"></th>
           </tr>
         </thead>
         <tbody v-bind:class="locationFilter" v-bind:id="trainersFilterEdited">
