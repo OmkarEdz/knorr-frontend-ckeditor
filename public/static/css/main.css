@@ -2863,7 +2863,7 @@ div.bg-blue{
   #weekviewcontainer th.bg-blue {background: #004581;color:#fff;}
 
   .cp_wrapper_new .cpImageWrapper {display:none !important;}
-  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;}
+  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;min-height: 70px;}
   .cp_wrapper_new .cpNameWrapper h4 {color: #fff;font-size: 18px;line-height:24px;margin: 0px 0px 2px;font-weight: 600;}
   .cp_wrapper_new .cpNameWrapper p {color: #fff;font-size: 18px;line-height:24px;margin: 0px;}
   .cp_wrapper_new .cpDetailWrapper {padding: 30px 0px 30px 30px;display: flex;flex-direction: row-reverse;align-items: flex-start;justify-content: space-between;}
