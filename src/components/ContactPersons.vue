@@ -34,7 +34,7 @@
                       </div>
                       <div class="cpDetailWrapper">
                         <div class="cpMainImgWrap">
-                          <img :src="`/files/images/${contactPerson.trainerImage}`" alt="Trainer Image">
+                          <img :src="`/files/images/` + contactPerson.trainerImage" alt="Trainer Image">
                         </div>
                         <div class="cpCardLeft">
                           <div v-if="contactPerson.company" class="">{{ contactPerson.company }}</div>
@@ -55,7 +55,7 @@
                       </div>
                       <div class="cpDetailWrapper">
                         <div class="cpMainImgWrap">
-                          <img :src="`/files/images/${contactPerson.trainerImage}`" alt="Trainer Image">
+                          <img :src="`/files/images/` + contactPerson.trainerImage" alt="Trainer Image">
                         </div>
                         <div class="cpCardLeft">
                           <div v-if="contactPerson.company" class="">{{ contactPerson.company }}</div>
@@ -76,7 +76,7 @@
                       </div>
                       <div class="cpDetailWrapper">
                         <div class="cpMainImgWrap">
-                          <img :src="`/files/images/${contactPerson.trainerImage}`" alt="Trainer Image">
+                          <img :src="`/files/images/` + contactPerson.trainerImage" alt="Trainer Image">
                         </div>
                         <div class="cpCardLeft">
                           <div v-if="contactPerson.company" class="">{{ contactPerson.company }}</div>
