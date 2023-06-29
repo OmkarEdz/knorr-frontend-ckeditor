@@ -2863,7 +2863,7 @@ div.bg-blue{
   #weekviewcontainer th.bg-blue {background: #004581;color:#fff;}
 
   .cp_wrapper_new .cpImageWrapper {display:none !important;}
-  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;}
+  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;min-height: 70px;}
   .cp_wrapper_new .cpNameWrapper h4 {color: #fff;font-size: 18px;line-height:24px;margin: 0px 0px 2px;font-weight: 600;}
   .cp_wrapper_new .cpNameWrapper p {color: #fff;font-size: 18px;line-height:24px;margin: 0px;}
   .cp_wrapper_new .cpDetailWrapper {padding: 30px 0px 30px 30px;display: flex;flex-direction: row-reverse;align-items: flex-start;justify-content: space-between;}
@@ -2882,8 +2882,13 @@ div.bg-blue{
   .right-side-block > .text-dark a:hover {color: #bfb497;border-bottom-color: #bfb497;}
   .v-item-group.v-bottom-navigation--absolute {position: unset;}
   .backbutton {display: none !important;}
-
-
+  .sessionLink a {transition:0.5s all;color: #004581;text-decoration: none !important;font-size: 18px;line-height: 30px;border-bottom: 1px solid #004581 !important;display: inline-block;}
+  .sessionLink a:hover {color: #bfb497;border-bottom-color: #bfb497 !important;}
+  .view-all-traning-link {margin-top:15px;font-weight: 600;transition:0.5s all;color: #004581 !important;text-decoration: none !important;font-size: 20px;line-height: 30px;display: flex;flex-direction: row-reverse;justify-content: flex-end;}
+  .view-all-traning-link img {width:22px;}
+  .view-all-traning-link:hover {color: #bfb497 !important;}
+  .toolDetailsPgNewWrap .text-content h4 {font-size: 32px;line-height: 38px;margin-bottom: 30px;} 
+  .toolDetailsPgNewWrap .text-content p {line-height: 28px;color: #5b5b5b;}
 
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */

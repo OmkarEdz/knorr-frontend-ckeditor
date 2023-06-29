@@ -10,7 +10,7 @@
     </div>
   </div>
   <div>
-    <div class="row align-items-start toolDetailsPg">
+    <div class="row align-items-start toolDetailsPg toolDetailsPgNewWrap">
       <!-- Left Area -->
       <div class="col-xl-8 pl-md-16 pl-12 px-8 pr-sm-16" >        
         <div class="mx-0 pa-0 text-content">
@@ -30,18 +30,21 @@
       <!-- Right Area -->
       <div class="col-xl-4 pl-12 pl-md-16 row">
         <div class="col-xl-12 right-side-block">
-          <h4 class="text-uppercase">{{ $t("actions") }}</h4>
-          <div class="right-side divider"></div>
-          <div class="mt-6"></div>
+          <h4 class="text-uppercase hide">{{ $t("actions") }}</h4>
+          <div class="mt-6 hide"></div>
           <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
-          <div class="right-side divider"></div>
-          <div class="mt-6"></div>
-          <h4 class="text-uppercase mb-5">{{ $t("openTraining") }}</h4>
-          <div v-if="uniqueTrainings.length> 0">
-          <div v-for="(training, index) in uniqueTrainings.slice(0, 5)" :key="index" class="mb-2">
-          <a style="border-color: #333; text-decoration: underline;"  :href="'/request?trainingId=' + training.value">{{ training.text }}</a>
+          <div class="right-side divider hide"></div>
+          <div class="mt-6 hide"></div>
+          <h4 class="text-uppercase">{{ $t("openTraining") }}</h4>
+          <div class="right-side divider mb-5"></div>
+          <div v-if="uniqueTrainings.length> 0" class="mt-6">
+          <div v-for="(training, index) in uniqueTrainings.slice(0, 5)" :key="index" class="mb-2 sessionLink">
+          <a :href="'/request?trainingId=' + training.value">{{ training.text }}</a>
           </div>  
-         <a class="mt-5" style="border-color: #333; text-decoration: underline;"  href="/trainings" > {{ $t("openTrainingSessions") }}</a>
+         <a class="view-all-traning-link" href="/trainings" >
+          {{ $t("openTrainingSessions") }}
+          <img src="../assets/img/arrow_right_blue.svg">
+         </a>
          </div>
          <div v-else>{{ $t("noOpenTrainings") }}</div>
         </div>
