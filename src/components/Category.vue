@@ -55,7 +55,7 @@
                   </v-card>
                 </div>
               </div>
-              <div class="mx-0 col-12">
+              <div class="mx-0 col-12 pb-0">
                 <div class="category-box">
                   <v-card
                     flat

@@ -98,7 +98,7 @@
       <!-- Left Area -->
       <v-btn :href="`/api/calendar/export/` +  selectedYear" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mb-2 mr-sm-16 hideCSVButon">{{ $t("export_csv") }}</v-btn>
       
-      <div class="col-xl-12 px-0 pb-0">
+      <div class="col-xl-12 px-0 pb-0 topJanIssue">
         <div class="mx-0 pa-0 text-content mt-0">
 
           <div class="pt-0">
@@ -252,7 +252,7 @@
             <DatePicker v-model="appointment.start" clearable :label="$t('begin_date')" />
         </div>
         <div class="col-sm-6 col-md-6 ">
-            <DatePicker v-model="appointment.end" clearable :label="$t('end_date')" :min-date="appointment.start" />
+            <DatePicker v-model="appointment.end" clearable :label="$t('end_date')" :min-date="begin_date" />
         </div>
         <div class="col-sm-12 col-md-12">
           <v-select
@@ -583,7 +583,7 @@ export default {
 
       handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        this.isSticky = scrollTop > 450; // Adjust the value as per your requirement
+        this.isSticky = scrollTop > 650; // Adjust the value as per your requirement
       },
 
       //new functions end

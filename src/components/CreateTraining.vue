@@ -243,7 +243,7 @@
         </div>
 
         </v-tab-item>
-        <div class="text-right">
+        <div class="text-right mb-4">
           <v-label>
               * {{ $t("mandatory_fields") }}
           </v-label>

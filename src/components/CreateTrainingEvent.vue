@@ -355,11 +355,11 @@
                         ></v-textarea>
                       </div>
                 </div>
+            </div>
             <div class="text-right">
               <v-label>
                 * {{ $t("mandatory_fields") }}
               </v-label>
-            </div>
             </div>
           </v-tab-item>
 
