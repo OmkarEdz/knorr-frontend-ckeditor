@@ -2637,7 +2637,7 @@ div.bg-blue{
   .calendar-month.calendar-month-custom .calendar-content-row > div {flex:1;}
 
   /* calendar css start here */
-  #weekviewcontainer {max-width: 95%;margin: 50px auto;}
+  #weekviewcontainer {max-width: 95%;margin: 50px auto 0px;}
   #weekviewcontainer table {width: 100%;border-collapse: collapse;}
   #weekviewcontainer th, #weekviewcontainer td {padding: 6px 8px;min-width: 160px;max-width: 160px;border: 1px solid #fff;font-weight: 400;font-size: 14px;line-height: 19px;text-align: left;}
   #weekviewcontainer th {color:#000;background: #BFB499;text-transform: capitalize;font-size: 14px !important;}
@@ -2862,6 +2862,28 @@ div.bg-blue{
   .v-menu__content {z-index: 99 !important;}
   #weekviewcontainer th.bg-blue {background: #004581;color:#fff;}
 
+  .cp_wrapper_new .cpImageWrapper {display:none !important;}
+  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;}
+  .cp_wrapper_new .cpNameWrapper h4 {color: #fff;font-size: 18px;line-height:24px;margin: 0px 0px 2px;font-weight: 600;}
+  .cp_wrapper_new .cpNameWrapper p {color: #fff;font-size: 18px;line-height:24px;margin: 0px;}
+  .cp_wrapper_new .cpDetailWrapper {padding: 30px 0px 30px 30px;display: flex;flex-direction: row-reverse;align-items: flex-start;justify-content: space-between;}
+  .cp_wrapper_new .cpDetailWrapper .cpCardLeft {width: calc(100% - 160px);font-size: 20px;color: #5b5b5b;line-height: 28px;word-wrap: break-word;}
+  .cp_wrapper_new .cpDetailWrapper .cpMainImgWrap {width: 138px;text-align: right;}
+  .cp_wrapper_new .sixteentonine {padding-left: 0px;padding-right: 0px;padding-top: 5px;padding-bottom: 0px;}
+  .cp_wrapper_new .trainer-block {margin-left: 10px;margin-right: -10px !important;}
+  .cp_wrapper_new .cpDetailWrapper .cpMainImgWrap img {width: 100%;height: 138px;object-fit: cover;object-position: center center;}
+  .cp_wrapper_new .cpDetailWrapper .cpCardLeft a {color: #5b5b5b;text-decoration: none;border-bottom: 1px solid #5B5B5B;transition: 0.5s all;}
+  .cp_wrapper_new .cpDetailWrapper .cpCardLeft a:hover {color: #bfb497;border-bottom-color: #bfb497;}
+
+  .right-side-block > h4, .right-side-block > h3 {margin: 0px;font-size: 32px;line-height: 38px;font-weight: 400;}
+  .right-side-block .font-blue {font-size: 18px;line-height: 24px;}
+  .right-side-block > .text-dark {font-size: 18px;color: #5B5B5B !important;line-height: 28px;}
+  .right-side-block > .text-dark a {text-decoration: none !important;transition: 0.5s all;border-bottom: 1px solid #5b5b5b;}
+  .right-side-block > .text-dark a:hover {color: #bfb497;border-bottom-color: #bfb497;}
+  .v-item-group.v-bottom-navigation--absolute {position: unset;}
+  .backbutton {display: none !important;}
+
+
 
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */
@@ -2889,7 +2911,7 @@ div.bg-blue{
   }
 
   @media (max-width:1580px) and (min-width:1360px){
-    .v-app-bar--is-scrolled .v-toolbar__content .headerbtn {padding: 0px 7px !important;font-size: 14px !important;}
+    .v-app-bar--is-scrolled .v-toolbar__content .headerbtn {padding: 0px 10px !important;font-size: 15px !important;}
   }
 
   @media (max-width:1360px){
@@ -2924,6 +2946,10 @@ div.bg-blue{
     #salesFilterWrapScroll {padding-bottom: 10px;margin-bottom: -10px;overflow-x: auto;}
     .salesFilterWrap {min-width: 1024px;}
     .headline .text-md-h5 {font-size: 22px !important;padding: 5px 0px;}
+
+    .cp_wrapper_new .cpNameWrapper {padding: 10px 20px;}
+    .cp_wrapper_new .cpDetailWrapper {flex-direction: column;padding: 20px;}
+    .cp_wrapper_new .cpDetailWrapper .cpCardLeft {margin-top: 10px;width: 100%;font-size: 16px;line-height: 20px;}
   }
 
   @media (max-width:768px){
@@ -2937,6 +2963,9 @@ div.bg-blue{
     .video_popup {margin: 0px;}
     .toggleWrap .switchBtn {font-size: 12px;}
     .toggleWrap .switchBtn img {height: 10px;}
+    .cp_wrapper_new .trainer-block {margin-left: -5px;margin-right: -5px !important;}
+    .right-side-block > .text-uppercase, .right-side-block > h3 {font-size: 20px;line-height: 28px;}
+    html body .v-application main.mb-12 {margin-bottom: 0px !important;}
   }
 
   @media (max-width:545px){

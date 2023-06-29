@@ -25,39 +25,66 @@
               <v-expansion-panel-content>
                 <div class="row px-4">
                   <div class="col-xl-12 pb-0 pl-0 pl-md-6 pl-2" v-show="tenant.contactPersons.headOffice.length > 0"><h4>{{ $t("head_office") }}</h4></div>
-                  <div class="trainer-block mr-2 col-md-4 row justify-content-center" v-for="contactPerson in tenant.contactPersons.headOffice" :key="contactPerson.id">
+                  <div class="trainer-block mr-2 col-md-6 row justify-content-center" v-for="contactPerson in tenant.contactPersons.headOffice" :key="contactPerson.id">
                     <div class="block-tile col-md-12 sixteentonine">
-                      <div class="block-tile kachelimage block-background-image" :style="{'background-image': 'url(\'/files/images/' + contactPerson.trainerImage + '\')'}"></div>
-                      <div class="py-1 pr-2 pl-2 pl-md-6 bottom-row bg-blue">{{ contactPerson.fullname }}</div>
-                      <div v-if="contactPerson.designation" class="py-1 pr-2 pl-2 pl-md-6  bg-blue">{{ contactPerson.designation }}</div>
-                      <div v-if="contactPerson.company" class="py-1 pr-2 pl-2 pl-md-6 ">{{ contactPerson.company }}</div>
-                      <div v-if="tenant.addressFormattedSingleLineWithCountry" class="py-1 pr-2 pl-2 pl-md-6 ">{{ tenant.addressFormattedSingleLineWithCountry }}</div>  
-                      <div v-if="contactPerson.personnelnumber" class="py-1 pr-2 pl-2 pl-md-6 ">Tel:{{ contactPerson.personnelnumber }}</div>    
-                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.email }}</div>               
+                      <div class="block-tile kachelimage block-background-image cpImageWrapper" :style="{'background-image': 'url(\'/files/images/' + contactPerson.trainerImage + '\')'}"></div>
+                      <div class="bg-blue cpNameWrapper">
+                        <h4>{{ contactPerson.fullname }}</h4>
+                        <p v-if="contactPerson.designation">{{ contactPerson.designation }}</p>
+                      </div>
+                      <div class="cpDetailWrapper">
+                        <div class="cpMainImgWrap">
+                          <img :src="`/files/images/${contactPerson.trainerImage}`" alt="Trainer Image">
+                        </div>
+                        <div class="cpCardLeft">
+                          <div v-if="contactPerson.company" class="">{{ contactPerson.company }}</div>
+                          <div v-if="tenant.addressFormattedSingleLineWithCountry" class="">{{ tenant.addressFormattedSingleLineWithCountry }}</div>  
+                          <div v-if="contactPerson.personnelnumber" class="">Tel: <a :href="'tel:' + contactPerson.personnelnumber">{{ contactPerson.personnelnumber }}</a></div>    
+                          <div  v-if="contactPerson.email" class=""><a :href="'mailto:' + contactPerson.email">{{ contactPerson.email }}</a></div>   
+                        </div>            
+                      </div>
                     </div>
                   </div>
                   <div class="col-xl-12 pb-0 pl-0 pl-md-6 pl-2" v-show="tenant.contactPersons.trainers.length > 0"><h4>{{ $t("trainers") }}</h4></div>
-                  <div class="trainer-block mr-2 col-md-4 row justify-content-center" v-for="contactPerson in tenant.contactPersons.trainers" :key="contactPerson.id">
+                  <div class="trainer-block mr-2 col-md-6 row justify-content-center" v-for="contactPerson in tenant.contactPersons.trainers" :key="contactPerson.id">
                     <div class="block-tile col-md-12 sixteentonine">
-                      <div class="kachelimage block-background-image" :style="{'background-image': 'url(\'/files/images/' + contactPerson.trainerImage + '\')'}"></div>
-                      <div class="pr-2 pl-2 pl-md-6 bg-blue">{{ contactPerson.fullname }}</div>
-                      <div v-if="contactPerson.designation" class="pr-2 pl-2 pl-md-6 bg-blue">{{ contactPerson.designation }}</div>
-                      <div v-if="contactPerson.company" class="py-1 pr-2 pl-2 pl-md-6 ">{{ contactPerson.company }}</div>
-                      <div v-if="tenant.addressFormattedSingleLineWithCountry" class="py-1 pr-2 pl-2 pl-md-6 ">{{ tenant.addressFormattedSingleLineWithCountry }}</div>  
-                      <div  v-if="contactPerson.personnelnumber" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.personnelnumber }}</div>
-                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.email }}</div>
+                      <div class="kachelimage block-background-image cpImageWrapper" :style="{'background-image': 'url(\'/files/images/' + contactPerson.trainerImage + '\')'}"></div>
+                      <div class="bg-blue cpNameWrapper">
+                        <h4>{{ contactPerson.fullname }}</h4>
+                        <p v-if="contactPerson.designation">{{ contactPerson.designation }}</p>
+                      </div>
+                      <div class="cpDetailWrapper">
+                        <div class="cpMainImgWrap">
+                          <img :src="`/files/images/${contactPerson.trainerImage}`" alt="Trainer Image">
+                        </div>
+                        <div class="cpCardLeft">
+                          <div v-if="contactPerson.company" class="">{{ contactPerson.company }}</div>
+                          <div v-if="tenant.addressFormattedSingleLineWithCountry" class="">{{ tenant.addressFormattedSingleLineWithCountry }}</div>  
+                          <div  v-if="contactPerson.personnelnumber" class="">Tel: <a :href="'tel:' + contactPerson.personnelnumber">{{ contactPerson.personnelnumber }}</a></div>
+                          <div  v-if="contactPerson.email" class=""><a :href="'mailto:' + contactPerson.email">{{ contactPerson.email }}</a></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-xl-12 pb-0 pl-0 pl-md-6 pl-2" v-show="tenant.contactPersons.others.length > 0"><h4>{{ $t("contactpersons") }}</h4></div>
-                  <div class="trainer-block mr-2 col-md-4 row justify-content-center" v-for="contactPerson in tenant.contactPersons.others" :key="contactPerson.id">
+                  <div class="trainer-block mr-2 col-md-6 row justify-content-center" v-for="contactPerson in tenant.contactPersons.others" :key="contactPerson.id">
                     <div class="block-tile col-md-12 sixteentonine">
-                      <div class="kachelimage block-background-image" :style="{'background-image': 'url(\'/files/images/' + contactPerson.trainerImage + '\')'}"></div>
-                      <div class="py-1 pr-2 pl-2 pl-md-6  bg-blue">{{ contactPerson.fullname }}</div>
-                      <div v-if="contactPerson.designation" class="py-1 pr-2 pl-2 pl-md-6  bg-blue">{{ contactPerson.designation }}</div>
-                      <div v-if="contactPerson.company" class="py-1 pr-2 pl-2 pl-md-6 ">{{ contactPerson.company }}</div>
-                      <div v-if="tenant.addressFormattedSingleLineWithCountry" class="py-1 pr-2 pl-2 pl-md-6 ">{{ tenant.addressFormattedSingleLineWithCountry }}</div> 
-                      <div v-if="contactPerson.personnelnumber" class="py-1 pr-2 pl-2 pl-md-6  ">Tel:{{ contactPerson.personnelnumber }}</div> 
-                      <div  v-if="contactPerson.email" class="pr-2 pl-2 pl-md-6 ">Tel: {{ contactPerson.email }}</div>
+                      <div class="kachelimage block-background-image cpImageWrapper" :style="{'background-image': 'url(\'/files/images/' + contactPerson.trainerImage + '\')'}"></div>
+                      <div class="bg-blue cpNameWrapper">
+                        <h4>{{ contactPerson.fullname }}</h4>
+                        <p v-if="contactPerson.designation">{{ contactPerson.designation }}</p>
+                      </div>
+                      <div class="cpDetailWrapper">
+                        <div class="cpMainImgWrap">
+                          <img :src="`/files/images/${contactPerson.trainerImage}`" alt="Trainer Image">
+                        </div>
+                        <div class="cpCardLeft">
+                          <div v-if="contactPerson.company" class="">{{ contactPerson.company }}</div>
+                          <div v-if="tenant.addressFormattedSingleLineWithCountry" class="">{{ tenant.addressFormattedSingleLineWithCountry }}</div> 
+                          <div v-if="contactPerson.personnelnumber" class="">Tel: <a :href="'tel:' + contactPerson.personnelnumber">{{ contactPerson.personnelnumber }}</a></div> 
+                          <div  v-if="contactPerson.email" class=""><a :href="'mailto:' + contactPerson.email">{{ contactPerson.email }}</a></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
