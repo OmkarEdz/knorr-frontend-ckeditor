@@ -664,6 +664,7 @@ header.flex-grow-0{
 
 .text-content.aboutus ul li{
   margin-top: 5px;
+  color: #5b5b5b;
 }
 
 .v-data-table .v-btn.v-btn--disabled .v-icon, .v-data-table .theme--light.v-btn.v-btn--disabled .v-icon {
@@ -2772,8 +2773,8 @@ div.bg-blue{
   .aboutus-image-big.aboutus-image-new {height: unset;border-bottom: 1px solid #004581;padding-bottom: 25px;margin-bottom: 35px;}
   .aboutus-image-big.aboutus-image-new img {width:100%;height: 100%;}
   .aboutus_new_content {margin-bottom: 40px;}
-  .aboutus_new_content h3 {font-weight: 600;font-size: 25px;line-height: 34px;color: #004380;margin-bottom: 16px;}
-  .aboutus_new_content p {font-weight: 400;font-size: 18px;line-height: 25px;color: #222222;}
+  .aboutus_new_content h3 {font-weight: 400;font-size: 32px;line-height: 38px;color: #004380;margin-bottom: 30px;}
+  .aboutus_new_content p {font-weight: 400;font-size: 20px;line-height: 28px;color: #5b5b5b;margin-bottom: 20px;}
   .aboutus_new_content p:last-child {margin: 0px;}
   .vdialognew {padding: 15px;}
   .video_section {padding: 0px 50px 0px 15px;}
@@ -2882,14 +2883,20 @@ div.bg-blue{
   .right-side-block > .text-dark a:hover {color: #bfb497;border-bottom-color: #bfb497;}
   .v-item-group.v-bottom-navigation--absolute {position: unset;}
   .backbutton {display: none !important;}
-  .sessionLink a {transition:0.5s all;color: #004581;text-decoration: none !important;font-size: 18px;line-height: 30px;border-bottom: 1px solid #004581 !important;display: inline-block;}
-  .sessionLink a:hover {color: #bfb497;border-bottom-color: #bfb497 !important;}
-  .view-all-traning-link {margin-left: -5px;margin-top:15px;font-weight: 600;transition:0.5s all;color: #004581 !important;text-decoration: none !important;font-size: 18px;line-height: 25px;display: flex;flex-direction: row-reverse;justify-content: flex-end;}
-  .view-all-traning-link img {width:22px;}
+  .sessionLink a, .opentrainingsWrap td a {transition:0.5s all;color: #004581;text-decoration: none !important;font-size: 18px;line-height: 30px;border-bottom: 1px solid #004581 !important;display: inline-block;}
+  .sessionLink a:hover, .opentrainingsWrap td a:hover {color: #bfb497;border-bottom-color: #bfb497 !important;}
+  .view-all-traning-link {align-items: flex-start;margin-left: -5px;margin-top:15px;font-weight: 600;transition:0.5s all;color: #004581 !important;text-decoration: none !important;font-size: 18px;line-height: 25px;display: flex;flex-direction: row-reverse;justify-content: flex-end;}
+  .view-all-traning-link img {width:18px;padding-top: 3px;}
   .view-all-traning-link:hover {color: #bfb497 !important;}
-  .toolDetailsPgNewWrap .text-content h4 {font-size: 32px;line-height: 38px;margin-bottom: 30px;} 
+  .toolDetailsPgNewWrap .text-content h4 {font-size: 32px;line-height: 38px;margin-bottom: 30px;font-weight: 400;} 
   .toolDetailsPgNewWrap .text-content p {line-height: 28px;color: #5b5b5b;}
+  .opentrainingsWrap td {vertical-align: middle;}
+  .v-application .opentrainingsWrap td span {margin-right: 20px !important;display: flex;align-items: center;justify-content: flex-end;padding: 7px 15px;font-size: 12px;line-height: 17px;width: max-content;float: right;color: #fff;background: #004581;border-radius: 20px;}
+  .v-application .opentrainingsWrap td span i {font-size: 16px;color:#fff;margin-right: 3px;}
+  .cookiesWrap .text-content p {font-size: 20px;line-height: 28px;color: #5b5b5b;margin-bottom: 30px;}
+  .cookiesWrap .text-content h4 {font-weight: 400;font-size: 32px;line-height: 38px;color: #004380;margin-bottom: 30px;}
 
+    
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */
     .v-app-bar--is-scrolled .kb-header-logo {width: 250px;height: auto;margin: 0px !important;}

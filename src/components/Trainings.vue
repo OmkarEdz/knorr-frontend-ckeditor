@@ -16,7 +16,7 @@
         <div class="mx-0 pa-0 text-content">
           <h4>{{ $t("openTraining") }}</h4>
         </div>
-       <table class="table table-bordered table-md opentrainings" >
+       <table class="table table-bordered table-md opentrainings opentrainingsWrap" >
        <tbody>
           <tr v-for="(training, index) in uniqueTrainings" :key="training.value" class="border-top border-bottom" >
           <td style="border-color: #333;" class="col-0 border-right-0">{{ index + 1 }}.</td>
@@ -27,8 +27,8 @@
       </table>
       </div>
       <!-- Right Area -->
-      <div class="col-xl-4 px-0 pl-8 pl-8 pl-md-12 pl-lg-8  row pt-0">
-        <div class="col-xl-12 right-side-block">
+      <div class="col-xl-4 px-0 pl-8 pl-8 pl-md-12 pl-lg-8  row">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
