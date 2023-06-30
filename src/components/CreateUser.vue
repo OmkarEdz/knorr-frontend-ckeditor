@@ -106,7 +106,7 @@
                     <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-12">
                         <v-text-field  
                         hide-details="auto"
-                        class="datainput justify-content-end align-self-center pb-1"
+                        class="datainput justify-content-end align-self-center pb-1 mb-5"
                         dense
                         outlined
                         :label="$t('designation')"
@@ -114,7 +114,7 @@
                         ></v-text-field>
                           <v-text-field  
                         hide-details="auto"
-                        class="datainput justify-content-end align-self-center pb-1"
+                        class="datainput justify-content-end align-self-center pb-1 mb-5"
                         dense
                         outlined
                         :label="$t('personnelnumber')"
@@ -181,7 +181,7 @@
                     <div v-show="userTypes[selectedTab] == 'contact_person'" class="col-sm-12 col-md-12">
                        <v-text-field  
                         hide-details="auto"
-                        class="datainput justify-content-end align-self-center pb-1"
+                        class="datainput justify-content-end align-self-center pb-1 mb-5"
                         dense
                         outlined
                         :label="$t('designation')"
@@ -189,7 +189,7 @@
                         ></v-text-field>
                           <v-text-field  
                         hide-details="auto"
-                        class="datainput justify-content-end align-self-center pb-1"
+                        class="datainput justify-content-end align-self-center pb-1 mb-5"
                         dense
                         outlined
                         :label="$t('personnelnumber')"

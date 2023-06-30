@@ -86,7 +86,7 @@
 
       <!-- Right Area -->
       <div class="col-xl-4 pl-12 pl-md-16 row">
-        <div class="col-xl-12 right-side-block">
+        <div class="col-xl-12 right-side-block" v-show="$rights.includes('CREATE_TRAINING')">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>

@@ -2863,9 +2863,9 @@ div.bg-blue{
   #weekviewcontainer th.bg-blue {background: #004581;color:#fff;}
 
   .cp_wrapper_new .cpImageWrapper {display:none !important;}
-  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;min-height: 70px;}
-  .cp_wrapper_new .cpNameWrapper h4 {color: #fff;font-size: 18px;line-height:24px;margin: 0px 0px 2px;font-weight: 600;}
-  .cp_wrapper_new .cpNameWrapper p {color: #fff;font-size: 18px;line-height:24px;margin: 0px;}
+  .cp_wrapper_new .cpNameWrapper {padding: 10px 35px;}
+  .cp_wrapper_new .cpNameWrapper h4 {color: #fff;font-size: 18px;line-height:24px;margin: 0px;font-weight: 600;}
+  .cp_wrapper_new .cpNameWrapper p {color: #fff;font-size: 18px;line-height:24px;margin:2px 0px 0px;}
   .cp_wrapper_new .cpDetailWrapper {padding: 30px 0px 30px 30px;display: flex;flex-direction: row-reverse;align-items: flex-start;justify-content: space-between;}
   .cp_wrapper_new .cpDetailWrapper .cpCardLeft {width: calc(100% - 160px);font-size: 20px;color: #5b5b5b;line-height: 28px;word-wrap: break-word;}
   .cp_wrapper_new .cpDetailWrapper .cpMainImgWrap {width: 138px;text-align: right;}
@@ -2884,7 +2884,7 @@ div.bg-blue{
   .backbutton {display: none !important;}
   .sessionLink a {transition:0.5s all;color: #004581;text-decoration: none !important;font-size: 18px;line-height: 30px;border-bottom: 1px solid #004581 !important;display: inline-block;}
   .sessionLink a:hover {color: #bfb497;border-bottom-color: #bfb497 !important;}
-  .view-all-traning-link {margin-top:15px;font-weight: 600;transition:0.5s all;color: #004581 !important;text-decoration: none !important;font-size: 20px;line-height: 30px;display: flex;flex-direction: row-reverse;justify-content: flex-end;}
+  .view-all-traning-link {margin-left: -5px;margin-top:15px;font-weight: 600;transition:0.5s all;color: #004581 !important;text-decoration: none !important;font-size: 18px;line-height: 25px;display: flex;flex-direction: row-reverse;justify-content: flex-end;}
   .view-all-traning-link img {width:22px;}
   .view-all-traning-link:hover {color: #bfb497 !important;}
   .toolDetailsPgNewWrap .text-content h4 {font-size: 32px;line-height: 38px;margin-bottom: 30px;} 
