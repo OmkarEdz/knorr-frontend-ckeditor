@@ -8,7 +8,7 @@
     </div>
   </div>
   <div>
-    <div class="mx-0 row align-items-start">
+    <div class="mx-0 row align-items-start cookiesWrap">
       <!-- Left Area -->
       <div class="col-xl-8 px-8 pr-sm-16">        
         <div class="px-md-4 mx-0 pa-0 text-content">
@@ -17,7 +17,7 @@
             <p>{{ $t("cookies_3") }}</p>
             <p>{{ $t("cookies_4") }}</p>
             <p>{{ $t("cookies_5") }}</p>
-            <span><b>{{ $t("cookies_6") }}</b></span><br>
+            <p><b>{{ $t("cookies_6") }}</b></p>
             <p>{{ $t("cookies_7") }}</p>
 
             <v-simple-table class="userstable" hide-default-footer>
