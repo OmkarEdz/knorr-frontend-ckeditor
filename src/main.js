@@ -28,6 +28,7 @@ import Category from './components/Category.vue'
 import Venues from './components/Venues.vue'
 import TrainingTable from './components/TrainingTable.vue'
 import TrainingDetails from './components/TrainingDetails.vue'
+import CategoryTraining from './components/CategoryTraining.vue'
 import TrainingEvents from './components/TrainingEvents.vue'
 import InactiveEvents from './components/InactiveEvents.vue'
 import CreateTrainingEvent from './components/CreateTrainingEvent.vue'
@@ -98,6 +99,7 @@ Vue.use(InactiveEvents)
 Vue.use(CreateTrainingEvent)
 Vue.use(FeedBackForm)
 Vue.use(Trainings)
+Vue.use(CategoryTraining)
 
 // Widgets
 Vue.use(Contact)
@@ -152,6 +154,7 @@ const router = new VueRouter({
         { path: "/roles", component: Roles },
         { path: "/categories", component: Category },
         { path: "/category/:pathMatch(.*)*", component: TrainingTable },
+        { path: "/category-training/:pathMatch(.*)*", component: CategoryTraining },
         { path: "/create-training", component: CreateTraining, props: route => ({ categoryName: route.query.category }) },
         { path: "/edit-training", component: CreateTraining, props: route => ({ trainingId: route.query.trainingId }) },
         { path: "/create-category", component: CreateCategory },
