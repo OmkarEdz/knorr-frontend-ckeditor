@@ -2895,7 +2895,16 @@ div.bg-blue{
   .v-application .opentrainingsWrap td span i {font-size: 16px;color:#fff;margin-right: 3px;}
   .cookiesWrap .text-content p {font-size: 20px;line-height: 28px;color: #5b5b5b;margin-bottom: 30px;}
   .cookiesWrap .text-content h4 {font-weight: 400;font-size: 32px;line-height: 38px;color: #004380;margin-bottom: 30px;}
+  .categoriesMainWrap {margin-bottom: -30px;}
 
+  .lastBtnSubmit {border-top: 1px solid #ccc;margin: 10px 15px;padding: 25px 0px 0px;}
+  .noBorderBtn {padding: 0px !important;}
+  .noBorderBtn button {border: none;padding: 0px !important;text-transform: capitalize;}
+  .noBorderBtn button:hover {color:#00457e;background: transparent;}
+  .noBorderBtn button i {font-size: 16px !important;margin-right: 5px;}
+  .noBorderBtn button:hover:before {opacity: 0 !important;}
+  .cancelBtn {background: #bfb497;border-color: #bfb497 !important;color: #fff !important;}
+  .cancelBtn i {color: #fff !important;font-size: 20px !important;}
     
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */

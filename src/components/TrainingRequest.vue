@@ -499,8 +499,11 @@
                       </template>
                       </v-checkbox>
                </div>
+               <div class="col-md-12 lastBtnSubmit">
+                <v-btn v-show="!editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_request") }}</v-btn>
+              </div>
             </div>
-            <div class="text-right">
+            <div class="text-right mb-1">
               <v-label>
                 * {{ $t("mandatory_fields") }}
               </v-label>
@@ -560,7 +563,7 @@
 
       <!-- Right Area -->
       <div class="col-xl-4 px-0 pl-8 pl-8 pl-md-12 pl-lg-8  row pt-0">
-        <div class="col-xl-12 right-side-block">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>

@@ -243,6 +243,11 @@
         </div>
 
         </v-tab-item>
+        <div class="col-md-12 lastBtnSubmit">
+          <v-btn @click="saveTraining()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn v-show="editMode" @click="openDeleteDialog= true"  outlined depressed tile class="deletebutton cancelBtn mr-2 mb-2"><v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+        </div>
         <div class="text-right mb-4">
           <v-label>
               * {{ $t("mandatory_fields") }}
@@ -250,8 +255,8 @@
         </div>
       </v-tabs-items>
     </div>
-    <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0">
-        <div class="col-xl-12 right-side-block">
+    <div class="col-xl-3 px-0 pl-8 pl-md-4 row pt-0">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>

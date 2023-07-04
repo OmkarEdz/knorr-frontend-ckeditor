@@ -64,8 +64,8 @@
                   <td v-show="$rights.includes('CREATE_TRAINING')" class="pb-1 text-uppercase align-bottom">{{training.maxParticipants}}</td>
                   <!-- <td v-show="$rights.includes('CREATE_TRAINING')" class="pb-1 text-uppercase align-bottom"><img style="width:26px;height:17px;vertical-align: unset;" :src="'/files/flags/' + $languages[training.language].flag"></td> -->
                   <td class="pb-1 text-uppercase align-bottom">{{$t(training.type.toLowerCase())}}</td>
-                  <td class="text-right">
-                    <v-btn @click.stop="$router.push('/training/' + training.designationUrl)" v-show="$rights.includes('CREATE_TRAINING')" outlined depressed tile>{{ $t("preview") }}</v-btn>
+                  <td class="text-right noBorderBtn">
+                    <v-btn @click.stop="$router.push('/training/' + training.designationUrl)" v-show="$rights.includes('CREATE_TRAINING')" outlined depressed tile><v-icon>mdi-eye</v-icon> {{ $t("preview") }}</v-btn>
                   </td>
                 </tr>
                 <tr v-show="trainings.length == 0">
