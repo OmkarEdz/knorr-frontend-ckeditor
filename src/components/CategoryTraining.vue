@@ -168,7 +168,9 @@ export default {
       }
     },
     fetchTrainings() {
+      
       var _this = this;
+      _this.trainings=[];
       this.$axios
         .get(this.routes.trainings, {
           params: {
