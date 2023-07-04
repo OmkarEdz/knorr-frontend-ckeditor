@@ -976,6 +976,10 @@ div.bg-blue{
   overflow: hidden;
   cursor: pointer;
 }
+.search-container {
+  width: 800px; /* Adjust the width value as needed */
+  margin: 0 auto; /* Center the search field horizontally */
+}
 
 .upload-component .file-name:hover{
   text-decoration: underline;
