@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="categoriesMainWrap">
     <div class="sixteentosix omt-6 omt-md-25">
       <div
         class="kachelimage header-image large"
@@ -76,7 +76,7 @@
                   <v-card
                     flat
                     class="no-border-radius"
-                    style="min-height: 33vh;"
+                    style="min-height: 210px;"
                     @click="openRailServicesWebsite()"
                   >
                     <v-img
