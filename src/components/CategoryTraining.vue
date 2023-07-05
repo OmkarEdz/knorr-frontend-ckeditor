@@ -38,10 +38,10 @@
                   <th @click="sort = 'd.description', order = !order,page = 1, fetchTrainings()" class="col-4 text-uppercase align-bottom">
                     {{$t("designation")}} <v-icon v-show="sort == 'd.description' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'd.description' && !order" >fas fa-chevron-up</v-icon>
                   </th>
-                  <th v-show="$rights.includes('CREATE_TRAINING')" @click="sort = 'minParticipants', order = !order,page = 1, fetchTrainings()" class="col-1 text-uppercase align-bottom">
+                  <th  @click="sort = 'minParticipants', order = !order,page = 1, fetchTrainings()" class="col-1 text-uppercase align-bottom">
                     {{$t("minParticipants")}} <v-icon v-show="sort == 'minParticipants' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'minParticipants' && !order" >fas fa-chevron-up</v-icon>
                   </th>
-                  <th v-show="$rights.includes('CREATE_TRAINING')" @click="sort = 'maxParticipants', order = !order,page = 1, fetchTrainings()" class="col-1 text-uppercase align-bottom">
+                  <th  @click="sort = 'maxParticipants', order = !order,page = 1, fetchTrainings()" class="col-1 text-uppercase align-bottom">
                     {{$t("maxParticipants")}} <v-icon v-show="sort == 'maxParticipants' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'maxParticipants' && !order" >fas fa-chevron-up</v-icon>
                   </th>
                   <th @click="sort = 'training.category.designationsMap[$locale]', order = !order, page = 1, fetchTrainings" class="col-4 text-uppercase align-bottom">
