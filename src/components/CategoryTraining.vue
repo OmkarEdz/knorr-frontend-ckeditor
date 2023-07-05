@@ -56,8 +56,8 @@
               <tbody>
                 <tr v-for="training in trainings" :key="training.id" @click="$routerPush('/edit-training?trainingId=' + training.id, 'CREATE_TRAINING', '/training/' + training.designationUrl)">
                   <td class="pb-1 text-uppercase align-bottom">{{training.designationsMap[$locale]}}</td>
-                  <td v-show="$rights.includes('CREATE_TRAINING')" class="pb-1 text-uppercase align-bottom">{{training.minParticipants}}</td>
-                  <td v-show="$rights.includes('CREATE_TRAINING')" class="pb-1 text-uppercase align-bottom">{{training.maxParticipants}}</td>
+                  <td  class="pb-1 text-uppercase align-bottom">{{training.minParticipants}}</td>
+                  <td  class="pb-1 text-uppercase align-bottom">{{training.maxParticipants}}</td>
                   <!-- <td v-show="$rights.includes('CREATE_TRAINING')" class="pb-1 text-uppercase align-bottom"><img style="width:26px;height:17px;vertical-align: unset;" :src="'/files/flags/' + $languages[training.language].flag"></td> -->
                     <td class="pb-1 text-uppercase align-bottom">{{training.category.designationMap[$locale]}}</td>
                   <td class="pb-1 text-uppercase align-bottom">{{$t(training.type.toLowerCase())}}</td>
