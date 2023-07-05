@@ -144,7 +144,7 @@
                         </v-radio-group>
                         </div>
                     </div> 
-                    <div v-show="userTypes[selectedTab] == 'trainer'"> <v-text-field  
+                    <div v-show="userTypes[selectedTab] == 'trainer'" class="col-sm-12 col-md-6 pb-0 remove_margin"> <v-text-field  
                         
                         class="datainput justify-content-end align-self-center pb-1"
                         dense
@@ -366,6 +366,11 @@
                 </div>
             </div>
             </v-tab-item>
+            <div class="col-md-12 lastBtnSubmit">
+              <v-btn @click="saveUser()" outlined depressed tile class="mr-2 mb-2 savebutton">{{ $t("save") }}</v-btn>
+              <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+              <v-btn v-show="editMode" @click="deleteUser()" outlined depressed tile class="mr-2 mb-2 deletebutton cancelBtn"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+            </div>
             <div class="text-right">
             <div v-show="user.blockedAtFormatted != ''"><v-label>{{ $t("blocked_since") }} {{ user.blockedAtFormatted }}</v-label></div>
             &nbsp;&nbsp;&nbsp;
@@ -376,8 +381,8 @@
           
         </v-tabs-items>
     </div>
-    <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0">
-        <div class="col-xl-12 right-side-block">
+    <div class="col-xl-3 px-0 pl-8 pl-md-6 row pt-0 onlyContact">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>

@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="mx-0 row align-items-start">
-    <div class="col-xl-8 px-8 pr-sm-16">
+    <div class="col-xl-8 px-8  pr-md-10 pr-lg-0">
       <div class="px-md-4 mx-0 pa-0 row justify-content-sm-between justify-content-center">
         <v-simple-table class="venuestable" style="width:100%" hide-default-footer>
           <thead>
