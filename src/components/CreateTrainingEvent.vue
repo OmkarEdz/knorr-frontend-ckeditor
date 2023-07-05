@@ -1193,7 +1193,7 @@
       </template>
     </b-modal>
     </div>
-    <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0">
+    <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0 onlyContact">
 
         <!-- Actions for first and second Tab -->
         <div class="col-xl-12 right-side-block" v-show="trainingEventTab == 0 || trainingEventTab == 1">

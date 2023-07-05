@@ -46,7 +46,7 @@
           <img src="../assets/img/arrow_right_blue.svg">
          </a>
          </div>
-         <div v-else>{{ $t("noOpenTrainings") }}</div>
+         <div class="mt-6" v-else>{{ $t("noOpenTrainings") }}</div>
         </div>
         <Contact />
       </div>

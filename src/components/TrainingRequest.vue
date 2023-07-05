@@ -501,6 +501,9 @@
                </div>
                <div class="col-md-12 lastBtnSubmit">
                 <v-btn v-show="!editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_request") }}</v-btn>
+                <v-btn v-show="editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+                <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+                <v-btn v-show="editMode" @click="deleteRequest()" outlined depressed tile class="deletebutton cancelBtn mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
               </div>
             </div>
             <div class="text-right mb-1">
@@ -562,16 +565,12 @@
       </div>
 
       <!-- Right Area -->
-      <div class="col-xl-4 px-0 pl-8 pl-8 pl-md-12 pl-lg-8  row pt-0">
-        <div class="col-xl-12 right-side-block hide">
+      <div class="col-xl-4 px-0 pl-8 pl-8 pl-md-12 pl-lg-8  row pt-0 onlyContact">
+        <div class="col-xl-12 right-side-block" v-show="editMode">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn v-show="!editMode" @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_request") }}</v-btn>
-          <v-btn v-show="editMode" @click="sendRequest()" outlined depressed tile class="save mr-2 mb-2">{{ $t("save") }}</v-btn>
-          <v-btn v-show="editMode" @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon>  {{ $t("back") }}</v-btn>
-          <v-btn v-show="editMode" @click="deleteRequest()" outlined depressed tile class="deletebutton mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
-           <v-btn v-show="editMode" @click="download()" outlined depressed tile class="downBtn mr-2 mb-2"> <v-icon color="#444" small >fas fa-file-pdf</v-icon> {{ $t("downloadpdf") }}</v-btn>
+          <v-btn v-show="editMode" @click="download()" outlined depressed tile class="downBtn mr-2 mb-2"> <v-icon color="#444" small >fas fa-file-pdf</v-icon> {{ $t("downloadpdf") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block" v-show="editMode">
           <h3>{{ $t("customer") }}</h3>

@@ -39,7 +39,7 @@
         <img style="width:26px;height:17px;vertical-align: unset;" :src="'/files/flags/' + language.flag">&nbsp;&nbsp;{{ $t(language.language) }}
       </v-tab>
     </v-tabs>
-    <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0 pa-0">
+    <div class="col-md-12 col-xl-9 innercreatetraining mb-3 mb-lg-0 pt-5 px-md-8 px-4 mx-0">
 
 
       <v-tabs-items v-model="languageTab">
@@ -74,16 +74,21 @@
                 :label="$t('parent_category')">
               </v-autocomplete>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12 mb-1">
             <Upload v-model="category.image" />
           </div>
 
         </div>
         </v-tab-item>
+        <div class="col-md-12 lastBtnSubmit widAuto">
+          <v-btn @click="saveCategory()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+          <v-btn v-show="editMode" @click="openDeleteDialog= true"  outlined depressed tile class="deletebutton cancelBtn mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+        </div>
       </v-tabs-items>
     </div>
-    <div class="col-xl-3 px-0 pl-8 pl-md-12 row pt-0">
-        <div class="col-xl-12 right-side-block">
+    <div class="col-xl-3 px-0 pl-8 pl-md-6 row pt-0 onlyContact">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>

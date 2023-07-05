@@ -2903,13 +2903,18 @@ div.bg-blue{
 
   .lastBtnSubmit {border-top: 1px solid #ccc;margin: 10px 15px;padding: 25px 0px 0px;}
   .noBorderBtn {padding: 0px !important;}
+  .cancelBtn {background: #bfb497;border-color: #bfb497 !important;color: #fff !important;text-transform: capitalize;}
+  .cancelBtn i {color: #fff !important;font-size: 20px !important;margin-right: 3px;}
+  .remove_margin {margin-bottom: -10px;}
+  .widAuto {width:auto;}
+  .onlyContact {margin-top: -20px;}
+  html body .v-application .right-side-block .v-btn:not(.noBorderBtn button, .switchBtn, .headerbtn, .footerbtn), html body .v-application .lastBtnSubmit .v-btn {font-size: 18px !important;height: 45px !important;margin-right: 20px !important;}
+  html body .v-application .right-side-block .v-btn i, html body .v-application .lastBtnSubmit .v-btn i{font-size: 20px !important;margin-right: 3px;margin-left: 0px !important;}
   .noBorderBtn button {border: none;padding: 0px !important;text-transform: capitalize;}
   .noBorderBtn button:hover {color:#00457e;background: transparent;}
   .noBorderBtn button i {font-size: 16px !important;margin-right: 5px;}
-  .noBorderBtn button:hover:before {opacity: 0 !important;}
-  .cancelBtn {background: #bfb497;border-color: #bfb497 !important;color: #fff !important;}
-  .cancelBtn i {color: #fff !important;font-size: 20px !important;}
-    
+  .noBorderBtn button:hover:before {opacity: 0 !important;} 
+  
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */
     .v-app-bar--is-scrolled .kb-header-logo {width: 250px;height: auto;margin: 0px !important;}
@@ -2963,6 +2968,7 @@ div.bg-blue{
     #salesFilterWrapScroll.stickyFilter {position: unset;z-index: unset;}
     .resMobHeader .col-md.pb-0.pt-md-6 {padding-top: 10px !important;}
     .top-Left-wrap img {width: 200px;}
+    .onlyContact {margin-top: 0px;}
   }
 
   @media (max-width:1024px){
@@ -2975,6 +2981,8 @@ div.bg-blue{
     .cp_wrapper_new .cpNameWrapper {padding: 10px 20px;}
     .cp_wrapper_new .cpDetailWrapper {flex-direction: column;padding: 20px;}
     .cp_wrapper_new .cpDetailWrapper .cpCardLeft {margin-top: 10px;width: 100%;font-size: 16px;line-height: 20px;}
+    html body .v-application .v-btn:not(.noBorderBtn button) {font-size: 14px !important;height: 36px !important;margin-right: 10px !important;}
+    html body .v-application .v-btn i {font-size: 16px !important;}
   }
 
   @media (max-width:768px){

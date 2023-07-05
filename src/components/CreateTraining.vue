@@ -255,7 +255,7 @@
         </div>
       </v-tabs-items>
     </div>
-    <div class="col-xl-3 px-0 pl-8 pl-md-4 row pt-0">
+    <div class="col-xl-3 px-0 pl-8 pl-md-4 row pt-0 onlyContact">
         <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>

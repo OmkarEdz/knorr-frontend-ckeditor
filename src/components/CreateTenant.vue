@@ -120,6 +120,11 @@
               </div>
 
           </div>
+          <div class="col-md-12 lastBtnSubmit mr-0 ml-0">
+            <v-btn @click="saveTenant()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
+            <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+            <v-btn v-show="editMode" @click="deleteTenant()" outlined depressed tile class="deletebutton cancelBtn mr-2 mb-2"> <v-icon color= "#444">mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
+          </div>
           <div class="text-right">
             <v-label>
               * {{ $t("mandatory_fields") }}
@@ -129,8 +134,8 @@
       </div>
 
       <!-- Right Area -->
-      <div class="col-xl-4 px-0 pl-8 pl-md-12 row pt-0">
-        <div class="col-xl-12 right-side-block">
+      <div class="col-xl-4 px-0 pl-8 pl-md-12 row pt-0 onlyContact">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
