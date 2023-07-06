@@ -877,6 +877,7 @@
           <div class="mt-6"></div>
           <v-btn  outlined depressed tile class="save mr-2 mb-2" v-if="!$rights.includes('CREATE_TRAINING_EVENT') || (addmanual==='true' && $rights.includes('CREATE_TRAINING_EVENT'))" @click="submitfeedback()">{{ $t("save") }}</v-btn>
           <v-btn  outlined depressed tile class="backbutton cancelbutton mr-2 mb-2" @click="$routerBack()">{{ $t("back") }}</v-btn>
+          <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancelEvent") }}</v-btn>
         </div>
         <Contact />
       </div>

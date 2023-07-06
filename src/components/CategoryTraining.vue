@@ -11,40 +11,47 @@
   </div>
   <div>
       
-    <div class="align-items-start">
-        <div class="search-container">
-         <v-text-field  
-            hide-details="auto"
-            class="justify-content-end searchbar align-self-center pb-1 pt-3"
-            style="padding-right:2px"
-            dense
-            outlined
-            v-model="search"
-            @keypress.enter="fetchTrainings()"
-            :label="$t('search')"><template v-slot:append>
-                  <v-icon color="#003A60">fas fa-search</v-icon>
-         </template></v-text-field>
-         
+      <div class="row mx-0">
+        <div class="pl-md-12 col-md-12 col-xl-7 right-side-block">
+          <div class="mt-6"></div>
+            <v-text-field  
+                hide-details="auto"
+                class="justify-content-end searchbar align-self-center pb-1 pt-3 categorySearch"
+                style="padding-right:2px"
+                dense
+                outlined
+                v-model="search"
+                @keypress.enter="fetchTrainings()"
+                :label="$t('search')"><template v-slot:append>
+                      <v-icon color="#003A60">fas fa-search</v-icon>
+            </template></v-text-field>
         </div>
+        <div class="pr-md-12 col-md-12 col-xl-5 d-flex align-end justify-end">
+          <v-btn @click="$routerBack()" outlined depressed tile class="backBtnPlain"><img src="../assets/img/arrow_right_blue.svg"> Back to main</v-btn>
+        </div>
+      </div>
      
       <!-- Left Area -->
-      <div class="px-3">   
-             
-        <div v-bind:class="{'pl-4 pl-md-4': subcategories.length == 0}" class="mx-0 pa-0  text-content">
+      <div class="px-0">   
+        <div class="pl-8 pl-md-12 mx-0 pa-0 text-content">
+            <h3 class="text-uppercase">{{ $t("our_training_portfolio") }}</h3>
+            <div class="divider"></div>
+        </div>
+        <div v-bind:class="{'px-12 px-md-12': subcategories.length == 0}" class="mx-0 pa-0  text-content pt-5">
           <div>
             <v-simple-table class="trainingstable" style="width:100%" hide-default-footer>
               <thead>
                 <tr>
-                  <th @click="sort = 'd.description', order = !order,page = 1, fetchTrainings()" class="col-4 text-uppercase align-bottom">
+                  <th @click="sort = 'd.description', order = !order,page = 1, fetchTrainings()" class="col-3 text-uppercase align-bottom">
                     {{$t("designation")}} <v-icon v-show="sort == 'd.description' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'd.description' && !order" >fas fa-chevron-up</v-icon>
                   </th>
-                  <th v-show="$rights.includes('CREATE_TRAINING')" @click="sort = 'minParticipants', order = !order,page = 1, fetchTrainings()" class="col-1 text-uppercase align-bottom">
+                  <th v-show="$rights.includes('CREATE_TRAINING')" @click="sort = 'minParticipants', order = !order,page = 1, fetchTrainings()" class="col-2 text-uppercase align-bottom">
                     {{$t("minParticipants")}} <v-icon v-show="sort == 'minParticipants' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'minParticipants' && !order" >fas fa-chevron-up</v-icon>
                   </th>
-                  <th v-show="$rights.includes('CREATE_TRAINING')" @click="sort = 'maxParticipants', order = !order,page = 1, fetchTrainings()" class="col-1 text-uppercase align-bottom">
+                  <th v-show="$rights.includes('CREATE_TRAINING')" @click="sort = 'maxParticipants', order = !order,page = 1, fetchTrainings()" class="col-2 text-uppercase align-bottom">
                     {{$t("maxParticipants")}} <v-icon v-show="sort == 'maxParticipants' && order" >fas fa-chevron-down</v-icon><v-icon v-show="sort == 'maxParticipants' && !order" >fas fa-chevron-up</v-icon>
                   </th>
-                  <th @click="sort = 'training.category.designationsMap[$locale]', order = !order, page = 1, fetchTrainings" class="col-4 text-uppercase align-bottom">
+                  <th @click="sort = 'training.category.designationsMap[$locale]', order = !order, page = 1, fetchTrainings" class="col-3 text-uppercase align-bottom">
                   {{$t("category")}}<v-icon v-show="sort == 'training.category.designationMap[$locale]' && order">fas fa-chevron-down</v-icon><v-icon v-show="sort == 'training.category.designationMap[$locale]' && !order">fas fa-chevron-up</v-icon>
                   </th>
                   <th @click="sort = 'type', order = !order,page = 1, fetchTrainings()" class="col-2 text-uppercase align-bottom">
@@ -61,8 +68,8 @@
                   <!-- <td v-show="$rights.includes('CREATE_TRAINING')" class="pb-1 text-uppercase align-bottom"><img style="width:26px;height:17px;vertical-align: unset;" :src="'/files/flags/' + $languages[training.language].flag"></td> -->
                     <td class="pb-1 text-uppercase align-bottom">{{training.category.designationMap[$locale]}}</td>
                   <td class="pb-1 text-uppercase align-bottom">{{$t(training.type.toLowerCase())}}</td>
-                  <td class="text-right">
-                    <v-btn @click.stop="$router.push('/training/' + training.designationUrl)" v-show="$rights.includes('CREATE_TRAINING')" outlined depressed tile>{{ $t("preview") }}</v-btn>
+                  <td class="text-right noBorderBtn">
+                    <v-btn @click.stop="$router.push('/training/' + training.designationUrl)" v-show="$rights.includes('CREATE_TRAINING')" outlined depressed tile><v-icon>mdi-eye</v-icon> {{ $t("preview") }}</v-btn>
                   </td>
                 </tr>
                 <tr v-show="trainings.length == 0">
