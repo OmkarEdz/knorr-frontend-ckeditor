@@ -51,7 +51,7 @@
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>
-          <v-btn :to="`/create-venue`" outlined depressed tile class="savebutton mr-2 text-uppercase">{{ $t("create_venue") }}</v-btn>
+          <v-btn :to="`/create-venue`" outlined depressed tile class="savebutton mr-2">{{ $t("create_venue") }}</v-btn>
         </div>
         <div class="col-xl-12 right-side-block">
           <h3 class="text-uppercase">{{ $t("search") }}</h3>

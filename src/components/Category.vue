@@ -20,13 +20,11 @@
         </div>
       </div>
     </div>
-     <div class="col-xl-12 right-side-block">
-          <h3 class="text-uppercase">{{ $t("search") }}</h3>
-          <div class="right-side divider"></div>
+     <div class="pl-md-12 col-md-12 col-xl-7 right-side-block">
           <div class="mt-6"></div>
           <v-text-field  
             hide-details="auto"
-            class="justify-content-end searchbar align-self-center pb-1"
+            class="justify-content-end searchbar align-self-center pb-1 categorySearch"
             style="padding-right:2px"
             dense
             outlined

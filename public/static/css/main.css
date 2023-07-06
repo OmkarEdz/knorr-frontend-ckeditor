@@ -2908,12 +2908,22 @@ div.bg-blue{
   .remove_margin {margin-bottom: -10px;}
   .widAuto {width:auto;}
   .onlyContact {margin-top: -20px;}
-  html body .v-application .right-side-block .v-btn:not(.noBorderBtn button, .switchBtn, .headerbtn, .footerbtn), html body .v-application .lastBtnSubmit .v-btn {font-size: 18px !important;height: 45px !important;margin-right: 20px !important;}
+  html body .v-application .right-side-block .v-btn:not(.noBorderBtn button, .switchBtn, .headerbtn, .footerbtn, .colorWhite), html body .v-application .lastBtnSubmit .v-btn {font-size: 18px !important;height: 45px !important;margin-right: 20px !important;}
   html body .v-application .right-side-block .v-btn i, html body .v-application .lastBtnSubmit .v-btn i{font-size: 20px !important;margin-right: 3px;margin-left: 0px !important;}
   .noBorderBtn button {border: none;padding: 0px !important;text-transform: capitalize;}
   .noBorderBtn button:hover {color:#00457e;background: transparent;}
   .noBorderBtn button i {font-size: 16px !important;margin-right: 5px;}
   .noBorderBtn button:hover:before {opacity: 0 !important;} 
+  .v-text-field--outlined.categorySearch fieldset {border: 1px solid #C0C0C0;}
+  .v-text-field--outlined.categorySearch .v-input__append-inner .v-icon.v-icon {font-size: 20px;top: 1px;}
+  .backBtnPlain {padding: 0px !important;border: unset;font-size: 18px !important;text-transform: capitalize;color: #00457E !important;height: auto !important;margin-bottom: 5px;}
+  .backBtnPlain img {width: 16px;margin-right: 5px;transform: rotateZ(180deg);transition: 0.5s all;}
+  .backBtnPlain:hover {color:#000000de !important;}
+  .backBtnPlain:before {display: none !important;}
+  .backBtnPlain:hover:before, .backBtnPlain:focus:before {opacity: 0 !important;}
+  .backBtnPlain:hover img {filter: brightness(0);}
+  .backBtnPlain .v-ripple__container {display: none;}
+  .relativeBtn {z-index: 9;}
   
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */

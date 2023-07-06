@@ -9,7 +9,7 @@
   </div>
   <div class="pl-md-12 pa-8 SalesCalendarWrap" id="SalesCalendarMain">
     <div class="row disablerow align-items-start justify-content-end">
-
+      
       <div class="toggleWrap">
         <router-link to="/sales-calendar" tag="button" class="savebutton v-btn v-size--default switchBtn activeBtn">
           <img src="../assets/img/arrow_right.png" alt="Icon">
@@ -20,6 +20,7 @@
           Default View
         </router-link>
       </div>
+      <v-btn :href="`/api/calendar/export/` +  selectedYear" v-show="!$external && $rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mb-2 ml-sm-10 relativeBtn">{{ $t("export_csv") }}</v-btn>
 
       <div id="salesFilterWrapScroll" v-bind:class="{ 'stickyFilter': isSticky }">
         <div class="salesFilterWrap">
