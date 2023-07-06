@@ -2864,7 +2864,7 @@ div.bg-blue{
   .SalesCalendarWrap .bg-beige-dark.mo, .SalesCalendarWrap .bg-beige.mo, .SalesCalendarWrap .bg-beige-dark.mois, .SalesCalendarWrap .bg-beige.mois {border-left: 1px solid #777;}
   .resMobHeader .right-menu-bar .v-btn>.v-btn__content .v-icon {margin-left: 5px;}
   .languagepicker .v-input__icon i {font-size: 30px;color: #135a98;}
-  .v-menu__content {z-index: 99 !important;}
+  .v-menu__content {z-index: 9999 !important;}
   #weekviewcontainer th.bg-blue {background: #004581;color:#fff;}
 
   .cp_wrapper_new .cpImageWrapper {display:none !important;}
