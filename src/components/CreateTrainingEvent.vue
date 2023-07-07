@@ -29,7 +29,7 @@
     <v-tabs
       v-model="trainingEventTab"
       align-with-title
-      class="LanguageselectTabgroup pt-md-4 pt-lg-0 pl-md-8 pl-4"
+      class="col-md-12 col-xl-9 pb-0 LanguageselectTabgroup pt-md-4 pt-lg-0 pl-md-8 pl-4"
     >
       <v-tabs-slider color="indigo"></v-tabs-slider>
 

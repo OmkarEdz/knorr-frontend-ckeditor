@@ -61,8 +61,8 @@
             <h4 class="text-uppercase">{{ $t("actions") }}</h4>
             <div class="right-side divider"></div>
             <div class="mt-6"></div>
-            <v-btn :to="`/create-user`" v-show="$rights.includes('CREATE_USER')" outlined depressed tile class="savebutton mr-2">{{ $t("create_user") }}</v-btn>
-            <v-btn :href="`/api/user/export`" v-show="$rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mr-2">{{ $t("export_csv") }}</v-btn>
+            <v-btn :to="`/create-user`" v-show="$rights.includes('CREATE_USER')" outlined depressed tile class="savebutton mb-2 mr-2">{{ $t("create_user") }}</v-btn>
+            <v-btn :href="`/api/user/export`" v-show="$rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mb-2 mr-2">{{ $t("export_csv") }}</v-btn>
           </div>
           <div class="col-xl-12 right-side-block">
             <h3 class="text-uppercase">{{ $t("search") }}</h3>
