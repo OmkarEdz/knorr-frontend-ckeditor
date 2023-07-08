@@ -314,13 +314,22 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item href="/request" class="d-xl-none">
+           <v-list-item v-show="user != null && $rights.includes('CREATE_USER')" href="/training-requests" class="d-xl-none">
+            <v-list-item-content>
+              <v-list-item-title class="text-uppercase font-16px">
+                {{$t("training_requests")}}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item v-if="!$rights.includes('CREATE_USER')" href="/request" class="d-xl-none">
             <v-list-item-content>
               <v-list-item-title class="text-uppercase font-16px">
                 {{$t("training_request")}}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
 
         </v-list>
       </v-navigation-drawer>
