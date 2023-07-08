@@ -88,6 +88,7 @@ export default {
 
   data() {
     return {
+      nextPrevious:false,
       page: 1,
       totalPages: 1,
       ElementPerPage: 50,
@@ -136,10 +137,12 @@ export default {
 
   methods: {
     previousPage() {
+       this.nextPrevious=true;
       this.page = this.page - 1;
       this.fetchVenues();
     },
     nextPage() {
+       this.nextPrevious=true;
       this.page = this.page + 1;
       this.fetchVenues();
     },
@@ -173,6 +176,10 @@ export default {
     },
     fetchVenues() {
       var _this = this;
+      if(_this.search !== null && _this.search !== '' && _this.nextPrevious===false)
+      {
+      _this.page=1;
+      }
       this.$axios
         .get(this.routes.venues, {
           params: {
@@ -184,6 +191,7 @@ export default {
           }
         })
         .then(function (response) {
+           _this.nextPrevious=false;
           _this.venues = response.data.content;
           _this.totalPages = response.data.totalPages;
           _this.$forceUpdate();

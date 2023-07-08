@@ -103,6 +103,7 @@ export default {
 
   data() {
     return {
+      nextPrevious:false,
       page: 1,
       totalPages: 1,
       ElementPerPage: 50,
@@ -156,10 +157,12 @@ export default {
     },
 
     previousPage() {
+      this.nextPrevious=true;
       this.page = this.page - 1;
       this.fetchTrainings();
     },
     nextPage() {
+      this.nextPrevious=true;
       this.page = this.page + 1;
       this.fetchTrainings();
     },
@@ -177,6 +180,10 @@ export default {
     fetchTrainings() {
       
       var _this = this;
+      if(_this.search !== null && _this.search !== '' && _this.nextPrevious===false)
+      {
+      _this.page=1;
+      }
       _this.trainings=[];
       this.$axios
         .get(this.routes.trainings, {
@@ -189,6 +196,7 @@ export default {
           }
         })
         .then(function (response) {
+          _this.nextPrevious=false;
           _this.trainings = response.data.content;
           _this.totalPages = response.data.totalPages;
           _this.$forceUpdate();
