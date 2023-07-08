@@ -775,13 +775,13 @@
           </v-tab-item>
 
 
-          <div class="col-md-12 lastBtnSubmit mr-2 ml-2 widAuto" v-show="trainingEventTab == 0 || trainingEventTab == 1">
+          <div class="col-md-12 lastBtnSubmit mr-2 ml-2 widAuto" v-show="trainingEventTab == 0">
             <v-btn @click="$routerBack()" outlined depressed tile class="backbutton mr-2 mb-2"> <v-icon>mdi-chevron-left</v-icon> {{ $t("back") }}</v-btn>
             <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" @click="saveTrainingEvent()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
             <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('2')" outlined depressed tile class="savebutton mr-2 mb-2">   <v-icon>mdi-pencil-outline</v-icon>{{ $t("draft") }}</v-btn>
             <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='cancelled'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("activate") }}</v-btn>
             <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='drafted'" @click="activeOrInactiveTrainingEvent('0')" outlined depressed tile class="savebutton mr-2 mb-2"> {{ $t("undraft") }}</v-btn>
-            <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancelEvent") }}</v-btn>
+            <v-btn v-show="$rights.includes('CREATE_TRAINING_EVENT')" v-if="eventStatus==='normal'" @click="activeOrInactiveTrainingEvent('1')" outlined depressed tile class="cancelBtn mr-2 mb-2"><v-icon dark left>mdi-minus-circle</v-icon>{{ $t("cancelEvent") }}</v-btn>
             <v-btn v-show="editMode && $rights.includes('CREATE_TRAINING_EVENT')" @click="openDeleteDialog= true" outlined depressed tile class="mr-2 deletebutton cancelBtn mb-2"> <v-icon>mdi-delete</v-icon> {{ $t("delete") }}</v-btn>
           </div>
 
