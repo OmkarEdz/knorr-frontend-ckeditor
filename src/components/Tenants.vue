@@ -24,12 +24,12 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="tenant in tenants" :key="tenant.id" @click="tableRowClicked(tenant.id)">
+            <draggable tag="tbody" :component-data="{ tag: 'tbody', name: 'flip-list', type: 'transition' }" animation="300" :list="tenants" v-bind="dragOptions" @end="checkMove" id="tableId" >
+              <tr v-for="tenant in tenants" :key="tenant.id" @click="tableRowClicked(tenant.id)" v-bind:id="tenant.id">
                 <td class="pb-1 text-uppercase align-bottom">{{tenant.name}}</td>
                 <td class="pb-1 text-uppercase align-bottom">{{tenant.addressFormattedSingleLineWithCountry}}</td>
               </tr>
-            </tbody>
+            </draggable>
           </v-simple-table>
           <pagination
               class="my-2"
@@ -76,10 +76,24 @@
 <script>
 
 import pagination from './custom/pagination.vue'
+import draggable from "vuedraggable";
+const message = [
+  "vue.draggable",
+  "draggable",
+  "component",
+  "for",
+  "vue.js 2.0",
+  "based",
+  "on",
+  "Sortablejs"
+];
 
 export default {
-
+  name: "transition-example",
+  display: "Transition",
+  order: 6,
   components: {
+    draggable,
     pagination
   },
 
@@ -126,6 +140,29 @@ export default {
   },
 
   methods: {
+    getableData(){
+      this.tableBody = document.getElementById("tableId");
+      this.tbodyRowCount = this.tableBody.rows;
+      for(let i = 0; i < this.tbodyRowCount.length; i++) {
+        this.tbodyRowCount[i].setAttribute("data-id", i + 1);
+      }
+    },
+    checkMove: function(e) {
+      this.onChangeRole();
+    },
+    onChangeRole(){
+      this.isDraggable = true;
+      setTimeout(function() {
+        this.tableBody = document.getElementById("tableId");
+        this.tbodyRowCount = this.tableBody.rows;
+        for(let i = 0; i < this.tbodyRowCount.length; i++) {
+          this.tbodyRowCount[i].setAttribute("data-id", i + 1);
+          const updatedValues = this.tbodyRowCount[i].getAttribute("data-id");
+          const updatedId = this.tbodyRowCount[i].getAttribute("id");
+          console.log(updatedValues, updatedId);
+        }
+      }, 500);
+    },
     previousPage() {
       this.page = this.page - 1;
       this.fetchTenants();
@@ -252,6 +289,17 @@ export default {
       };
       return options;
     },
+  },
+
+  computed: {
+    dragOptions() {
+      return {
+        animation: 0,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   },
 };
 </script>

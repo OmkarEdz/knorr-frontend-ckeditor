@@ -12,9 +12,12 @@ import 'vuetify/dist/vuetify.min.css'
 import 'vue-cal/dist/vuecal.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Sortable from 'vue-sortable'
 
 // QYSIWYG Editor
 import { VueEditor } from "vue2-editor";
+import CKEditor from 'ckeditor4-vue';
+
 
 // Vue Components
 import ResetPassword from './components/ResetPassword.vue'
@@ -83,6 +86,7 @@ Vue.use(Vuetify)
 Vue.use(VueRouter)
 Vue.use(VueEditor, /* { default global options} */)
 Vue.component("vue-editor", VueEditor);
+Vue.use(CKEditor);
 
 // Components
 Vue.use(ResetPassword)
@@ -110,6 +114,7 @@ Vue.use(Upload)
 Vue.component("Upload", Upload);
 Vue.use(DatePicker)
 Vue.component("DatePicker", DatePicker);
+Vue.use(Sortable)
 
 // Language
 Vue.use(VueI18n)

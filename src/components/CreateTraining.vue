@@ -193,15 +193,16 @@
                 ></v-checkbox>
           </div>
 
-          <div class="col-md-12 px-0">
+          <div class="col-md-12 px-0 new-html-editor-wrap">
             <div class="col-md-12 pb-4">
               <div class="html-editor">
                 <label class="html-editor-headline">
                   {{ $t("goals") }}
                 </label>
-                <vue-editor
+                <ckeditor
+                  :editor="editor"
+                  :config="editorConfig"
                   v-model="training.goals[language.shortForm]"
-                  :editor-toolbar="customToolbar"
                 />
               </div>
             </div>
@@ -210,9 +211,10 @@
                 <label class="html-editor-headline">
                   {{ $t("targetgroup") }}
                 </label>
-                <vue-editor
+                <ckeditor
+                  :editor="editorTwo"
+                  :config="editorConfigTwo"
                   v-model="training.targetGroups[language.shortForm]"
-                  :editor-toolbar="customToolbar"
                 />
               </div>
             </div>
@@ -221,9 +223,10 @@
                 <label class="html-editor-headline">
                   {{ $t("content") }}
                 </label>
-                <vue-editor
+                <ckeditor
+                  :editor="editorThree"
+                  :config="editorConfigThree"
                   v-model="training.descriptions[language.shortForm]"
-                  :editor-toolbar="customToolbar"
                 />
               </div>
             </div>
@@ -232,9 +235,10 @@
                 <label class="html-editor-headline">
                   {{ $t("prerequesites") }}
                 </label>
-                <vue-editor
+                <ckeditor
+                  :editor="editorFour"
+                  :config="editorConfigFour"
                   v-model="training.prerequesites[language.shortForm]"
-                  :editor-toolbar="customToolbar"
                 />
               </div>
             </div>
@@ -273,7 +277,8 @@
 </template>
 
 <script>
-import Card from './custom/Card.vue'
+import Card from './custom/Card.vue'  
+
 export default {
     components:{
       Card,
@@ -291,11 +296,12 @@ export default {
         categories: [],     // only data for select boxes
         languageTab: null,
         selectedCategory: null,
-         openDeleteDialog:false,
+        openDeleteDialog:false,
         customToolbar: [
           ["bold", "italic", "underline"],
           [{ list: "ordered" }, { list: "bullet" }],
           [{ indent: "-1" }, { indent: "+1" }],
+          ["code"],
           ["clean"]
         ],
         locations: [],
@@ -328,7 +334,60 @@ export default {
           showUpcomingSchedules: true,
           selectedLocations: [],
           isPopular:false
-        }
+        },
+
+        content: {
+            ops: [],
+        },
+        config: {
+            readOnly: false,
+            placeholder: 'Compose an epic...',
+        },
+
+        editor: 'ClassicEditor',
+        editorConfig: {
+          toolbar: [
+            ["Bold","Italic","Strike"],
+            ["RemoveFormat"],
+            ["NumberedList", "BulletedList"],
+            [ "Outdent", "Indent"],
+            ["Link", "Unlink"],
+            ["Source"]
+          ],  
+        },
+        editorTwo: 'ClassicEditor',
+        editorConfigTwo: {
+          toolbar: [
+            ["Bold","Italic","Strike"],
+            ["RemoveFormat"],
+            ["NumberedList", "BulletedList"],
+            [ "Outdent", "Indent"],
+            ["Link", "Unlink"],
+            ["Source"]
+          ],  
+        },
+        editorThree: 'ClassicEditor',
+        editorConfigThree: {
+          toolbar: [
+            ["Bold","Italic","Strike"],
+            ["RemoveFormat"],
+            ["NumberedList", "BulletedList"],
+            [ "Outdent", "Indent"],
+            ["Link", "Unlink"],
+            ["Source"]
+          ],  
+        },
+        editorFour: 'ClassicEditor',
+        editorConfigFour: {
+          toolbar: [
+            ["Bold","Italic","Strike"],
+            ["RemoveFormat"],
+            ["NumberedList", "BulletedList"],
+            [ "Outdent", "Indent"],
+            ["Link", "Unlink"],
+            ["Source"]
+          ],  
+        },
       }
     },
 

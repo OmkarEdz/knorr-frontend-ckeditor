@@ -10,8 +10,24 @@
     </div>
   </div>
   <div class="mx-0 row align-items-start">
-    <div class="col-xl-8 px-8  pr-md-10 pr-lg-0">
-        <div class="px-md-4 mx-0 pa-0 row justify-content-sm-between justify-content-center">
+    <div class="col-xl-8 px-8 pr-md-10 pr-lg-0 pt-8">
+        <div class="rolesFilterWrap">
+          <div class="custom-select-dropdown custom-location-dropdown custom-role-dropdown">
+              <v-autocomplete  
+                v-model="rolesFilter"
+                hide-details="auto"
+                class="justify-content-end searchbar align-self-center"
+                :items="rolesList"
+                item-text='name'
+                item-value='id'
+                dense
+                @change="onChangeRole()"
+                outlined>
+                  <template v-slot:append></template>
+              </v-autocomplete>
+            </div>
+        </div>
+        <div class="px-md-4 mx-0 pa-0 pr-0 row justify-content-sm-between justify-content-center forDragableTbl">
           <v-simple-table class="userstable" style="width:100%" hide-default-footer>
             <thead>
               <tr>
@@ -35,14 +51,25 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <draggable tag="tbody"  :component-data="{ tag: 'tbody', name: 'flip-list', type: 'transition' }" animation="300" :list="users" v-bind="dragOptions" @end="checkMove" id="tableId" v-if="rolesFilter !== 'VIEW ALL'">
+                  <tr v-for="user in users" :key="user.id" @click="$router.push('/edit-user?userId=' + user.id)"
+                  v-if="rolesFilter === 'VIEW ALL' || rolesFilter == user.roles" v-bind:id="user.id">
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.lastname}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.firstname}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.email}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.company}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.roles != null ? getRoles(user) : ""}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.blocked ? $t("blocked") : $t("active")}}</td>
+                  </tr>
+            </draggable>
+            <tbody v-if="rolesFilter === 'VIEW ALL'">
               <tr v-for="user in users" :key="user.id" @click="$router.push('/edit-user?userId=' + user.id)">
-                <td class="pb-1 text-uppercase align-bottom">{{user.lastname}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{user.firstname}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{user.email}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{user.company}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{user.roles != null ? getRoles(user) : ""}}</td>
-                <td class="pb-1 text-uppercase align-bottom">{{user.blocked ? $t("blocked") : $t("active")}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.lastname}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.firstname}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.email}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.company}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.roles != null ? getRoles(user) : ""}}</td>
+                    <td class="pl-0 pb-1 text-uppercase align-bottom">{{user.blocked ? $t("blocked") : $t("active")}}</td>
               </tr>
             </tbody>
           </v-simple-table>
@@ -63,6 +90,7 @@
             <div class="mt-6"></div>
             <v-btn :to="`/create-user`" v-show="$rights.includes('CREATE_USER')" outlined depressed tile class="savebutton mb-2 mr-2">{{ $t("create_user") }}</v-btn>
             <v-btn :href="`/api/user/export`" v-show="$rights.includes('TENANT_INDEPENDENCE')" outlined depressed tile class="savebutton mb-2 mr-2">{{ $t("export_csv") }}</v-btn>
+            <v-btn v-show="rolesFilter !== 'VIEW ALL'" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("save") }}</v-btn>
           </div>
           <div class="col-xl-12 right-side-block">
             <h3 class="text-uppercase">{{ $t("search") }}</h3>
@@ -113,10 +141,24 @@
 <script>
 
 import pagination from './custom/pagination.vue'
+import draggable from "vuedraggable";
+const message = [
+  "vue.draggable",
+  "draggable",
+  "component",
+  "for",
+  "vue.js 2.0",
+  "based",
+  "on",
+  "Sortablejs"
+];
 
 export default {
-
+  name: "transition-example",
+  display: "Transition",
+  order: 6,
   components: {
+    draggable,
     pagination
   },
 
@@ -147,9 +189,18 @@ export default {
       createUserPopup: false,
       menu: false,
       createmode: true,
+      rolesFilter: [],
+      rolesList: ['VIEW ALL'],
+      rolesWrap: [],
 
       // Personal Data
       me: null,
+
+      list: message.map((name, index) => {
+        return { name, order: index + 1 };
+      }),
+      tableBody: null,
+      tbodyRowCount: null,
     };
   },
 
@@ -160,13 +211,37 @@ export default {
   },
 
   mounted() {
+    this.rolesFilter = "VIEW ALL";
     this.fetchUsers();
     if(this.$rights.includes("TENANT_INDEPENDENCE")){
       this.fetchTenants();
-    }
+    };
   },
 
-  methods: {
+  methods: {  
+    getableData(){
+      this.tableBody = document.getElementById("tableId");
+      this.tbodyRowCount = this.tableBody.rows;
+      for(let i = 0; i < this.tbodyRowCount.length; i++) {
+        this.tbodyRowCount[i].setAttribute("data-id", i + 1);
+      }
+    },
+    checkMove: function(e) {
+      this.onChangeRole();
+    },
+    onChangeRole(){
+      this.isDraggable = true;
+      setTimeout(function() {
+        this.tableBody = document.getElementById("tableId");
+        this.tbodyRowCount = this.tableBody.rows;
+        for(let i = 0; i < this.tbodyRowCount.length; i++) {
+          this.tbodyRowCount[i].setAttribute("data-id", i + 1);
+          const updatedValues = this.tbodyRowCount[i].getAttribute("data-id");
+          const updatedId = this.tbodyRowCount[i].getAttribute("id");
+          console.log(updatedValues, updatedId);
+        }
+      }, 500);
+    },
     getRoles(user){
       var str = '';
       for (let i = 0; i < user.roles.length; i++) {
@@ -214,6 +289,9 @@ export default {
           _this.users = response.data.content;
           for (let i = 0; i < _this.users.length; i++) {
             const user = _this.users[i];
+            for (let j = 0; j < _this.users.length && i == 0; j++) {
+              _this.rolesList.push(_this.users[j].roles[i]);
+            }
             if(typeof user === "object") continue;
             _this.$axios.get(_this.routes.users + "/" + user)
               .then(function (response) {
@@ -224,7 +302,10 @@ export default {
           _this.totalPages = response.data.totalPages;
           _this.$forceUpdate();
         })
-        .catch(this.onError);
+        .catch(this.onError)
+        .finally(() => {
+          this.getableData();
+        });
     },
     exportUser(){
       this.$axios
@@ -334,6 +415,17 @@ export default {
       };
       return options;
     },
+  },
+
+  computed: {
+    dragOptions() {
+      return {
+        animation: 0,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   },
 };
 </script>

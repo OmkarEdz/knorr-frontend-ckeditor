@@ -11,7 +11,7 @@
   </div>
   <div class="mx-0 row align-items-start">
     <div class="col-xl-8 px-8  pr-md-10 pr-lg-0">
-      <div class="px-md-4 mx-0 pa-0 row justify-content-sm-between justify-content-center">
+      <div class="px-md-4 mx-0 pa-0 row justify-content-sm-between justify-content-center forDragableTbl">
         <v-simple-table class="venuestable" style="width:100%" hide-default-footer>
           <thead>
             <tr>
@@ -26,13 +26,13 @@
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="venue in venues" :key="venue.id" @click="$router.push('/edit-venue?venueId=' + venue.id)">
+          <draggable tag="tbody" :component-data="{ tag: 'tbody', name: 'flip-list', type: 'transition' }" animation="300" :list="venues" v-bind="dragOptions" @end="checkMove" id="tableId" >
+            <tr v-for="venue in venues" :key="venue.id" @click="$router.push('/edit-venue?venueId=' + venue.id)" v-bind:id="venue.id">
               <td class="pl-0 pb-1 text-uppercase align-bottom">{{venue.designation}}</td>
               <td class="pl-0 pb-1 text-uppercase align-bottom">{{venue.addressFormattedSingleLine}}</td>
               <td class="pl-0 pb-1 text-uppercase align-bottom">{{venue.country}}</td>
             </tr>
-          </tbody>
+          </draggable>
         </v-simple-table>
         <pagination
             class="my-2"
@@ -79,10 +79,24 @@
 <script>
 
 import pagination from './custom/pagination.vue'
+import draggable from "vuedraggable";
+const message = [
+  "vue.draggable",
+  "draggable",
+  "component",
+  "for",
+  "vue.js 2.0",
+  "based",
+  "on",
+  "Sortablejs"
+];
 
 export default {
-
+  name: "transition-example",
+  display: "Transition",
+  order: 6,
   components: {
+    draggable,
     pagination
   },
 
@@ -114,6 +128,8 @@ export default {
       // Personal Data
       me: null,
       rightGlobalAccess: false,
+      tableBody: null,
+      tbodyRowCount: null,
     };
   },
 
@@ -135,6 +151,29 @@ export default {
   },
 
   methods: {
+    getableData(){
+      this.tableBody = document.getElementById("tableId");
+      this.tbodyRowCount = this.tableBody.rows;
+      for(let i = 0; i < this.tbodyRowCount.length; i++) {
+        this.tbodyRowCount[i].setAttribute("data-id", i + 1);
+      }
+    },
+    checkMove: function(e) {
+      this.onChangeRole();
+    },
+    onChangeRole(){
+      this.isDraggable = true;
+      setTimeout(function() {
+        this.tableBody = document.getElementById("tableId");
+        this.tbodyRowCount = this.tableBody.rows;
+        for(let i = 0; i < this.tbodyRowCount.length; i++) {
+          this.tbodyRowCount[i].setAttribute("data-id", i + 1);
+          const updatedValues = this.tbodyRowCount[i].getAttribute("data-id");
+          const updatedId = this.tbodyRowCount[i].getAttribute("id");
+          console.log(updatedValues, updatedId);
+        }
+      }, 500);
+    },
     previousPage() {
       this.page = this.page - 1;
       this.fetchVenues();
@@ -271,6 +310,17 @@ export default {
       };
       return options;
     },
+  },
+
+  computed: {
+    dragOptions() {
+      return {
+        animation: 0,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   },
 };
 </script>

@@ -82,6 +82,10 @@
                </div>
                 </div> 
             </div>
+            <div class="col-md-12 lastBtnSubmit mr-3 ml-3 widAuto">
+              <v-btn @click="sendRequest()" outlined depressed tile class="savebutton mr-2 mb-2">{{ $t("send_request") }}</v-btn>
+            <v-btn @click="$routerBack()" outlined depressed tile class="cancelBtn mr-2 mb-2">{{ $t("cancel") }}</v-btn>
+            </div>
             <div class="text-right">
               <v-label>
                 * {{ $t("mandatory_fields") }}
@@ -91,8 +95,8 @@
       </div>
 
       <!-- Right Area -->
-      <div class="col-xl-4 px-0 pl-12 pl-8 pl-md-12 pl-lg-8  row pt-0">
-        <div class="col-xl-12 right-side-block">
+      <div class="col-xl-4 px-0 pl-12 pl-8 pl-md-12 pl-lg-8  row pt-0 onlyContact">
+        <div class="col-xl-12 right-side-block hide">
           <h4 class="text-uppercase">{{ $t("actions") }}</h4>
           <div class="right-side divider"></div>
           <div class="mt-6"></div>

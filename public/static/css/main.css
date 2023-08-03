@@ -2695,14 +2695,14 @@ div.bg-blue{
   .custom-select-dropdown-list li a.clicked {pointer-events: none;background: #07477f;}
   .custom-select-dropdown.active .custom-select-dropdown-list {display: block;}
 
-  #grouphead .custom-select-dropdown .v-input__slot {cursor: pointer;min-height:27px;padding:3px 30px 3px 15px;color:#fff;max-width: 160px;background: #135A98;border: 1px solid #5596CF;}
-  #grouphead .custom-select-dropdown .v-input__slot:hover {background:#07477f;}
-  #grouphead .custom-select-dropdown .v-input__slot fieldset {display:none;}
-  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label {position:unset !important;font-weight: 400;font-size: 13px;line-height: 22px;color: #FFFFFF;}
-  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label--active {display:none;}
-  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label ~ input {cursor: pointer;padding: 0px;color: #fff;font-weight: 400;font-size: 13px;line-height: 20px;}
-  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner {margin:0px;position:absolute;padding: 0px;right: -20px;top: -2px;bottom: 0;}
-  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {color: #fff !important;font-size: 30px;position:relative;right:-7px;}
+  #grouphead .custom-select-dropdown .v-input__slot, .rolesFilterWrap .custom-role-dropdown .v-input__slot {cursor: pointer;min-height:27px;padding:3px 30px 3px 15px;color:#fff;max-width: 160px;background: #135A98;border: 1px solid #5596CF;}
+  #grouphead .custom-select-dropdown .v-input__slot:hover, .rolesFilterWrap .custom-role-dropdown .v-input__slot:hover {background:#07477f;}
+  #grouphead .custom-select-dropdown .v-input__slot fieldset, .rolesFilterWrap .custom-role-dropdown .v-input__slot fieldset {display:none;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label, .rolesFilterWrap .custom-role-dropdown .v-text-field--outlined.v-input--dense .v-label {position:unset !important;font-weight: 400;font-size: 13px;line-height: 22px;color: #FFFFFF;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label--active, .rolesFilterWrap .custom-role-dropdown .v-text-field--outlined.v-input--dense .v-label--active {display:none;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-label ~ input, .rolesFilterWrap .custom-role-dropdown .v-text-field--outlined.v-input--dense .v-label ~ input {cursor: pointer;padding: 0px;color: #fff;font-weight: 400;font-size: 13px;line-height: 20px;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner, .rolesFilterWrap .custom-role-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner {margin:0px;position:absolute;padding: 0px;right: -20px;top: -2px;bottom: 0;}
+  #grouphead .custom-select-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i, .rolesFilterWrap .custom-role-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {color: #fff !important;font-size: 30px;position:relative;right:-7px;}
 
   .maincontaincontent[data-location="view-all"] .trainer-row {display:table-row !important;}
 
@@ -2887,7 +2887,7 @@ div.bg-blue{
   .right-side-block > .text-dark a:hover {color: #bfb497;border-bottom-color: #bfb497;}
   .v-item-group.v-bottom-navigation--absolute {position: unset;}
   .backbutton {display: none !important;}
-  .sessionLink a, .opentrainingsWrap td a {transition:0.5s all;color: #004581;text-decoration: none !important;font-size: 18px;line-height: 30px;border-bottom: 1px solid #004581 !important;display: inline-block;}
+  .sessionLink a, .opentrainingsWrap td a {transition:0.5s all;color: #004581;text-decoration: underline !important;text-decoration-color: #004581;font-size: 18px;line-height: 30px;text-underline-offset: 8px;display: inline-block;}
   .sessionLink a:hover, .opentrainingsWrap td a:hover {color: #bfb497;border-bottom-color: #bfb497 !important;}
   .view-all-traning-link {align-items: flex-start;margin-left: -5px;margin-top:15px;font-weight: 600;transition:0.5s all;color: #004581 !important;text-decoration: none !important;font-size: 18px;line-height: 25px;display: flex;flex-direction: row-reverse;justify-content: flex-end;}
   .view-all-traning-link img {width:18px;padding-top: 3px;}
@@ -2924,6 +2924,36 @@ div.bg-blue{
   .backBtnPlain:hover img {filter: brightness(0);}
   .backBtnPlain .v-ripple__container {display: none;}
   .relativeBtn {z-index: 9;}
+
+  .innerListWrap {width: 100%;}
+  .innerListWrap span{display: flex;width: 100%;}
+
+  /* For dragable table css */
+  .pr-0.forDragableTbl {padding-right:0px !important;}
+  .rolesFilterWrap {display: flex;justify-content: flex-end;margin-bottom: 10px;}
+  .rolesFilterWrap .custom-select-dropdown {margin:0px;}
+  #grouphead .custom-select-dropdown .v-input__slot, .rolesFilterWrap .custom-role-dropdown .v-input__slot {min-width:200px;cursor: pointer !important;min-height: 27px !important;padding: 3px 30px 3px 15px !important;}
+  .rolesFilterWrap .custom-select-dropdown .v-autocomplete:not(.v-input--is-disabled).v-select.v-text-field input {color:#fff;cursor: pointer;}
+  .rolesFilterWrap .custom-role-dropdown .v-text-field--outlined.v-input--dense .v-input__append-inner i {top:8px;cursor: pointer;}
+  .rolesFilterWrap .custom-role-dropdown .v-input__slot {border: 1px solid #135A98;}
+  /* .forDragableTbl span {display: table;min-width: 100%;}
+  .forDragableTblBody table {width: 100%;}
+  .forDragableTbl tr:hover {background:transparent !important;}
+  .forDragableTbl tr:hover {background: #eee !important;}
+  .forDragableTbl tr td {font-size: .875rem;height: 48px;padding: 0 16px;-webkit-transition: height .2s cubic-bezier(.4,0,.6,1);
+    transition: height .2s cubic-bezier(.4,0,.6,1);border-bottom: 2px solid #00457e;}  */
+  #tableId tr {position: relative;}
+  #tableId tr:hover {background: transparent !important;}
+  #tableId tr td {vertical-align: middle !important;padding-bottom: 0px !important;}
+  #tableId tr:after {content: "\F35C";cursor: move;transition: 0.5s all; font-family: 'Material Design Icons';font-size: 28px;color: #999;position: absolute;right: 13px;width: 10px;height: 20px;display: flex;align-items: center;justify-content: center;top: 13px;opacity: 0;}
+  #tableId tr:hover:after {opacity:1 ;}
+  .flip-list-move {transition: transform 0.5s;}
+  .no-move {transition: transform 0s;}
+  .ghost {opacity: 1;background: #eee;}
+
+  .new-html-editor-wrap .html-editor {padding:0px;}
+  .new-html-editor-wrap .html-editor .cke_top, .new-html-editor-wrap .html-editor .cke_bottom {background: transparent;}
+  /* body .trainingstable > div > table > tbody > tr > td {vertical-align: middle !important;padding-bottom: 0px !important;} */
   
   @media (min-width:1360px){
     /* .v-app-bar--is-scrolled .row.col-7.pb-0.align-self-center {display: none;} */
